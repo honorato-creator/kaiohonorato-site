@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orçamento · Kaio Honorato</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="description" content="Conte o que você precisa para eu preparar o seu orçamento.">
+<meta name="theme-color" content="#F5F5F5">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Montserrat:wght@400;700;800&display=swap">
+<style>
+:root{--linen:#F5F5F5;--base:#313236;--acc:#E65516;--isa:#D8D6C9;--mut:#52555A;
+  --f-t:'Garet','Montserrat','Helvetica Neue',Arial,sans-serif;--f-b:'Glacial Indifference','Jost','Helvetica Neue',Arial,sans-serif;color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--linen);color:var(--base);font:400 19px/1.55 var(--f-b);-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,p,fieldset,legend{margin:0;padding:0}
+fieldset{border:0;min-width:0}
+img{display:block;max-width:100%;height:auto}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:880px;margin:0 auto;padding:22px 20px}
+.top img{width:min(240px,52vw)}
+.top a.back{font-size:16px;color:var(--mut);text-decoration:underline;text-decoration-color:var(--acc);text-underline-offset:4px;text-decoration-thickness:2px}
+main{max-width:880px;margin:0 auto;padding:clamp(12px,3vw,32px) 20px 96px}
+.label{font:400 13.5px/1.2 var(--f-b);letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.t{font-family:var(--f-t);font-weight:700;letter-spacing:-.03em;line-height:1.02;text-wrap:balance}
+h1.t{font-size:clamp(40px,6.4vw,72px);margin-top:14px}
+h1 em{font-style:normal;color:var(--acc)}
+.lede{margin-top:20px;font-size:clamp(19px,2vw,22px);color:var(--mut);max-width:46ch}
+.prog{display:flex;gap:8px;margin:clamp(32px,5vw,52px) 0 10px}
+.prog i{flex:1;height:5px;border-radius:5px;background:var(--isa);transition:background-color .25s}
+.prog i.on{background:var(--acc)}
+.stepname{font-size:15px;color:var(--mut);margin-bottom:22px}
+.card{background:#fff;border:1.5px solid var(--isa);border-radius:22px;padding:clamp(22px,4vw,40px);box-shadow:0 30px 60px -44px rgba(49,50,54,.45)}
+.step{display:none;gap:26px}
+.step.on{display:grid}
+legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin-bottom:6px}
+.q{display:grid;gap:10px}
+.q>span.l{font-weight:700;font-size:18px}
+.q>span.l small{font-weight:400;color:var(--mut);font-size:15px;margin-left:6px}
+.q input[type=text],.q input[type=email],.q input[type=tel],.q input[type=url],.q textarea{width:100%;background:var(--linen);border:1.5px solid var(--isa);border-radius:14px;padding:14px 16px;font:400 18px/1.4 var(--f-b);transition:border-color .2s,box-shadow .2s}
+.q textarea{min-height:104px;resize:vertical}
+.q input:focus,.q textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px rgba(230,85,22,.18);background:#fff}
+.q.bad input,.q.bad textarea{border-color:var(--acc)}
+.err{display:none;color:#b8400d;font-size:15px}
+.q.bad .err{display:block}
+.opts{display:grid;gap:10px}
+.o{position:relative;display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid var(--isa);border-radius:14px;background:var(--linen);cursor:pointer;line-height:1.35;transition:border-color .2s,background-color .2s}
+.o:hover{border-color:var(--base)}
+.o input{position:absolute;opacity:0;pointer-events:none}
+.o .mk{flex:none;width:22px;height:22px;margin-top:1px;border:1.5px solid var(--base);border-radius:50%;display:grid;place-items:center;background:#fff}
+.o.chk .mk{border-radius:7px}
+.o .mk::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--acc);transform:scale(0);transition:transform .15s}
+.o.chk .mk::after{border-radius:3px}
+.o input:checked+.mk::after{transform:scale(1)}
+.o:has(input:checked){border-color:var(--acc);background:#fff}
+.o:has(input:focus-visible){outline:2px solid var(--acc);outline-offset:3px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:30px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 30px;border-radius:999px;border:1.5px solid var(--base);font:700 17px var(--f-b);background:transparent;transition:background-color .2s,color .2s,border-color .2s}
+.btn:hover{background:var(--base);color:var(--linen)}
+.btn.go{background:var(--acc);border-color:var(--acc);color:var(--linen)}
+.btn.go:hover{background:var(--base);border-color:var(--base)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.btn.ghost{border-color:transparent;color:var(--mut);padding:0 8px;text-decoration:underline;text-decoration-color:var(--acc);text-underline-offset:4px;text-decoration-thickness:2px}
+.btn.ghost:hover{background:transparent;color:var(--base)}
+.note{margin-top:16px;font-size:15.5px;color:var(--mut)}
+.note.bad{color:#b8400d}
+.note a{color:var(--base);text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:4px}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
+.ok{display:none;justify-items:start;gap:14px;padding-block:clamp(16px,4vw,40px)}
+.card.done .ok{display:grid}
+.card.done form{display:none}
+.ok svg{width:96px;height:96px}
+.ok .o1{fill:none;stroke:var(--acc);stroke-width:4;stroke-dasharray:330;stroke-dashoffset:330;animation:draw .8s ease forwards}
+.ok .o2{fill:none;stroke:var(--base);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:80;stroke-dashoffset:80;animation:draw .5s .6s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ok h2{font:700 clamp(30px,4vw,46px)/1.05 var(--f-t);letter-spacing:-.03em}
+.ok p{color:var(--mut);max-width:42ch}
+.foot{max-width:880px;margin:0 auto;padding:0 20px 40px;font-size:15px;color:var(--mut)}
+@media(max-width:560px){.btn{width:100%}.nav{flex-direction:column-reverse;align-items:stretch}.btn.ghost{width:auto;align-self:center}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a href="../" aria-label="Kaio Honorato, início"><img src="../img/wordmark-base.png" alt="Kaio Honorato" width="1598" height="116"></a>
+  <a class="back" href="../">voltar ao site</a>
+</header>
+
+<main>
+  <p class="label">Orçamento</p>
+  <h1 class="t">vamos desenhar o seu <em>projeto.</em></h1>
+  <p class="lede">Responda com calma. Quanto mais eu souber do seu negócio, mais certeiro é o orçamento. Leva uns 5 minutos.</p>
+
+  <div class="prog done-hide" id="prog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+  <p class="stepname done-hide" id="stepname" aria-live="polite"></p>
+
+  <div class="card" id="card">
+    <form id="f" name="orcamento" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+      <input type="hidden" name="form-name" value="orcamento">
+      <p class="hp"><label>Não preencha: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+      <fieldset class="step on" data-name="Sobre você">
+        <legend>Sobre você</legend>
+        <label class="q" id="q-empresa"><span class="l">Nome da empresa ou projeto</span><input type="text" name="empresa" autocomplete="organization" required><span class="err">Conte o nome da empresa ou do projeto.</span></label>
+        <label class="q" id="q-nome"><span class="l">Seu nome (responsável)</span><input type="text" name="nome" autocomplete="name" required><span class="err">Conte o seu nome.</span></label>
+        <div class="q" id="q-contato">
+          <span class="l">Como eu falo com você?</span>
+          <input type="tel" name="whatsapp" placeholder="WhatsApp com DDD" autocomplete="tel" aria-label="WhatsApp com DDD">
+          <input type="email" name="email" placeholder="E-mail" autocomplete="email" aria-label="E-mail">
+          <span class="err">Informe pelo menos um contato válido (WhatsApp ou e-mail).</span>
+        </div>
+        <label class="q"><span class="l">Segmento de atuação <small>opcional</small></span><input type="text" name="segmento"></label>
+      </fieldset>
+
+      <fieldset class="step" data-name="O site">
+        <legend>O que você quer construir</legend>
+        <div class="q"><span class="l">Qual é o principal objetivo do site? <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="objetivo" value="Gerar vendas diretas"><span class="mk"></span><span>Gerar vendas diretas</span></label>
+            <label class="o"><input type="radio" name="objetivo" value="Capturar leads / contatos"><span class="mk"></span><span>Capturar leads / contatos</span></label>
+            <label class="o"><input type="radio" name="objetivo" value="Apresentar a empresa (institucional)"><span class="mk"></span><span>Apresentar a empresa (institucional)</span></label>
+            <label class="o"><input type="radio" name="objetivo" value="Funcionar como portfólio"><span class="mk"></span><span>Funcionar como portfólio</span></label>
+          </div></div>
+        <div class="q"><span class="l">Formato pretendido <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="formato" value="Landing page"><span class="mk"></span><span><b>Landing page</b><br>Página única, foco direto em conversão</span></label>
+            <label class="o"><input type="radio" name="formato" value="Site institucional estático"><span class="mk"></span><span><b>Site institucional estático</b><br>Várias páginas, alta velocidade e autoridade</span></label>
+            <label class="o"><input type="radio" name="formato" value="Site gerenciável (CMS ou Notion)"><span class="mk"></span><span><b>Site gerenciável</b><br>Com CMS ou integração com Notion</span></label>
+            <label class="o"><input type="radio" name="formato" value="Aplicação sob medida / app web"><span class="mk"></span><span><b>Aplicação sob medida</b><br>App web feito para o seu processo</span></label>
+            <label class="o"><input type="radio" name="formato" value="Portfólio"><span class="mk"></span><span><b>Portfólio</b></span></label>
+          </div></div>
+        <label class="q"><span class="l">Quem é o seu cliente ideal? <small>opcional</small></span><textarea name="publico"></textarea></label>
+        <label class="q"><span class="l">Qual é o seu principal diferencial? <small>opcional</small></span><textarea name="diferencial"></textarea></label>
+      </fieldset>
+
+      <fieldset class="step" data-name="Marca e conteúdo">
+        <legend>Marca, domínio e conteúdo</legend>
+        <div class="q"><span class="l">Identidade visual <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="identidade" value="Já tenho completa (logo, cores e fontes)"><span class="mk"></span><span>Já tenho identidade completa (logo, cores e fontes)</span></label>
+            <label class="o"><input type="radio" name="identidade" value="Só o logo, preciso de apoio com cores e fontes"><span class="mk"></span><span>Tenho só o logo e preciso de apoio com cores e fontes</span></label>
+            <label class="o"><input type="radio" name="identidade" value="Não tenho, preciso criar do zero"><span class="mk"></span><span>Não tenho e preciso criar do zero</span></label>
+          </div></div>
+        <label class="q"><span class="l">Link dos arquivos da marca <small>Drive ou Figma, se houver</small></span><input type="text" name="arquivos_marca" inputmode="url" placeholder="https://"></label>
+        <div class="q"><span class="l">Domínio e hospedagem <small>marque o que se aplica</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="dominio_hospedagem" value="Já tenho domínio registrado"><span class="mk"></span><span>Já tenho domínio registrado (ex.: www.suaempresa.com.br)</span></label>
+            <label class="o chk"><input type="checkbox" name="dominio_hospedagem" value="Preciso de orientação para comprar domínio"><span class="mk"></span><span>Não tenho domínio e preciso de orientação para comprar</span></label>
+            <label class="o chk"><input type="checkbox" name="dominio_hospedagem" value="Já tenho hospedagem"><span class="mk"></span><span>Já tenho hospedagem contratada</span></label>
+            <label class="o chk"><input type="checkbox" name="dominio_hospedagem" value="Preciso de recomendação de hospedagem"><span class="mk"></span><span>Preciso de recomendação de hospedagem</span></label>
+          </div></div>
+        <div class="q"><span class="l">Textos, fotos e vídeos <small>marque o que se aplica</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="conteudo" value="Texto pronto e revisado"><span class="mk"></span><span>Todo o texto já está pronto e revisado</span></label>
+            <label class="o chk"><input type="checkbox" name="conteudo" value="Tenho tópicos, preciso de apoio na redação"><span class="mk"></span><span>Tenho os tópicos principais, mas preciso de apoio na redação</span></label>
+            <label class="o chk"><input type="checkbox" name="conteudo" value="Não tenho os textos"><span class="mk"></span><span>Não tenho os textos prontos</span></label>
+            <label class="o chk"><input type="checkbox" name="conteudo" value="Tenho fotos e vídeos profissionais"><span class="mk"></span><span>Tenho fotos e vídeos profissionais da empresa ou dos produtos</span></label>
+          </div></div>
+      </fieldset>
+
+      <fieldset class="step" data-name="Recursos e referências">
+        <legend>Recursos e referências</legend>
+        <div class="q"><span class="l">Funcionalidades e integrações <small>marque quantas quiser</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Botão flutuante de WhatsApp"><span class="mk"></span><span>Botão flutuante de WhatsApp</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Formulário de contato / orçamento"><span class="mk"></span><span>Formulário de contato ou orçamento customizado</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Blog"><span class="mk"></span><span>Blog ou seção de artigos</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Galeria / portfólio"><span class="mk"></span><span>Galeria de fotos ou portfólio</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Depoimentos"><span class="mk"></span><span>Depoimentos de clientes</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Agendamento online"><span class="mk"></span><span>Agendamento online integrado</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="E-mail marketing"><span class="mk"></span><span>Integração com e-mail marketing</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Agente de IA no WhatsApp"><span class="mk"></span><span>Agente de IA para o primeiro atendimento no WhatsApp</span></label>
+            <label class="o chk"><input type="checkbox" name="funcionalidades" value="Automação para planilha ou CRM"><span class="mk"></span><span>Automação para enviar dados a uma planilha ou CRM</span></label>
+          </div></div>
+        <label class="q"><span class="l">Sites que você gosta visualmente <small>opcional</small></span><textarea name="referencias" placeholder="Cole os links"></textarea></label>
+        <label class="q"><span class="l">Concorrentes, diretos ou indiretos <small>opcional</small></span><textarea name="concorrentes" placeholder="Cole os links"></textarea></label>
+        <label class="q"><span class="l">O que você NÃO quer ver no seu site? <small>opcional</small></span><textarea name="nao_quero"></textarea></label>
+        <label class="q"><span class="l">Existe data limite para o lançamento? <small>opcional</small></span><input type="text" name="prazo"></label>
+        <label class="q"><span class="l">Algo mais que eu deva saber? <small>opcional</small></span><textarea name="observacoes"></textarea></label>
+      </fieldset>
+
+      <div class="nav">
+        <button type="button" class="btn ghost" id="prev" hidden>Voltar</button>
+        <button type="button" class="btn go" id="next">Continuar <span aria-hidden="true">→</span></button>
+      </div>
+      <p class="note" id="note" aria-live="polite">As respostas chegam direto para mim e ficam só entre a gente.</p>
+    </form>
+
+    <div class="ok" id="ok" tabindex="-1" role="status">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="o1" cx="60" cy="60" r="52"/><path class="o2" d="M38 62l16 16 30-34"/></svg>
+      <h2 id="okH">Recebi!</h2>
+      <p>Vou ler tudo com atenção e te respondo com escopo, prazo e custo. Se quiser adiantar, me chame no WhatsApp.</p>
+      <a class="btn go" id="okWa" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
+    </div>
+  </div>
+</main>
+<p class="foot">Kaio Honorato · desenvolvedor · <a href="../" style="color:inherit">kaiohonorato.com.br</a></p>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var f=$('#f'),steps=$$('.step',f),bars=$$('#prog i'),cur=0,prev=$('#prev'),next=$('#next'),note=$('#note'),N0=note.textContent,card=$('#card');
+  var WA='https://wa.me/5513997319163?text=';
+  function show(i){
+    cur=i;steps.forEach(function(s,k){s.classList.toggle('on',k===i)});
+    bars.forEach(function(b,k){b.classList.toggle('on',k<=i)});
+    $('#stepname').textContent='Etapa '+(i+1)+' de '+steps.length+' · '+steps[i].dataset.name;
+    prev.hidden=i===0;
+    next.innerHTML=i===steps.length-1?'Enviar pedido <span aria-hidden="true">→</span>':'Continuar <span aria-hidden="true">→</span>';
+    note.className='note';note.textContent=N0;
+    window.scrollTo({top:$('#prog').offsetTop-24,behavior:'smooth'});
+  }
+  function mark(el,msg){var q=el.closest('.q');q.classList.toggle('bad',!!msg)}
+  function valid(){
+    if(cur!==0)return true;
+    var ok=true,e=f.empresa,n=f.nome,w=f.whatsapp.value.replace(/\D/g,''),m=f.email.value.trim();
+    mark(e,!e.value.trim());if(!e.value.trim())ok=false;
+    mark(n,!n.value.trim());if(!n.value.trim())ok=false;
+    var cOk=(w.length>=10)||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m);
+    $('#q-contato').classList.toggle('bad',!cOk);if(!cOk)ok=false;
+    if(!ok){var b=$('.bad input',f);if(b)b.focus()}
+    return ok;
+  }
+  prev.addEventListener('click',function(){show(cur-1)});
+  next.addEventListener('click',function(){
+    if(!valid())return;
+    if(cur<steps.length-1){show(cur+1);return}
+    send();
+  });
+  f.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();next.click()}});
+  function summary(){
+    var d=new FormData(f),g=function(k){return d.getAll(k).join(', ')};
+    return 'Oi Kaio, preenchi o pedido de orçamento.\nEmpresa: '+g('empresa')+'\nResponsável: '+g('nome')+(g('formato')?'\nFormato: '+g('formato'):'');
+  }
+  function done(){
+    var n=(f.nome.value.trim().split(' ')[0])||'';
+    $('#okH').textContent=n?'Recebi, '+n+'!':'Recebi!';
+    $('#okWa').href=WA+encodeURIComponent(summary());
+    card.classList.add('done');$$('.done-hide').forEach(function(x){x.style.display='none'});$('#ok').focus();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function send(){
+    next.disabled=true;next.textContent='Enviando…';
+    var p=new URLSearchParams();new FormData(f).forEach(function(v,k){p.append(k,v)});
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:p.toString()})
+      .then(function(r){if(!r.ok)throw new Error('x');done()})
+      .catch(function(){
+        var body=[];new FormData(f).forEach(function(v,k){if(v&&k!=='form-name'&&k!=='bot-field')body.push(k+': '+v)});
+        var href='mailto:kaiohonorato13@gmail.com?subject='+encodeURIComponent('Pedido de orçamento')+'&body='+encodeURIComponent(body.join('\n'));
+        note.className='note bad';note.innerHTML='Não consegui enviar daqui. <a href="'+href+'">Abrir no seu app de e-mail</a> ou me chame no <a href="'+WA+encodeURIComponent(summary())+'" target="_blank" rel="noopener">WhatsApp</a>.';
+        next.disabled=false;next.innerHTML='Tentar de novo <span aria-hidden="true">→</span>';
+      });
+  }
+  show(0);window.scrollTo(0,0);
+})();
+</script>
+</body>
+</html>
