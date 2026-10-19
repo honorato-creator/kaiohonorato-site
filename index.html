@@ -829,6 +829,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
         <div class="links2" id="links2">
           <a class="btn btn-line btn-sm" id="lnkGithub" href="#" target="_blank" rel="noopener" hidden>GitHub</a>
           <a class="btn btn-line btn-sm" id="lnkLinkedin" href="#" target="_blank" rel="noopener" hidden>LinkedIn</a>
+          <a class="btn btn-line btn-sm" id="lnkInsta" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
         </div>
         <div class="stack" aria-label="Tecnologias"><span>Python</span><span>Java</span><span>JavaScript</span><span>React</span><span>Supabase</span><span>n8n</span><span>WhatsApp</span><span>Notion</span></div>
       </div>
@@ -886,7 +887,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 <script>
 /* github: só o usuário. linkedin: endereço completo. Vazio = o botão não aparece. */
-var PERFIL={github:'honorato-creator',linkedin:'https://www.linkedin.com/in/honoratokaio',netlify:''};
+var PERFIL={github:'honorato-creator',linkedin:'https://www.linkedin.com/in/honoratokaio',instagram:'https://www.instagram.com/kaio_honorato/',netlify:''};
 /* links: vazio = o botão não aparece */
 var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.vercel.app',repo:''},manu:{live:'https://manujustel.com.br',repo:''}};
 
@@ -910,7 +911,8 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   var gh=(PERFIL.github||'').replace(/^https?:\/\/github\.com\//,'').replace(/\/$/,''),li=PERFIL.linkedin||'';
   if(gh){var g=$('#lnkGithub');g.href='https://github.com/'+gh;g.hidden=false}
   if(li){var l=$('#lnkLinkedin');l.href=li;l.hidden=false}
-  if(!gh&&!li)$('#links2').hidden=true;
+  if(PERFIL.instagram){var ig=$('#lnkInsta');ig.href=PERFIL.instagram;ig.hidden=false}
+  if(!gh&&!li&&!PERFIL.instagram)$('#links2').hidden=true;
 
   /* reator da abertura */
   var svg=$('#nodes'),ptr=null,t0=performance.now(),tick=$('#ticks'),tilt={x:0,y:0},heat=0,wv=-1;
@@ -1148,6 +1150,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     CH.push({k:'em',l:'E-mail',c:'kaiohonorato13@gmail.com',h:'mailto:kaiohonorato13@gmail.com'});
     if(g)CH.push({k:'gh',l:'GitHub',c:g,h:'https://github.com/'+g});
     if(PERFIL.linkedin)CH.push({k:'li',l:'LinkedIn',c:'ver perfil',h:PERFIL.linkedin});
+    if(PERFIL.instagram)CH.push({k:'ig',l:'Instagram',c:'@kaio_honorato',h:PERFIL.instagram});
     if(PERFIL.netlify)CH.push({k:'nt',l:'Netlify',c:'ver sites no ar',h:PERFIL.netlify});
     var fl=$('#footL');
     CH.forEach(function(c){if(c.k==='em')return;var a=document.createElement('a');a.href=c.h;a.textContent=c.l;if(c.k!=='em'){a.target='_blank';a.rel='noopener'}fl.appendChild(a)});
