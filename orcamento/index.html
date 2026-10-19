@@ -38,8 +38,8 @@ h1 em{font-style:normal;color:var(--acc)}
 .prog i.on{background:var(--acc)}
 .stepname{font-size:15px;color:var(--mut);margin-bottom:22px}
 .card{background:#fff;border:1.5px solid var(--isa);border-radius:22px;padding:clamp(22px,4vw,40px);box-shadow:0 30px 60px -44px rgba(49,50,54,.45)}
-.step{display:none;gap:26px}
-.step.on{display:grid}
+.step{display:grid;gap:26px;padding-top:clamp(28px,4vw,44px);margin-top:clamp(28px,4vw,44px);border-top:1.5px solid var(--isa)}
+.step:first-of-type{padding-top:0;margin-top:0;border-top:0}
 legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin-bottom:6px}
 .q{display:grid;gap:10px}
 .q>span.l{font-weight:700;font-size:18px}
@@ -98,15 +98,14 @@ legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin
   <h1 class="t">vamos desenhar o seu <em>projeto.</em></h1>
   <p class="lede">Responda com calma. Quanto mais eu souber do seu negócio, mais certeiro é o orçamento. Leva uns 5 minutos.</p>
 
-  <div class="prog done-hide" id="prog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
-  <p class="stepname done-hide" id="stepname" aria-live="polite"></p>
+  <div style="height:clamp(28px,4vw,44px)"></div>
 
   <div class="card" id="card">
     <form id="f" name="orcamento" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="orcamento">
       <p class="hp"><label>Não preencha: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 
-      <fieldset class="step on" data-name="Sobre você">
+      <fieldset class="step" data-name="Sobre você">
         <legend>Sobre você</legend>
         <label class="q" id="q-empresa"><span class="l">Nome da empresa ou projeto</span><input type="text" name="empresa" autocomplete="organization" required><span class="err">Conte o nome da empresa ou do projeto.</span></label>
         <label class="q" id="q-nome"><span class="l">Seu nome (responsável)</span><input type="text" name="nome" autocomplete="name" required><span class="err">Conte o seu nome.</span></label>
@@ -187,8 +186,8 @@ legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin
       </fieldset>
 
       <div class="nav">
-        <button type="button" class="btn ghost" id="prev" hidden>Voltar</button>
-        <button type="button" class="btn go" id="next">Continuar <span aria-hidden="true">→</span></button>
+        <span></span>
+        <button type="button" class="btn go" id="next">Enviar pedido <span aria-hidden="true">→</span></button>
       </div>
       <p class="note" id="note" aria-live="polite">As respostas chegam direto para mim e ficam só entre a gente.</p>
     </form>
@@ -206,35 +205,21 @@ legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin
 <script>
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
-  var f=$('#f'),steps=$$('.step',f),bars=$$('#prog i'),cur=0,prev=$('#prev'),next=$('#next'),note=$('#note'),N0=note.textContent,card=$('#card');
+  var f=$('#f'),next=$('#next'),note=$('#note'),N0=note.textContent,card=$('#card');
   var WA='https://wa.me/5513997319163?text=';
-  function show(i){
-    cur=i;steps.forEach(function(s,k){s.classList.toggle('on',k===i)});
-    bars.forEach(function(b,k){b.classList.toggle('on',k<=i)});
-    $('#stepname').textContent='Etapa '+(i+1)+' de '+steps.length+' · '+steps[i].dataset.name;
-    prev.hidden=i===0;
-    next.innerHTML=i===steps.length-1?'Enviar pedido <span aria-hidden="true">→</span>':'Continuar <span aria-hidden="true">→</span>';
-    note.className='note';note.textContent=N0;
-    window.scrollTo({top:$('#prog').offsetTop-24,behavior:'smooth'});
-  }
   function mark(el,msg){var q=el.closest('.q');q.classList.toggle('bad',!!msg)}
   function valid(){
-    if(cur!==0)return true;
     var ok=true,e=f.empresa,n=f.nome,w=f.whatsapp.value.replace(/\D/g,''),m=f.email.value.trim();
     mark(e,!e.value.trim());if(!e.value.trim())ok=false;
     mark(n,!n.value.trim());if(!n.value.trim())ok=false;
     var cOk=(w.length>=10)||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m);
     $('#q-contato').classList.toggle('bad',!cOk);if(!cOk)ok=false;
-    if(!ok){var b=$('.bad input',f);if(b)b.focus()}
+    if(!ok){var b=$('.bad input',f);if(b){b.focus();b.scrollIntoView({block:'center',behavior:'smooth'})}note.className='note bad';note.textContent='Faltam alguns dados obrigatórios no começo do formulário.'}
+    else{note.className='note';note.textContent=N0}
     return ok;
   }
-  prev.addEventListener('click',function(){show(cur-1)});
-  next.addEventListener('click',function(){
-    if(!valid())return;
-    if(cur<steps.length-1){show(cur+1);return}
-    send();
-  });
-  f.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();next.click()}});
+  next.addEventListener('click',function(){if(valid())send()});
+  f.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault()}});
   function summary(){
     var d=new FormData(f),g=function(k){return d.getAll(k).join(', ')};
     return 'Oi Kaio, preenchi o pedido de orçamento.\nEmpresa: '+g('empresa')+'\nResponsável: '+g('nome')+(g('formato')?'\nFormato: '+g('formato'):'');
@@ -243,7 +228,7 @@ legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin
     var n=(f.nome.value.trim().split(' ')[0])||'';
     $('#okH').textContent=n?'Recebi, '+n+'!':'Recebi!';
     $('#okWa').href=WA+encodeURIComponent(summary());
-    card.classList.add('done');$$('.done-hide').forEach(function(x){x.style.display='none'});$('#ok').focus();
+    card.classList.add('done');$('#ok').focus();
     window.scrollTo({top:0,behavior:'smooth'});
   }
   function send(){
@@ -258,7 +243,6 @@ legend{font:700 clamp(24px,3vw,32px)/1.1 var(--f-t);letter-spacing:-.02em;margin
         next.disabled=false;next.innerHTML='Tentar de novo <span aria-hidden="true">→</span>';
       });
   }
-  show(0);window.scrollTo(0,0);
 })();
 </script>
 </body>
