@@ -55,7 +55,7 @@ h1 em{font-style:normal;color:var(--acc)}
 .prog i{flex:1;height:5px;border-radius:5px;background:var(--isa);transition:background-color .25s}
 .prog i.on{background:var(--acc)}
 .stepname{font-size:15px;color:var(--mut);margin-bottom:22px}
-.card{background:#fff;border:1.5px solid var(--isa);border-radius:22px;padding:clamp(22px,4vw,40px);box-shadow:0 30px 60px -44px rgba(49,50,54,.45)}
+.card{scroll-margin-top:104px;background:#fff;border:1.5px solid var(--isa);border-radius:22px;padding:clamp(22px,4vw,40px);box-shadow:0 30px 60px -44px rgba(49,50,54,.45)}
 .step{display:grid;gap:26px;padding-top:clamp(28px,4vw,44px);margin-top:clamp(28px,4vw,44px);border-top:1.5px solid var(--isa)}
 .step:first-of-type{padding-top:0;margin-top:0;border-top:0}
 .step .lg+*{margin-top:0}
@@ -101,15 +101,21 @@ h1 em{font-style:normal;color:var(--acc)}
 @keyframes draw{to{stroke-dashoffset:0}}
 .ok h2{font:700 clamp(30px,4vw,46px)/1.05 var(--f-t);letter-spacing:-.03em}
 .ok p{color:var(--mut);max-width:42ch}
-.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:4px 2px 10px;margin:0 -2px}
-@media(max-width:760px){.tabs{display:flex;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:none;display:grid;align-content:start;gap:3px;text-align:left;min-height:54px;padding:12px 14px;border-radius:16px;border:1.5px solid var(--isa);background:#fff;font:700 17px/1.15 var(--f-b);color:var(--base);transition:border-color .2s,background-color .2s,color .2s}
-.tab small{font:400 13.5px/1.2 var(--f-b);color:var(--mut)}
-.tab:hover{border-color:var(--base)}
-.tab[aria-selected=true]{background:var(--base);border-color:var(--base);color:var(--linen)}
-.tab[aria-selected=true] small{color:var(--isa)}
-.tabhint{font-size:15px;color:var(--mut);margin:4px 0 18px}
+.pick{display:grid;gap:18px}
+.pick .lg{margin:0}
+.pick p.sub{color:var(--mut);margin:-6px 0 4px}
+.svcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.svc{display:grid;gap:6px;text-align:left;padding:20px 20px 18px;border-radius:18px;border:1.5px solid var(--isa);background:var(--linen);transition:border-color .2s,background-color .2s,transform .2s}
+.svc b{font:700 21px/1.15 var(--f-t);letter-spacing:-.01em}
+.svc span{font-size:15.5px;color:var(--mut);line-height:1.4}
+.svc:hover{border-color:var(--acc);background:#fff;transform:translateY(-2px)}
+.svc:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.svcbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.svcbar .chip{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:16px;padding:6px 14px;border-radius:999px;background:var(--base);color:var(--linen)}
+.svcbar button{background:none;border:0;padding:4px 0;color:var(--mut);font-size:15.5px;text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:4px}
+.svcbar button:hover{color:var(--base)}
+.wizard[hidden],.pick[hidden]{display:none!important}
+.wizard .step{padding-top:0!important;margin-top:0!important;border-top:0!important}
 .foot{max-width:880px;margin:0 auto;padding:0 20px 40px;font-size:15px;color:var(--mut)}
 @media(max-width:560px){.btn{width:100%}.nav{flex-direction:column-reverse;align-items:stretch}.btn.ghost{width:auto;align-self:center}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
@@ -141,34 +147,33 @@ h1 em{font-style:normal;color:var(--acc)}
 
   <div style="height:clamp(28px,4vw,44px)"></div>
 
-  <div class="tabs" role="tablist" aria-label="Serviço">
-    <button type="button" class="tab" role="tab" id="t-agente" data-tab="agente" aria-selected="false">Agente de IA<small>WhatsApp, atendimento</small></button>
-    <button type="button" class="tab" role="tab" id="t-automacao" data-tab="automacao" aria-selected="false">Automação<small>processos repetitivos</small></button>
-    <button type="button" class="tab" role="tab" id="t-landing" data-tab="landing" aria-selected="false">Landing page<small>uma página, conversão</small></button>
-    <button type="button" class="tab" role="tab" id="t-site" data-tab="site" aria-selected="true">Site<small>institucional, portfólio</small></button>
-    <button type="button" class="tab" role="tab" id="t-app" data-tab="app" aria-selected="false">App sob medida<small>sistema para o seu processo</small></button>
-  </div>
-  <p class="tabhint" id="tabhint">Não sabe qual escolher? Responda na que chega mais perto, eu ajusto depois.</p>
+
 
   <div class="card" id="card">
     <form id="f" name="orcamento" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="orcamento">
       <input type="hidden" name="servico" id="servico" value="Site">
       <input type="hidden" name="resumo" id="resumo" value="">
+
+      <div class="pick" id="pick">
+        <h2 class="lg">Qual serviço você quer orçar?</h2>
+        <p class="sub">Escolha um. Não tem certeza? Vá no que chega mais perto, eu ajusto depois.</p>
+        <div class="svcs">
+          <button type="button" class="svc" data-svc="agente"><b>Agente de IA</b><span>Atende seus clientes no WhatsApp a qualquer hora, agenda e qualifica.</span></button>
+          <button type="button" class="svc" data-svc="automacao"><b>Automação</b><span>Tarefas repetitivas entre WhatsApp, planilha, e-mail e sistemas rodando sozinhas.</span></button>
+          <button type="button" class="svc" data-svc="landing"><b>Landing page</b><span>Uma página focada em vender ou captar contatos.</span></button>
+          <button type="button" class="svc" data-svc="site"><b>Site</b><span>Institucional ou portfólio, com várias páginas.</span></button>
+          <button type="button" class="svc" data-svc="app"><b>App sob medida</b><span>Um sistema feito para o processo da sua empresa.</span></button>
+        </div>
+      </div>
+
+      <div class="wizard" id="wizard" hidden>
+        <div class="svcbar"><span class="chip" id="chip">Site</span><button type="button" id="trocar">trocar serviço</button></div>
+        <div class="prog" id="prog" aria-hidden="true"></div>
+        <p class="stepname" id="stepname"></p>
+
       <p class="hp"><label>Não preencha: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 
-      <div role="group" class="step" data-name="Sobre você">
-        <h2 class="lg">Sobre você</h2>
-        <label class="q" id="q-empresa"><span class="l">Nome da empresa ou projeto</span><input type="text" name="empresa" autocomplete="organization" required><span class="err">Conte o nome da empresa ou do projeto.</span></label>
-        <label class="q" id="q-nome"><span class="l">Seu nome (responsável)</span><input type="text" name="nome" autocomplete="name" required><span class="err">Conte o seu nome.</span></label>
-        <div class="q" id="q-contato">
-          <span class="l">Como eu falo com você?</span>
-          <input type="tel" name="whatsapp" placeholder="WhatsApp com DDD" autocomplete="tel" aria-label="WhatsApp com DDD">
-          <input type="email" name="email" placeholder="E-mail" autocomplete="email" aria-label="E-mail">
-          <span class="err">Informe pelo menos um contato válido (WhatsApp ou e-mail).</span>
-        </div>
-        <label class="q"><span class="l">Segmento de atuação <small>opcional</small></span><input type="text" name="segmento"></label>
-      </div>
 
 
       <div role="group" class="step" data-tabs="agente" data-name="O agente">
@@ -328,6 +333,19 @@ h1 em{font-style:normal;color:var(--acc)}
         <label class="q"><span class="l">O que você NÃO quer ver no seu site? <small>opcional</small></span><textarea name="nao_quero"></textarea></label>
       </div>
 
+      <div role="group" class="step" data-name="Sobre você">
+        <h2 class="lg">Sobre você</h2>
+        <label class="q" id="q-empresa"><span class="l">Nome da empresa ou projeto</span><input type="text" name="empresa" autocomplete="organization" required><span class="err">Conte o nome da empresa ou do projeto.</span></label>
+        <label class="q" id="q-nome"><span class="l">Seu nome (responsável)</span><input type="text" name="nome" autocomplete="name" required><span class="err">Conte o seu nome.</span></label>
+        <div class="q" id="q-contato">
+          <span class="l">Como eu falo com você?</span>
+          <input type="tel" name="whatsapp" placeholder="WhatsApp com DDD" autocomplete="tel" aria-label="WhatsApp com DDD">
+          <input type="email" name="email" placeholder="E-mail" autocomplete="email" aria-label="E-mail">
+          <span class="err">Informe pelo menos um contato válido (WhatsApp ou e-mail).</span>
+        </div>
+        <label class="q"><span class="l">Segmento de atuação <small>opcional</small></span><input type="text" name="segmento"></label>
+      </div>
+
       <div role="group" class="step" data-name="Para fechar">
         <h2 class="lg">Para fechar</h2>
         <label class="q"><span class="l">Existe prazo para ficar pronto? <small>opcional</small></span><input type="text" name="prazo"></label>
@@ -335,8 +353,9 @@ h1 em{font-style:normal;color:var(--acc)}
       </div>
 
       <div class="nav">
-        <span></span>
-        <button type="button" class="btn go" id="next">Enviar pedido <span aria-hidden="true">→</span></button>
+        <button type="button" class="btn ghost" id="back">← Voltar</button>
+        <button type="button" class="btn go" id="next">Continuar <span aria-hidden="true">→</span></button>
+      </div>
       </div>
       <p class="note" id="note" aria-live="polite">As respostas chegam direto para mim e ficam só entre a gente.</p>
     </form>
@@ -379,22 +398,59 @@ h1 em{font-style:normal;color:var(--acc)}
   var f=$('#f'),next=$('#next'),note=$('#note'),N0=note.textContent,card=$('#card');
   var WA='https://wa.me/5513997319163?text=';
   function mark(el,msg){var q=el.closest('.q');q.classList.toggle('bad',!!msg)}
-  function valid(){
-    var ok=true,e=f.empresa,n=f.nome,w=f.whatsapp.value.replace(/\D/g,''),m=f.email.value.trim();
-    mark(e,!e.value.trim());if(!e.value.trim())ok=false;
-    mark(n,!n.value.trim());if(!n.value.trim())ok=false;
-    $$('[data-req]',f).forEach(function(q){
-      if(q.closest('[hidden]'))return;
+  var NOMES={agente:'Agente de IA',automacao:'Automação',landing:'Landing page',site:'Site',app:'App sob medida'};
+  var RESUMO={agente:'agente_funcoes',automacao:'auto_processo',landing:'landing_oferta',site:'objetivo',app:'app_problema'};
+  var atual=null,passos=[],idx=0,back=$('#back'),pick=$('#pick'),wiz=$('#wizard');
+  function validarPasso(st){
+    var ok=true;
+    if($('#q-empresa',st)){var e=f.empresa;mark(e,!e.value.trim());if(!e.value.trim())ok=false}
+    if($('#q-nome',st)){var n=f.nome;mark(n,!n.value.trim());if(!n.value.trim())ok=false}
+    if($('#q-contato',st)){var w=f.whatsapp.value.replace(/\D/g,''),m=f.email.value.trim();var cOk=(w.length>=10)||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m);$('#q-contato').classList.toggle('bad',!cOk);if(!cOk)ok=false}
+    $$('[data-req]',st).forEach(function(q){
       var nm=q.getAttribute('data-req'),els=$$('[name="'+nm+'"]',q),has=els.some(function(x){return (x.type==='checkbox'||x.type==='radio')?x.checked:!!x.value.trim()});
       q.classList.toggle('bad',!has);if(!has)ok=false;
     });
-    var cOk=(w.length>=10)||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m);
-    $('#q-contato').classList.toggle('bad',!cOk);if(!cOk)ok=false;
-    if(!ok){var b=$('.bad input, .bad textarea',f);if(b){b.focus();b.scrollIntoView({block:'center',behavior:'smooth'})}note.className='note bad';note.textContent='Faltam alguns dados obrigatórios. Confira os campos marcados.'}
+    if(!ok){var b=$('.bad input, .bad textarea',st);if(b){b.focus();b.scrollIntoView({block:'center',behavior:'smooth'})}note.className='note bad';note.textContent='Falta responder o que está marcado.'}
     else{note.className='note';note.textContent=N0}
     return ok;
   }
-  next.addEventListener('click',function(){if(valid())send()});
+  function mostrar(){
+    passos.forEach(function(st,i){st.hidden=i!==idx});
+    var p=$('#prog');p.innerHTML='';passos.forEach(function(_,i){var b=document.createElement('i');if(i<=idx)b.className='on';p.appendChild(b)});
+    $('#stepname').textContent='Etapa '+(idx+1)+' de '+passos.length+' · '+passos[idx].getAttribute('data-name');
+    var ultimo=idx===passos.length-1;
+    next.innerHTML=ultimo?'Enviar pedido <span aria-hidden="true">→</span>':'Continuar <span aria-hidden="true">→</span>';
+    back.textContent=idx===0?'← Trocar serviço':'← Voltar';
+    note.className='note';note.textContent=ultimo?N0:'';
+  }
+  function abrir(t,rolar){
+    if(!NOMES[t])return escolher();
+    atual=t;
+    $$('[data-tabs]',f).forEach(function(sec){
+      var on=(' '+sec.getAttribute('data-tabs')+' ').indexOf(' '+t+' ')>-1;
+      sec.setAttribute('data-off',on?'0':'1');
+      $$('input,textarea,select',sec).forEach(function(x){x.disabled=!on});
+    });
+    passos=$$('.step',f).filter(function(st){return st.getAttribute('data-off')!=='1'});
+    $('#servico').value=NOMES[t];$('#chip').textContent=NOMES[t];
+    pick.hidden=true;wiz.hidden=false;idx=0;mostrar();
+    if(rolar)card.scrollIntoView({block:'start',behavior:'smooth'});
+  }
+  function escolher(){
+    atual=null;pick.hidden=false;wiz.hidden=true;note.className='note';note.textContent='';
+    try{history.replaceState(null,'',location.pathname)}catch(e){}
+  }
+  $$('.svc').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-svc');try{history.replaceState(null,'','#'+t)}catch(e){}abrir(t,true)})});
+  $('#trocar').addEventListener('click',escolher);
+  back.addEventListener('click',function(){if(idx===0)escolher();else{idx--;mostrar();card.scrollIntoView({block:'start',behavior:'smooth'})}});
+  next.addEventListener('click',function(){
+    if(!validarPasso(passos[idx]))return;
+    if(idx<passos.length-1){idx++;mostrar();card.scrollIntoView({block:'start',behavior:'smooth'});var c=$('input:not([type=hidden]),textarea',passos[idx]);if(c&&c.type!=='radio'&&c.type!=='checkbox')setTimeout(function(){c.focus({preventScroll:true})},350)}
+    else send();
+  });
+  var h0=(location.hash||'').replace('#','').toLowerCase();
+  if(NOMES[h0])abrir(h0);else escolher();
+  window.addEventListener('hashchange',function(){var h=(location.hash||'').replace('#','').toLowerCase();if(NOMES[h]&&h!==atual)abrir(h,true)});
   f.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault()}});
   function summary(){
     var d=new FormData(f),g=function(k){return d.getAll(k).join(', ')};
@@ -407,30 +463,6 @@ h1 em{font-style:normal;color:var(--acc)}
     card.classList.add('done');$('#ok').focus();
     window.scrollTo({top:0,behavior:'smooth'});
   }
-  var NOMES={agente:'Agente de IA',automacao:'Automação',landing:'Landing page',site:'Site',app:'App sob medida'};
-  var RESUMO={agente:'agente_funcoes',automacao:'auto_processo',landing:'landing_oferta',site:'objetivo',app:'app_problema'};
-  var atual='site';
-  function abrir(t,foco){
-    if(!NOMES[t])t='site';atual=t;
-    $$('.tab').forEach(function(b){var on=b.getAttribute('data-tab')===t;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1});
-    $$('[data-tabs]',f).forEach(function(sec){
-      var on=(' '+sec.getAttribute('data-tabs')+' ').indexOf(' '+t+' ')>-1;
-      sec.hidden=!on;
-      $$('input,textarea,select',sec).forEach(function(x){x.disabled=!on});
-    });
-    $$('.step',f).filter(function(x){return !x.hidden}).forEach(function(x,i){x.style.paddingTop=i?'':'0';x.style.marginTop=i?'':'0';x.style.borderTop=i?'':'0'});
-    $('#servico').value=NOMES[t];
-    if(foco){var b=$('#t-'+t);b.focus();b.scrollIntoView({block:'nearest',inline:'nearest'})}
-  }
-  $$('.tab').forEach(function(b){
-    b.addEventListener('click',function(){var t=b.getAttribute('data-tab');abrir(t);try{history.replaceState(null,'','#'+t)}catch(e){}});
-    b.addEventListener('keydown',function(e){
-      var tabs=$$('.tab'),i=tabs.indexOf(b);
-      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];abrir(n.getAttribute('data-tab'),true)}
-    });
-  });
-  abrir((location.hash||'').replace('#','').toLowerCase());
-  window.addEventListener('hashchange',function(){abrir((location.hash||'').replace('#','').toLowerCase())});
   function send(){
     var rd=new FormData(f).getAll(RESUMO[atual]).join(', ');$('#resumo').value=(NOMES[atual]+': '+rd).slice(0,300);
     next.disabled=true;next.textContent='Enviando…';
