@@ -995,6 +995,11 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     return h+'</svg>';
   })();
   var PRJ=[
+    {id:'central',name:'Central de automação',type:'automação',status:'no ar',url:'kaio.central · TV do escritório',
+     dor:'Leads chegando por WhatsApp, e-mail e site, agentes atendendo clientes, sites de clientes no ar. Acompanhar tudo isso olhando app por app tomava tempo e deixava coisa passar.',
+     feito:'Transformei uma TV Box simples em uma central de comando: ligou na tomada, abre direto o painel. Por trás, o n8n coloca para trabalhar a Iris (agente de IA que atende no WhatsApp e marca diagnóstico), um supervisor que revisa as conversas dela, um vigia que confere sites e agentes a cada 5 minutos e tenta consertar sozinho, e um disparo para a lista com limite anti-spam. O que precisa de mim aparece na TV, chega no meu WhatsApp e vira um relatório todo dia às 8h.',
+     stack:['n8n','IA','WhatsApp','Supabase','Notion','TV Box Android'],note:'Print real do painel. Nomes de clientes ocultos.',
+     shots:[['Painel','img/central-painel.jpg','Painel da central com caixa de entrada, leads, supervisor dos agentes, Iris no WhatsApp, projetos e sistemas no ar'],['Como funciona','img/central-fluxo.jpg','Diagrama: WhatsApp, formulários do site, Notion e sites entram no n8n com IA e no Supabase, e chegam como painel na TV, aviso no WhatsApp e relatório das 8h']]},
     {id:'gerontodata',name:'GerontoData',type:'app',status:'em desenvolvimento',url:'gerontodata-web.vercel.app',
      dor:'A avaliação gerontológica envolve muitos instrumentos. Em papel e planilha, o dado se espalha e o laudo demora a sair.',
      feito:'App web com cadastro, escalas validadas e laudo em PDF para compartilhar por e-mail ou WhatsApp. Reconstruído em React e Supabase para as turmas da UFSCar.',
