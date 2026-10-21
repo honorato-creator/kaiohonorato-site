@@ -101,6 +101,15 @@ h1 em{font-style:normal;color:var(--acc)}
 @keyframes draw{to{stroke-dashoffset:0}}
 .ok h2{font:700 clamp(30px,4vw,46px)/1.05 var(--f-t);letter-spacing:-.03em}
 .ok p{color:var(--mut);max-width:42ch}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:4px 2px 10px;margin:0 -2px}
+@media(max-width:760px){.tabs{display:flex;overflow-x:auto;scrollbar-width:none;margin-inline:-20px;padding-inline:20px}}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;display:grid;align-content:start;gap:3px;text-align:left;min-height:54px;padding:12px 14px;border-radius:16px;border:1.5px solid var(--isa);background:#fff;font:700 17px/1.15 var(--f-b);color:var(--base);transition:border-color .2s,background-color .2s,color .2s}
+.tab small{font:400 13.5px/1.2 var(--f-b);color:var(--mut)}
+.tab:hover{border-color:var(--base)}
+.tab[aria-selected=true]{background:var(--base);border-color:var(--base);color:var(--linen)}
+.tab[aria-selected=true] small{color:var(--isa)}
+.tabhint{font-size:15px;color:var(--mut);margin:4px 0 18px}
 .foot{max-width:880px;margin:0 auto;padding:0 20px 40px;font-size:15px;color:var(--mut)}
 @media(max-width:560px){.btn{width:100%}.nav{flex-direction:column-reverse;align-items:stretch}.btn.ghost{width:auto;align-self:center}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
@@ -128,13 +137,24 @@ h1 em{font-style:normal;color:var(--acc)}
 <main>
   <p class="label">Orçamento</p>
   <h1 class="t">vamos desenhar o seu <em>projeto.</em></h1>
-  <p class="lede">Responda com calma. Quanto mais eu souber do seu negócio, mais certeiro é o orçamento. Leva uns 5 minutos.</p>
+  <p class="lede">Escolha o serviço e responda com calma. Quanto mais eu souber do seu negócio, mais certeiro é o orçamento. Leva uns 5 minutos.</p>
 
   <div style="height:clamp(28px,4vw,44px)"></div>
+
+  <div class="tabs" role="tablist" aria-label="Serviço">
+    <button type="button" class="tab" role="tab" id="t-agente" data-tab="agente" aria-selected="false">Agente de IA<small>WhatsApp, atendimento</small></button>
+    <button type="button" class="tab" role="tab" id="t-automacao" data-tab="automacao" aria-selected="false">Automação<small>processos repetitivos</small></button>
+    <button type="button" class="tab" role="tab" id="t-landing" data-tab="landing" aria-selected="false">Landing page<small>uma página, conversão</small></button>
+    <button type="button" class="tab" role="tab" id="t-site" data-tab="site" aria-selected="true">Site<small>institucional, portfólio</small></button>
+    <button type="button" class="tab" role="tab" id="t-app" data-tab="app" aria-selected="false">App sob medida<small>sistema para o seu processo</small></button>
+  </div>
+  <p class="tabhint" id="tabhint">Não sabe qual escolher? Responda na que chega mais perto, eu ajusto depois.</p>
 
   <div class="card" id="card">
     <form id="f" name="orcamento" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" novalidate>
       <input type="hidden" name="form-name" value="orcamento">
+      <input type="hidden" name="servico" id="servico" value="Site">
+      <input type="hidden" name="resumo" id="resumo" value="">
       <p class="hp"><label>Não preencha: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 
       <div role="group" class="step" data-name="Sobre você">
@@ -150,7 +170,102 @@ h1 em{font-style:normal;color:var(--acc)}
         <label class="q"><span class="l">Segmento de atuação <small>opcional</small></span><input type="text" name="segmento"></label>
       </div>
 
-      <div role="group" class="step" data-name="O site">
+
+      <div role="group" class="step" data-tabs="agente" data-name="O agente">
+        <h2 class="lg">O agente de IA</h2>
+        <div class="q" data-req="agente_funcoes"><span class="l">O que o agente deve fazer? <small>marque quantas quiser</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Responder dúvidas frequentes"><span class="mk"></span><span>Responder dúvidas frequentes</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Agendar, confirmar e remarcar horários"><span class="mk"></span><span>Agendar, confirmar e remarcar horários</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Qualificar leads e passar para o vendedor"><span class="mk"></span><span>Qualificar leads e passar para mim ou para o vendedor</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Vender e enviar orçamento ou link de pagamento"><span class="mk"></span><span>Vender, enviar orçamento ou link de pagamento</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Acompanhar pedidos e dar suporte"><span class="mk"></span><span>Acompanhar pedidos e dar suporte pós-venda</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Recuperar clientes que pararam de responder"><span class="mk"></span><span>Recuperar clientes que pararam de responder</span></label>
+          </div><span class="err">Marque pelo menos uma tarefa para o agente.</span></div>
+        <div class="q"><span class="l">Onde ele vai atender? <small>marque o que se aplica</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="agente_canais" value="WhatsApp"><span class="mk"></span><span>WhatsApp</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_canais" value="Instagram"><span class="mk"></span><span>Direct do Instagram</span></label>
+            <label class="o chk"><input type="checkbox" name="agente_canais" value="Chat no site"><span class="mk"></span><span>Chat no site</span></label>
+          </div></div>
+        <div class="q"><span class="l">Quantas mensagens você recebe por dia? <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="agente_volume" value="Até 20"><span class="mk"></span><span>Até 20</span></label>
+            <label class="o"><input type="radio" name="agente_volume" value="De 20 a 100"><span class="mk"></span><span>De 20 a 100</span></label>
+            <label class="o"><input type="radio" name="agente_volume" value="Mais de 100"><span class="mk"></span><span>Mais de 100</span></label>
+          </div></div>
+        <label class="q"><span class="l">Quais sistemas o agente precisa usar? <small>agenda, CRM, planilha, sistema próprio</small></span><input type="text" name="agente_sistemas" placeholder="Ex.: Google Agenda e uma planilha de clientes"></label>
+        <label class="q"><span class="l">Quais perguntas seus clientes mais fazem? <small>opcional</small></span><textarea name="agente_perguntas" placeholder="Ex.: valores, horários, convênios, prazo de entrega"></textarea></label>
+        <label class="q"><span class="l">Quando o agente não souber responder, quem assume? <small>opcional</small></span><input type="text" name="agente_humano" placeholder="Ex.: eu, a recepção, o vendedor"></label>
+      </div>
+
+      <div role="group" class="step" data-tabs="automacao" data-name="A automação">
+        <h2 class="lg">A automação</h2>
+        <label class="q" data-req="auto_processo"><span class="l">Qual tarefa repetitiva você quer automatizar?</span><textarea name="auto_processo" placeholder="Conte do jeito que acontece hoje: quem faz, em que ordem, onde os dados entram e saem"></textarea><span class="err">Conte qual tarefa você quer automatizar.</span></label>
+        <div class="q"><span class="l">Quanto tempo isso toma por semana? <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="auto_tempo" value="Menos de 2 horas"><span class="mk"></span><span>Menos de 2 horas</span></label>
+            <label class="o"><input type="radio" name="auto_tempo" value="De 2 a 10 horas"><span class="mk"></span><span>De 2 a 10 horas</span></label>
+            <label class="o"><input type="radio" name="auto_tempo" value="Mais de 10 horas"><span class="mk"></span><span>Mais de 10 horas</span></label>
+          </div></div>
+        <div class="q"><span class="l">Quais ferramentas fazem parte do processo? <small>marque quantas quiser</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="WhatsApp"><span class="mk"></span><span>WhatsApp</span></label>
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="E-mail"><span class="mk"></span><span>E-mail</span></label>
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="Planilha (Excel ou Google)"><span class="mk"></span><span>Planilha (Excel ou Google)</span></label>
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="CRM"><span class="mk"></span><span>CRM</span></label>
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="Notion"><span class="mk"></span><span>Notion</span></label>
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="Agenda"><span class="mk"></span><span>Agenda</span></label>
+            <label class="o chk"><input type="checkbox" name="auto_ferramentas" value="Sistema próprio ou ERP"><span class="mk"></span><span>Sistema próprio ou ERP</span></label>
+          </div></div>
+        <label class="q"><span class="l">O que muda no seu dia quando isso estiver rodando sozinho? <small>opcional</small></span><textarea name="auto_resultado"></textarea></label>
+      </div>
+
+      <div role="group" class="step" data-tabs="landing" data-name="A landing page">
+        <h2 class="lg">A landing page</h2>
+        <label class="q" data-req="landing_oferta"><span class="l">O que a página vai oferecer?</span><textarea name="landing_oferta" placeholder="Produto, serviço, evento, curso, consulta…"></textarea><span class="err">Conte o que a página vai oferecer.</span></label>
+        <div class="q"><span class="l">O que o visitante deve fazer? <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="landing_objetivo" value="Comprar"><span class="mk"></span><span>Comprar</span></label>
+            <label class="o"><input type="radio" name="landing_objetivo" value="Deixar o contato"><span class="mk"></span><span>Deixar o contato (lead)</span></label>
+            <label class="o"><input type="radio" name="landing_objetivo" value="Chamar no WhatsApp"><span class="mk"></span><span>Chamar no WhatsApp</span></label>
+            <label class="o"><input type="radio" name="landing_objetivo" value="Se inscrever em evento"><span class="mk"></span><span>Se inscrever em evento ou lista</span></label>
+          </div></div>
+        <label class="q"><span class="l">Quem é o seu cliente ideal? <small>opcional</small></span><textarea name="landing_publico"></textarea></label>
+        <div class="q"><span class="l">Vai anunciar para a página? <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="landing_trafego" value="Sim, já anuncio"><span class="mk"></span><span>Sim, já faço anúncios</span></label>
+            <label class="o"><input type="radio" name="landing_trafego" value="Vou começar"><span class="mk"></span><span>Vou começar a anunciar</span></label>
+            <label class="o"><input type="radio" name="landing_trafego" value="Não, só divulgação orgânica"><span class="mk"></span><span>Não, só divulgação orgânica</span></label>
+          </div></div>
+        <div class="q"><span class="l">Para onde vão os contatos? <small>marque o que se aplica</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="landing_integracoes" value="WhatsApp"><span class="mk"></span><span>Direto para o meu WhatsApp</span></label>
+            <label class="o chk"><input type="checkbox" name="landing_integracoes" value="Planilha ou CRM"><span class="mk"></span><span>Para uma planilha ou CRM</span></label>
+            <label class="o chk"><input type="checkbox" name="landing_integracoes" value="Agente de IA responde na hora"><span class="mk"></span><span>Um agente de IA responde na hora</span></label>
+            <label class="o chk"><input type="checkbox" name="landing_integracoes" value="Pixel de anúncios"><span class="mk"></span><span>Pixel do Meta ou Google Ads</span></label>
+          </div></div>
+      </div>
+
+      <div role="group" class="step" data-tabs="app" data-name="O app">
+        <h2 class="lg">O app sob medida</h2>
+        <label class="q" data-req="app_problema"><span class="l">Que problema o app vai resolver?</span><textarea name="app_problema" placeholder="O que hoje é feito na mão, em papel ou espalhado em planilhas"></textarea><span class="err">Conte que problema o app vai resolver.</span></label>
+        <div class="q"><span class="l">Quem vai usar? <small>escolha uma</small></span>
+          <div class="opts">
+            <label class="o"><input type="radio" name="app_usuarios" value="Só a minha equipe"><span class="mk"></span><span>Só a minha equipe</span></label>
+            <label class="o"><input type="radio" name="app_usuarios" value="Meus clientes"><span class="mk"></span><span>Meus clientes</span></label>
+            <label class="o"><input type="radio" name="app_usuarios" value="Equipe e clientes"><span class="mk"></span><span>Equipe e clientes</span></label>
+          </div></div>
+        <label class="q"><span class="l">Quantas pessoas vão usar, mais ou menos? <small>opcional</small></span><input type="text" name="app_quantos"></label>
+        <label class="q"><span class="l">Quais são as funções principais? <small>opcional</small></span><textarea name="app_funcoes" placeholder="Ex.: cadastro de clientes, agenda, relatórios, login"></textarea></label>
+        <div class="q"><span class="l">Onde vai ser usado? <small>marque o que se aplica</small></span>
+          <div class="opts">
+            <label class="o chk"><input type="checkbox" name="app_plataforma" value="Computador"><span class="mk"></span><span>No computador</span></label>
+            <label class="o chk"><input type="checkbox" name="app_plataforma" value="Celular"><span class="mk"></span><span>No celular</span></label>
+          </div></div>
+      </div>
+
+      <div role="group" class="step" data-tabs="site" data-name="O site">
         <h2 class="lg">O que você quer construir</h2>
         <div class="q"><span class="l">Qual é o principal objetivo do site? <small>escolha uma</small></span>
           <div class="opts">
@@ -161,17 +276,15 @@ h1 em{font-style:normal;color:var(--acc)}
           </div></div>
         <div class="q"><span class="l">Formato pretendido <small>escolha uma</small></span>
           <div class="opts">
-            <label class="o"><input type="radio" name="formato" value="Landing page"><span class="mk"></span><span><b>Landing page</b><br>Página única, foco direto em conversão</span></label>
             <label class="o"><input type="radio" name="formato" value="Site institucional estático"><span class="mk"></span><span><b>Site institucional estático</b><br>Várias páginas, alta velocidade e autoridade</span></label>
             <label class="o"><input type="radio" name="formato" value="Site gerenciável (CMS ou Notion)"><span class="mk"></span><span><b>Site gerenciável</b><br>Com CMS ou integração com Notion</span></label>
-            <label class="o"><input type="radio" name="formato" value="Aplicação sob medida / app web"><span class="mk"></span><span><b>Aplicação sob medida</b><br>App web feito para o seu processo</span></label>
             <label class="o"><input type="radio" name="formato" value="Portfólio"><span class="mk"></span><span><b>Portfólio</b></span></label>
           </div></div>
         <label class="q"><span class="l">Quem é o seu cliente ideal? <small>opcional</small></span><textarea name="publico"></textarea></label>
         <label class="q"><span class="l">Qual é o seu principal diferencial? <small>opcional</small></span><textarea name="diferencial"></textarea></label>
       </div>
 
-      <div role="group" class="step" data-name="Marca e conteúdo">
+      <div role="group" class="step" data-tabs="site landing" data-name="Marca e conteúdo">
         <h2 class="lg">Marca, domínio e conteúdo</h2>
         <div class="q"><span class="l">Identidade visual <small>escolha uma</small></span>
           <div class="opts">
@@ -196,7 +309,7 @@ h1 em{font-style:normal;color:var(--acc)}
           </div></div>
       </div>
 
-      <div role="group" class="step" data-name="Recursos e referências">
+      <div role="group" class="step" data-tabs="site" data-name="Recursos e referências">
         <h2 class="lg">Recursos e referências</h2>
         <div class="q"><span class="l">Funcionalidades e integrações <small>marque quantas quiser</small></span>
           <div class="opts">
@@ -213,7 +326,11 @@ h1 em{font-style:normal;color:var(--acc)}
         <label class="q"><span class="l">Sites que você gosta visualmente <small>opcional</small></span><textarea name="referencias" placeholder="Cole os links"></textarea></label>
         <label class="q"><span class="l">Concorrentes, diretos ou indiretos <small>opcional</small></span><textarea name="concorrentes" placeholder="Cole os links"></textarea></label>
         <label class="q"><span class="l">O que você NÃO quer ver no seu site? <small>opcional</small></span><textarea name="nao_quero"></textarea></label>
-        <label class="q"><span class="l">Existe data limite para o lançamento? <small>opcional</small></span><input type="text" name="prazo"></label>
+      </div>
+
+      <div role="group" class="step" data-name="Para fechar">
+        <h2 class="lg">Para fechar</h2>
+        <label class="q"><span class="l">Existe prazo para ficar pronto? <small>opcional</small></span><input type="text" name="prazo"></label>
         <label class="q"><span class="l">Algo mais que eu deva saber? <small>opcional</small></span><textarea name="observacoes"></textarea></label>
       </div>
 
@@ -266,9 +383,14 @@ h1 em{font-style:normal;color:var(--acc)}
     var ok=true,e=f.empresa,n=f.nome,w=f.whatsapp.value.replace(/\D/g,''),m=f.email.value.trim();
     mark(e,!e.value.trim());if(!e.value.trim())ok=false;
     mark(n,!n.value.trim());if(!n.value.trim())ok=false;
+    $$('[data-req]',f).forEach(function(q){
+      if(q.closest('[hidden]'))return;
+      var nm=q.getAttribute('data-req'),els=$$('[name="'+nm+'"]',q),has=els.some(function(x){return (x.type==='checkbox'||x.type==='radio')?x.checked:!!x.value.trim()});
+      q.classList.toggle('bad',!has);if(!has)ok=false;
+    });
     var cOk=(w.length>=10)||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m);
     $('#q-contato').classList.toggle('bad',!cOk);if(!cOk)ok=false;
-    if(!ok){var b=$('.bad input',f);if(b){b.focus();b.scrollIntoView({block:'center',behavior:'smooth'})}note.className='note bad';note.textContent='Faltam alguns dados obrigatórios no começo do formulário.'}
+    if(!ok){var b=$('.bad input, .bad textarea',f);if(b){b.focus();b.scrollIntoView({block:'center',behavior:'smooth'})}note.className='note bad';note.textContent='Faltam alguns dados obrigatórios. Confira os campos marcados.'}
     else{note.className='note';note.textContent=N0}
     return ok;
   }
@@ -276,7 +398,7 @@ h1 em{font-style:normal;color:var(--acc)}
   f.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault()}});
   function summary(){
     var d=new FormData(f),g=function(k){return d.getAll(k).join(', ')};
-    return 'Oi Kaio, preenchi o pedido de orçamento.\nEmpresa: '+g('empresa')+'\nResponsável: '+g('nome')+(g('formato')?'\nFormato: '+g('formato'):'');
+    return 'Oi Kaio, preenchi o pedido de orçamento ('+g('servico')+').\nEmpresa: '+g('empresa')+'\nResponsável: '+g('nome')+(g('formato')?'\nFormato: '+g('formato'):'');
   }
   function done(){
     var n=(f.nome.value.trim().split(' ')[0])||'';
@@ -285,14 +407,39 @@ h1 em{font-style:normal;color:var(--acc)}
     card.classList.add('done');$('#ok').focus();
     window.scrollTo({top:0,behavior:'smooth'});
   }
+  var NOMES={agente:'Agente de IA',automacao:'Automação',landing:'Landing page',site:'Site',app:'App sob medida'};
+  var RESUMO={agente:'agente_funcoes',automacao:'auto_processo',landing:'landing_oferta',site:'objetivo',app:'app_problema'};
+  var atual='site';
+  function abrir(t,foco){
+    if(!NOMES[t])t='site';atual=t;
+    $$('.tab').forEach(function(b){var on=b.getAttribute('data-tab')===t;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1});
+    $$('[data-tabs]',f).forEach(function(sec){
+      var on=(' '+sec.getAttribute('data-tabs')+' ').indexOf(' '+t+' ')>-1;
+      sec.hidden=!on;
+      $$('input,textarea,select',sec).forEach(function(x){x.disabled=!on});
+    });
+    $$('.step',f).filter(function(x){return !x.hidden}).forEach(function(x,i){x.style.paddingTop=i?'':'0';x.style.marginTop=i?'':'0';x.style.borderTop=i?'':'0'});
+    $('#servico').value=NOMES[t];
+    if(foco){var b=$('#t-'+t);b.focus();b.scrollIntoView({block:'nearest',inline:'nearest'})}
+  }
+  $$('.tab').forEach(function(b){
+    b.addEventListener('click',function(){var t=b.getAttribute('data-tab');abrir(t);try{history.replaceState(null,'','#'+t)}catch(e){}});
+    b.addEventListener('keydown',function(e){
+      var tabs=$$('.tab'),i=tabs.indexOf(b);
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];abrir(n.getAttribute('data-tab'),true)}
+    });
+  });
+  abrir((location.hash||'').replace('#','').toLowerCase());
+  window.addEventListener('hashchange',function(){abrir((location.hash||'').replace('#','').toLowerCase())});
   function send(){
+    var rd=new FormData(f).getAll(RESUMO[atual]).join(', ');$('#resumo').value=(NOMES[atual]+': '+rd).slice(0,300);
     next.disabled=true;next.textContent='Enviando…';
     var p=new URLSearchParams();new FormData(f).forEach(function(v,k){p.append(k,v)});
     fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:p.toString()})
       .then(function(r){if(!r.ok)throw new Error('x');done()})
       .catch(function(){
         var body=[];new FormData(f).forEach(function(v,k){if(v&&k!=='form-name'&&k!=='bot-field')body.push(k+': '+v)});
-        var href='mailto:kaiohonorato13@gmail.com?subject='+encodeURIComponent('Pedido de orçamento')+'&body='+encodeURIComponent(body.join('\n'));
+        var href='mailto:kaiohonorato13@gmail.com?subject='+encodeURIComponent('Pedido de orçamento: '+$('#servico').value)+'&body='+encodeURIComponent(body.join('\n'));
         note.className='note bad';note.innerHTML='Não consegui enviar daqui. <a href="'+href+'">Abrir no seu app de e-mail</a> ou me chame no <a href="'+WA+encodeURIComponent(summary())+'" target="_blank" rel="noopener">WhatsApp</a>.';
         next.disabled=false;next.innerHTML='Tentar de novo <span aria-hidden="true">→</span>';
       });
