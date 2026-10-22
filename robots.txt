@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /orcamento/
+
+Sitemap: https://kaiohonorato.com.br/sitemap.xml
