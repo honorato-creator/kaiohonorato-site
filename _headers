@@ -1,0 +1,15 @@
+# Cache do navegador: imagens e ícones ficam guardados por 30 dias; as páginas são sempre conferidas.
+/img/*
+  Cache-Control: public, max-age=2592000
+/favicon.png
+  Cache-Control: public, max-age=2592000
+/favicon-32.png
+  Cache-Control: public, max-age=2592000
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+/robots.txt
+  Cache-Control: public, max-age=3600

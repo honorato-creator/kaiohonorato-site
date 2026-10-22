@@ -29,12 +29,13 @@
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Montserrat:wght@400;700&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Montserrat:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&family=Montserrat:wght@400;700&display=swap"></noscript>
 <style>
-@font-face{font-family:'Garet';font-weight:400;font-display:swap;src:url('fonts/Garet-Regular.woff2') format('woff2'),url('fonts/Garet-Regular.otf') format('opentype'),local('Garet'),local('Garet Book')}
-@font-face{font-family:'Garet';font-weight:700;font-display:swap;src:url('fonts/Garet-Bold.woff2') format('woff2'),url('fonts/Garet-Bold.otf') format('opentype'),local('Garet Bold'),local('Garet Heavy')}
-@font-face{font-family:'Glacial Indifference';font-weight:400;font-display:swap;src:url('fonts/GlacialIndifference-Regular.woff2') format('woff2'),url('fonts/GlacialIndifference-Regular.otf') format('opentype'),local('Glacial Indifference'),local('GlacialIndifference-Regular')}
-@font-face{font-family:'Glacial Indifference';font-weight:700;font-display:swap;src:url('fonts/GlacialIndifference-Bold.woff2') format('woff2'),url('fonts/GlacialIndifference-Bold.otf') format('opentype'),local('Glacial Indifference Bold'),local('GlacialIndifference-Bold')}
+@font-face{font-family:'Garet';font-weight:400;font-display:swap;src:local('Garet'),local('Garet Book')}
+@font-face{font-family:'Garet';font-weight:700;font-display:swap;src:local('Garet Bold'),local('Garet Heavy')}
+@font-face{font-family:'Glacial Indifference';font-weight:400;font-display:swap;src:local('Glacial Indifference'),local('GlacialIndifference-Regular')}
+@font-face{font-family:'Glacial Indifference';font-weight:700;font-display:swap;src:local('Glacial Indifference Bold'),local('GlacialIndifference-Bold')}
 
 /* Paleta: --linen é o off-white de fundo, --base o grafite (texto e seções escuras), --acc o laranja (acento), --isa o bege de estrutura. */
 :root{
@@ -690,7 +691,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
         <circle class="k-node k-hollow" cx="36" cy="40" r="3.4"/>
         <circle class="k-dot" cx="36" cy="8" r="3.6"/>
         <circle class="k-hub" cx="16" cy="24" r="6"/>
-      </svg><span class="bw"><img src="img/wordmark-base.png" alt="Kaio Honorato" width="1598" height="116"><small>desenvolvedor</small></span></a>
+      </svg><span class="bw"><img src="img/wordmark-base.png" alt="Kaio Honorato" width="800" height="58"><small>desenvolvedor</small></span></a>
     <nav class="links" id="links" aria-label="Principal">
       <a href="#projetos">projetos</a>
       <a href="#servicos">serviços</a>
@@ -837,7 +838,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="s dark on-dark sobre" id="sobre" aria-labelledby="sobT">
   <div class="wrap">
     <div class="grid">
-      <figure class="sobre-foto"><img src="img/kaio-duotone.jpg" alt="Retrato de Kaio Honorato, de óculos redondos e cabelo em dreads" width="900" height="1198"></figure>
+      <figure class="sobre-foto"><img src="img/kaio-duotone.jpg" alt="Retrato de Kaio Honorato, de óculos redondos e cabelo em dreads" width="896" height="1194" loading="lazy" decoding="async"></figure>
       <div class="sobre-txt">
         <h2 class="t h2" id="sobT">quem constrói.</h2>
         <p>Sou Kaio Honorato, gerontólogo e desenvolvedor. Estudo engenharia de software e escrevo código em Python, Java e JavaScript, além de montar agentes de IA e automações.</p>
@@ -896,7 +897,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
         <circle class="k-node k-hollow" cx="36" cy="40" r="3.4"/>
         <circle class="k-dot" cx="36" cy="8" r="3.6"/>
         <circle class="k-hub" cx="16" cy="24" r="6"/>
-      </svg><img src="img/wordmark-linen.png" alt="Kaio Honorato" width="1598" height="116"></a>
+      </svg><img src="img/wordmark-linen.png" alt="Kaio Honorato" width="800" height="58" loading="lazy" decoding="async"></a>
     <nav class="foot-l" id="footL" aria-label="Links"><a href="privacidade/">Privacidade</a></nav>
   </div>
 </footer>
@@ -1039,7 +1040,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     plist.appendChild(b);
   });
   function setShot(p,k){
-    var sh=p.shots[k];view.innerHTML='';var im=document.createElement('img');im.src=sh[1];im.alt=sh[2];view.appendChild(im);
+    var sh=p.shots[k];view.innerHTML='';var im=document.createElement('img');im.src=sh[1];im.loading='lazy';im.decoding='async';im.alt=sh[2];view.appendChild(im);
     $$('button',tabs).forEach(function(t,j){t.setAttribute('aria-pressed',j===k)});
   }
   function show(i){
