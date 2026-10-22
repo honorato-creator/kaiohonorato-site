@@ -881,7 +881,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
         <circle class="k-dot" cx="36" cy="8" r="3.6"/>
         <circle class="k-hub" cx="16" cy="24" r="6"/>
       </svg><img src="img/wordmark-linen.png" alt="Kaio Honorato" width="1598" height="116"></a>
-    <nav class="foot-l" id="footL" aria-label="Links"></nav>
+    <nav class="foot-l" id="footL" aria-label="Links"><a href="privacidade/">Privacidade</a></nav>
   </div>
 </footer>
 
@@ -1158,7 +1158,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     if(PERFIL.instagram)CH.push({k:'ig',l:'Instagram',c:'@kaio_honorato',h:PERFIL.instagram});
     if(PERFIL.netlify)CH.push({k:'nt',l:'Netlify',c:'ver sites no ar',h:PERFIL.netlify});
     var fl=$('#footL');
-    CH.forEach(function(c){if(c.k==='em')return;var a=document.createElement('a');a.href=c.h;a.textContent=c.l;if(c.k!=='em'){a.target='_blank';a.rel='noopener'}fl.appendChild(a)});
+    CH.forEach(function(c){if(c.k==='em')return;var a=document.createElement('a');a.href=c.h;a.textContent=c.l;if(c.k!=='em'){a.target='_blank';a.rel='noopener'}fl.insertBefore(a,fl.lastElementChild)});
   })();
   /* formulário de contato */
   (function(){
