@@ -967,7 +967,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   (function(){
     function ok(){try{var c=document.createElement('canvas');return !!(c.getContext('webgl2')||c.getContext('webgl'))}catch(e){return false}}
     var sd=navigator.connection&&navigator.connection.saveData;if(sd||!ok())return;
-    function go(){var sc=document.createElement('script');sc.src='js/reator3d.v1.js';sc.async=true;
+    function go(){var sc=document.createElement('script');sc.src='js/reator3d.v2.js';sc.async=true;
       sc.onload=function(){try{if(window.Reator3D&&window.Reator3D.init($('#gl3d'),{reduce:reduce}))rxEl.classList.add('on3d')}catch(e){}};document.head.appendChild(sc)}
     function sched(){(window.requestIdleCallback||function(f){setTimeout(f,300)})(go,{timeout:2500})}
     if(document.readyState==='complete')sched();else addEventListener('load',sched);
