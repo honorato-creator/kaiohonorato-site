@@ -123,6 +123,7 @@ button{cursor:pointer}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
+.rx #gl3d{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;touch-action:pan-y;transition:opacity .9s ease}.rx.on3d #gl3d{opacity:1;pointer-events:auto}.rx.on3d #nodes,.rx.on3d #neu{opacity:0;transition:opacity .9s ease}.rx.on3d{transform:none!important}
 .rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
@@ -739,7 +740,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
           <circle cx="250" cy="138" r="7" fill="#E65516"/><circle cx="347" cy="306" r="7" fill="#313236"/><circle cx="153" cy="306" r="7" fill="#313236"/></g>
         <circle cx="250" cy="250" r="106" fill="#313236"/>
         <circle id="wave" cx="250" cy="250" r="90" fill="none" stroke="#E65516" stroke-width="3" opacity="0"/>
-      </svg><canvas id="neu"></canvas></div>
+      </svg><canvas id="neu"></canvas><canvas id="gl3d"></canvas></div>
     </div>
   </div>
 </section>
@@ -961,6 +962,16 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   }
 
 
+
+  /* reator em 3D: carrega depois da página, só se o aparelho aceitar WebGL; senão fica o desenho em SVG */
+  (function(){
+    function ok(){try{var c=document.createElement('canvas');return !!(c.getContext('webgl2')||c.getContext('webgl'))}catch(e){return false}}
+    var sd=navigator.connection&&navigator.connection.saveData;if(sd||!ok())return;
+    function go(){var sc=document.createElement('script');sc.src='js/reator3d.v1.js';sc.async=true;
+      sc.onload=function(){try{if(window.Reator3D&&window.Reator3D.init($('#gl3d'),{reduce:reduce}))rxEl.classList.add('on3d')}catch(e){}};document.head.appendChild(sc)}
+    function sched(){(window.requestIdleCallback||function(f){setTimeout(f,300)})(go,{timeout:2500})}
+    if(document.readyState==='complete')sched();else addEventListener('load',sched);
+  })();
   /* rede neural no núcleo */
   (function(){
     var cv=$('#neu'),cx=cv.getContext('2d'),S=0,dpr=1;
