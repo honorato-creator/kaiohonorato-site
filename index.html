@@ -682,6 +682,14 @@ html.bgfx .dark,html.bgfx footer{background:transparent}
 html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 /* proposta */
+.s.demo{padding-bottom:clamp(40px,5vw,72px)}
+.s.pp{padding-top:clamp(24px,3vw,48px)}
+.pp-cta{display:grid;gap:14px;justify-items:start;max-width:40ch}
+.pp-cta .lede{margin:0}
+.pp-cta small{font-size:15px;color:#52555A}
+.btn-acc{background:var(--acc);border-color:var(--acc);color:#fff;min-height:58px;padding:0 34px;font-size:18px;gap:12px}
+.btn-acc:hover{background:var(--base);border-color:var(--base)}
+.btn-acc span{transition:transform .25s}.btn-acc:hover span{transform:translateX(5px)}
 .pp .top2{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,56px)}
 .pp .h2{max-width:none}
 .pp-k{font:600 13px var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:#52555A;margin:0 0 14px}
@@ -860,8 +868,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 <section class="s pp" id="proposta" aria-labelledby="ppT">
   <div class="wrap">
-    <div class="top2"><h2 class="t h2" id="ppT">como eu trabalho.</h2><p class="lede">Do primeiro papo ao projeto no ar, sem surpresa. O escopo e o custo ficam combinados antes de eu programar.</p></div>
-    <p><a class="btn btn-fill" href="orcamento/">Pedir orçamento</a></p>
+    <div class="top2"><h2 class="t h2" id="ppT">como eu trabalho.</h2><div class="pp-cta"><p class="lede">Do primeiro papo ao projeto no ar, sem surpresa. O escopo e o custo ficam combinados antes de eu programar.</p><a class="btn btn-acc" href="orcamento/">Pedir orçamento <span aria-hidden="true">→</span></a><small>Leva uns 5 minutos. Sem compromisso.</small></div></div>
     <p class="pp-k" style="margin:clamp(36px,5vw,64px) 0 0">As etapas</p>
     <ol class="pp-steps" aria-label="Como funciona">
       <li><b>Conversa</b><span>Entendo a sua rotina.</span></li>
