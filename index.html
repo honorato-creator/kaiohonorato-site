@@ -487,6 +487,71 @@ footer{background:var(--base);color:var(--linen);border-top:1px solid rgba(216,2
  .pbtn small{display:none}
 }
 @media (prefers-reduced-motion:reduce){.dev{transform:none!important}.view.wipe::after{animation:none}.pinfo.sw>*{animation:none}}
+/* ===== v10: central de comando dos projetos ===== */
+.hud{position:relative}
+.hud-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:600 14px var(--f-b);letter-spacing:.2em;text-transform:uppercase;color:var(--isa);border:1px solid rgba(230,85,22,.55);padding:12px 20px;background:linear-gradient(180deg,#2d2e33,#26272b);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px))}
+.hud-top .on{color:#3ddc97}
+.tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-top:14px}
+.ptile{position:relative;grid-column:span 2;display:flex;flex-direction:column;justify-content:flex-end;min-height:290px;padding:0;text-align:left;color:var(--linen);background:#202124;border:1px solid rgba(230,85,22,.5);overflow:hidden;cursor:pointer;font:inherit;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));transition:transform .25s,border-color .25s}
+.ptile.big{grid-column:span 4;min-height:320px}
+.ptile:hover,.ptile:focus-visible{transform:translateY(-4px);border-color:var(--acc);outline:none}
+.ptile:focus-visible{box-shadow:inset 0 0 0 3px var(--acc)}
+.pth{position:absolute;inset:0;background-size:cover;background-position:top left;opacity:.5;transition:opacity .3s,transform .6s}
+.pth.flowv{background:#2a2b30;display:grid;place-items:center}.pth.flowv svg{width:92%;height:auto;opacity:.8}
+.ptile:hover .pth{opacity:.85;transform:scale(1.04)}
+.ptile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 28%,rgba(20,20,22,.94));pointer-events:none}
+.pscan{position:absolute;left:0;right:0;height:2px;background:rgba(230,85,22,.6);box-shadow:0 0 14px var(--acc);animation:pscan 4.5s linear infinite;z-index:2;pointer-events:none}
+@keyframes pscan{from{top:-4px}to{top:100%}}
+.ptx{position:relative;z-index:3;padding:18px 20px}
+.pst{display:flex;gap:9px;align-items:center;font:600 13px var(--f-b);letter-spacing:.16em;text-transform:uppercase;color:var(--isa)}
+.led{display:inline-block;width:9px;height:9px;border-radius:50%;background:#3ddc97;box-shadow:0 0 8px #3ddc97;animation:pbl 2s infinite}.led.t{background:#ffb347;box-shadow:0 0 8px #ffb347}
+@keyframes pbl{50%{opacity:.35}}
+.ptx h3{font:700 clamp(24px,2.3vw,34px)/1.05 var(--f-t);letter-spacing:-.02em;margin:8px 0 4px;text-transform:uppercase}
+.ptx p{font-size:16px;color:var(--isa);max-width:46ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hud-foot{margin-top:14px;display:flex;gap:6px 24px;flex-wrap:wrap;font:600 13px var(--f-b);letter-spacing:.16em;text-transform:uppercase;color:var(--isa);border-top:1px solid rgba(216,214,201,.3);padding-top:12px}
+.pmod{position:fixed;inset:0;z-index:300;background:#18181b;display:none;padding:64px clamp(14px,3vw,40px) 24px;overflow:auto;color:var(--linen)}
+.pmod.on{display:block;animation:pfin .35s both}
+@keyframes pfin{from{opacity:0;transform:scale(.97)}}
+.pmx{position:fixed;top:14px;right:16px;z-index:2;background:var(--acc);border:0;color:#fff;width:44px;height:44px;border-radius:50%;font-size:26px;line-height:1;cursor:pointer}
+.pmc{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(18px,3vw,40px);align-items:start}
+.pms{position:relative;border:1px solid var(--acc);border-radius:10px;overflow:hidden;background:#111;box-shadow:0 0 50px rgba(230,85,22,.25)}
+.pms>img{display:block;width:100%;height:auto}
+.pms.flowv{background:var(--base);aspect-ratio:2/1}.pms.flowv svg{display:block;width:100%;height:100%}
+.ppin{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:var(--acc);color:#fff;font:700 15px var(--f-b);display:grid;place-items:center;animation:ppp 2s infinite;z-index:3}
+@keyframes ppp{0%{box-shadow:0 0 0 0 rgba(230,85,22,.7)}100%{box-shadow:0 0 0 16px rgba(230,85,22,0)}}
+.ppin.hl{background:#fff;color:var(--acc)}
+.pms.cmp .ppin{display:none}
+.pmt{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.pmt button{background:none;min-height:36px;padding:0 15px;border-radius:999px;border:1px solid rgba(216,214,201,.45);color:var(--linen);font:400 14.5px var(--f-b);cursor:pointer}
+.pmt button[aria-pressed="true"]{background:var(--linen);color:var(--base);border-color:var(--linen)}
+.pmt .pcmp{margin-left:auto;border-color:var(--acc);color:var(--acc)}.pmt .pcmp[aria-pressed="true"]{background:var(--acc);color:#fff}
+.pmn{margin-top:10px;color:var(--isa);font-size:15px}
+.pmR small{font:600 13px var(--f-b);letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.pmR h3{font:700 clamp(36px,4.4vw,60px)/.98 var(--f-t);letter-spacing:-.03em;text-transform:uppercase;margin:6px 0 14px}
+.pmp{margin:0 0 12px;font-size:18px}.pmp span:first-child{display:block;font-size:15px;color:var(--isa)}
+.pmcl{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}
+.pmcl li{display:flex;gap:10px;align-items:flex-start;background:rgba(245,245,245,.06);border:1px solid rgba(216,214,201,.25);border-radius:10px;padding:9px 12px;font-size:16px;transition:border-color .2s}
+.pmcl li.hl{border-color:var(--acc)}
+.pmcl i{flex:none;width:24px;height:24px;border-radius:50%;background:var(--acc);font:700 13px var(--f-b);display:grid;place-items:center;font-style:normal;color:#fff}
+.pmR .tg{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.pmR .tg span{padding:5px 14px;border:1px solid rgba(216,214,201,.5);border-radius:999px;font-size:15px}
+.pmR .act{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+/* antes e depois dentro do projeto */
+.cmpw{position:absolute;inset:0;z-index:4;--p:50%}
+.cmpw .before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--p)) 0 0);background:#2a2623;overflow:hidden}
+.cmpw .grain{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 2px,transparent 2px 5px)}
+.mess{position:absolute;inset:0}
+.mess .n{position:absolute;background:#f6e27a;color:#3a3320;padding:10px 12px;font:600 14px/1.2 var(--f-b);box-shadow:0 8px 16px rgba(0,0,0,.35);width:150px}
+.mess .n.b{background:#9fd3ff}.mess .n.p{background:#ffb3c7}.mess .n.g{background:#b9e8a4}
+.mess .bub{position:absolute;background:#e6f7da;color:#1c3a1c;border-radius:12px;padding:8px 12px;font:500 14px var(--f-b);box-shadow:0 6px 14px rgba(0,0,0,.35)}.mess .bub.w{background:#fff;color:#222}
+.mess .red{position:absolute;background:#e53935;color:#fff;border-radius:999px;font:700 15px var(--f-b);padding:2px 10px}
+.mess .sheet{position:absolute;width:200px;height:140px;background:#fff;box-shadow:0 8px 16px rgba(0,0,0,.35);background-image:linear-gradient(#cfd8e0 1px,transparent 1px),linear-gradient(90deg,#cfd8e0 1px,transparent 1px);background-size:100% 22px,50px 100%}
+.mess .pol{position:absolute;width:110px;height:130px;background:#fafafa;padding:8px 8px 26px;box-shadow:0 8px 16px rgba(0,0,0,.4)}.mess .pol div{width:100%;height:100%;background:linear-gradient(135deg,#8b6f5a,#3a2a22)}
+.ctag{position:absolute;top:12px;z-index:5;font:700 12px var(--f-b);letter-spacing:.2em;padding:5px 11px;border-radius:999px;background:rgba(0,0,0,.65);color:#fff}.ctag.cl{left:12px}.ctag.cr{right:12px;background:var(--acc)}
+.cmpw .hand{position:absolute;top:0;bottom:0;left:var(--p);width:4px;background:var(--acc);z-index:5;transform:translateX(-2px)}
+.cmpw .hand::after{content:"\2194";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font-size:22px;color:#fff;box-shadow:0 0 24px rgba(230,85,22,.6)}
+.cmpw input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:6;margin:0}
+@media (max-width:980px){.tiles{grid-template-columns:1fr}.ptile,.ptile.big{grid-column:auto;min-height:210px}.pmc{grid-template-columns:1fr}.pmt .pcmp{margin-left:0}}
+@media (prefers-reduced-motion:reduce){.pscan,.led,.ppin{animation:none}.pmod.on{animation:none}.ptile,.pth{transition:none}}
 
 /* serviços */
 .srv-sec .top2{margin-bottom:clamp(30px,4vw,56px)}
@@ -748,21 +813,12 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
   <div class="wrap">
     <div class="top2">
       <h2 class="t h2" id="projT">o que já construí.</h2>
-      <p>Escolha um projeto. Cada um mostra o problema, o que foi feito e como abrir.</p>
+      <p>Abra um módulo para ver o problema, o que foi feito e o sistema por dentro.</p>
     </div>
-    <div class="pstage">
-      <div class="pl">
-        <div class="plist" id="plist" role="tablist" aria-label="Projetos"></div>
-        <div class="pinfo" id="pinfo" aria-live="polite"></div>
-      </div>
-      <div class="pr" id="pr">
-        <div class="dev" id="dev">
-          <div class="bar"><i></i><i></i><i></i><span id="devUrl"></span><a id="devOpen" target="_blank" rel="noopener" hidden>abrir</a></div>
-          <div class="tabs3" id="tabs3" hidden></div>
-          <div class="view" id="view"></div>
-        </div>
-        <p class="note" id="devNote"></p>
-      </div>
+    <div class="hud">
+      <div class="hud-top"><span>Central online <span class="on" aria-hidden="true">●</span></span><span>Kaio Honorato · Projetos</span><span id="pclk" aria-hidden="true"></span></div>
+      <div class="tiles" id="tiles"></div>
+      <div class="hud-foot"><span>Toque em um módulo para abrir o projeto</span><span>5 projetos</span><span>Prints reais · dados fictícios onde indicado</span></div>
     </div>
   </div>
 </section>
@@ -1017,71 +1073,88 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     return h+'</svg>';
   })();
   var PRJ=[
-    {id:'central',name:'Central de automação',type:'automação',status:'no ar',url:'kaio.central · TV do escritório',
+    {id:'central',name:'Central de automação',type:'automação',status:'no ar',big:1,
      dor:'Leads chegando por WhatsApp, e-mail e site, agentes atendendo clientes, sites de clientes no ar. Acompanhar tudo isso olhando app por app tomava tempo e deixava coisa passar.',
      feito:'Transformei uma TV Box simples em uma central de comando: ligou na tomada, abre direto o painel. Por trás, o n8n coloca para trabalhar a Iris (agente de IA que atende no WhatsApp e marca diagnóstico), um supervisor que revisa as conversas dela, um vigia que confere sites e agentes a cada 5 minutos e tenta consertar sozinho, e um disparo para a lista com limite anti-spam. O que precisa de mim aparece na TV, chega no meu WhatsApp e vira um relatório todo dia às 8h.',
      stack:['n8n','IA','WhatsApp','Supabase','Notion','TV Box Android'],note:'Print real do painel (25/10/2026). Nomes de clientes ocultos.',
-     shots:[['Painel','img/central-painel-2.jpg','Painel da central em 25 de outubro de 2026, com caixa de entrada, leads, prospecção, atividade da Iris no WhatsApp, cobrança e sistemas no ar'],['Como funciona','img/central-fluxo.jpg','Diagrama: WhatsApp, formulários do site, Notion e sites entram no n8n com IA e no Supabase, e chegam como painel na TV, aviso no WhatsApp e relatório das 8h']]},
-    {id:'gerontodata',name:'GerontoData',type:'app',status:'em desenvolvimento',url:'gerontodata-web.vercel.app',
+     shots:[['Painel','img/central-painel-2.jpg','Painel da central em 25 de outubro de 2026, com caixa de entrada, leads, prospecção, atividade da Iris no WhatsApp, cobrança e sistemas no ar',[[17,26,'Caixa de entrada: o que chegou e já foi respondido'],[50,36,'Iris, o agente de IA no WhatsApp, online'],[85,80,'Sistemas no ar: vigia os sites a cada 5 minutos'],[17,57,'Leads abertos, vindos do Notion']]],['Como funciona','img/central-fluxo.jpg','Diagrama: WhatsApp, formulários do site, Notion e sites entram no n8n com IA e no Supabase, e chegam como painel na TV, aviso no WhatsApp e relatório das 8h',[]]]},
+    {id:'gerontodata',name:'GerontoData',type:'app',status:'em desenvolvimento',
      dor:'A avaliação gerontológica envolve muitos instrumentos. Em papel e planilha, o dado se espalha e o laudo demora a sair.',
      feito:'App web com cadastro, escalas validadas e laudo em PDF para compartilhar por e-mail ou WhatsApp. Reconstruído em React e Supabase para as turmas da UFSCar.',
      stack:['React','Supabase','PDF'],note:'Telas com dados fictícios.',
-     shots:[['Entrada','img/app-login.jpg','Tela de entrada do GerontoData'],['Painel','img/app-painel.jpg','Painel do GerontoData'],['Pacientes','img/app-pacientes.jpg','Lista de pacientes do GerontoData'],['Avaliações','img/app-avaliacoes.jpg','Escalas de avaliação do GerontoData']]},
-    {id:'manu',name:'Manu Justel',type:'site',status:'no ar',url:'manujustel.com.br',
+     shots:[['Painel','img/app-painel.jpg','Painel do GerontoData',[[10,18,'Menu: painel, pacientes e supervisão'],[40,26,'Resumo: pacientes e avaliações registradas'],[75,60,'Avaliações recentes, com a pontuação de cada escala'],[35,52,'Agenda de revisões e retornos']]],['Entrada','img/app-login.jpg','Tela de entrada do GerontoData',[]],['Pacientes','img/app-pacientes.jpg','Lista de pacientes do GerontoData',[]],['Avaliações','img/app-avaliacoes.jpg','Escalas de avaliação do GerontoData',[]]]},
+    {id:'manu',name:'Manu Justel',type:'site',status:'no ar',
      dor:'Uma profissional autônoma que precisava mostrar seus trabalhos de forma mais autêntica. Além de enviar orçamentos de forma mais otimizada.',
      feito:'Site-portfólio feito a partir da identidade visual disponibilizada, com aba de proposta comercial/orçamento (que aparece apenas para quem recebe o link) e painel no Notion para atualizar trabalhos de forma descomplicada e sem necessitar de um programador.',
      stack:['Site sob medida','Notion como painel'],note:'',
-     shots:[['Início','img/shot-manu.jpg','Página inicial do site da Manu Justel, com fotos em polaroides e selos sobre fundo bege']]},
-    {id:'agente',name:'Agente de WhatsApp',type:'agente de IA',status:'em teste',url:'fluxo do agente',
+     shots:[['Início','img/shot-manu.jpg','Página inicial do site da Manu Justel, com fotos em polaroides e selos sobre fundo bege',[[50,38,'Frase de abertura com a personalidade dela'],[12,48,'Fotos em polaroides: dá para arrastar pelo quadro'],[50,72,'Botões para ver os trabalhos e chamar']]]]},
+    {id:'agente',name:'Agente de WhatsApp',type:'agente de IA',status:'em teste',flow:true,
      dor:'Atender clientes no WhatsApp toma bastante tempo e necessita de uma pessoa focada nessa função.',
      feito:'Um agente que conversa em tom natural, tira dúvidas e faz agendamentos, além de chamar um humano somente quando é necessário.',
-     stack:['n8n','WhatsApp','IA'],note:'Desenho do fluxo por dentro.',flow:true}
+     stack:['n8n','WhatsApp','IA'],note:'Desenho do fluxo por dentro.',shots:[]},
+    {id:'climatiza',name:'Climatiza',type:'app + pacote',status:'em teste',
+     dor:'O técnico de ar-condicionado perde cliente por demorar a responder, esquece de avisar a hora da limpeza e não tem agenda e caixa organizados.',
+     feito:'Sistema de gestão que funciona no celular, mesmo sem sinal: agenda, ordens de serviço, orçamento e laudo em PDF, clientes e caixa. Faz parte de um pacote com site profissional e agente de IA no WhatsApp.',
+     stack:['React','App offline (PWA)','Supabase','PDF','n8n'],note:'Telas com dados fictícios.',
+     shots:[['Telas','img/climatiza-telas.jpg','Três telas do Climatiza no celular: agenda do dia, orçamentos e caixa do mês',[[21,25,'Agenda do dia, com as visitas e o valor previsto'],[28,54,'Visitas marcadas pelo agente de IA aparecem com a etiqueta "agente"'],[49,21,'Orçamentos: valor aguardando resposta e taxa de aprovação'],[77,27,'Caixa: quanto entrou no mês e por forma de pagamento'],[77,77,'O que falta receber, com botão para registrar o pagamento']]]]}
   ];
-  var plist=$('#plist'),pinfo=$('#pinfo'),view=$('#view'),tabs=$('#tabs3'),dev=$('#dev'),pcur=-1;
-  PRJ.forEach(function(p,i){
-    var b=document.createElement('button');b.type='button';b.className='pbtn';b.setAttribute('role','tab');b.setAttribute('aria-selected','false');b.innerHTML='<b></b><small></small>';
-    $('b',b).textContent=p.name;$('small',b).textContent=p.type;b.addEventListener('click',function(){show(i)});
-    b.addEventListener('keydown',function(e){if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();show((pcur+1)%PRJ.length);$$('.pbtn')[pcur].focus()}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();show((pcur+PRJ.length-1)%PRJ.length);$$('.pbtn')[pcur].focus()}});
-    plist.appendChild(b);
-  });
-  var lbx=document.createElement('div');lbx.className='lbx';lbx.setAttribute('role','dialog');lbx.setAttribute('aria-label','Imagem ampliada');lbx.innerHTML='<button type="button" aria-label="Fechar">&times;</button><img alt="">';document.body.appendChild(lbx);
-  function lbxClose(){lbx.classList.remove('on');document.body.style.overflow=''}
-  lbx.addEventListener('click',lbxClose);
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')lbxClose()});
-  view.addEventListener('click',function(e){var t=e.target;if(t.tagName==='IMG'){var li=$('img',lbx);li.src=t.src;li.alt=t.alt;lbx.classList.add('on');document.body.style.overflow='hidden'}});
-  function setShot(p,k){
-    var sh=p.shots[k];view.innerHTML='';var im=document.createElement('img');im.src=sh[1];im.loading='lazy';im.decoding='async';im.alt=sh[2];view.appendChild(im);
-    $$('button',tabs).forEach(function(t,j){t.setAttribute('aria-pressed',j===k)});
-  }
-  function show(i){
-    if(i===pcur)return;var first=pcur<0;pcur=i;var p=PRJ[i],L=LINKS[p.id]||{};
-    $$('.pbtn').forEach(function(b,j){b.setAttribute('aria-selected',j===i);b.tabIndex=j===i?0:-1});
-    $('#devUrl').textContent=p.url;var o=$('#devOpen');if(L.live){o.href=L.live;o.hidden=false}else o.hidden=true;
-    $('#devNote').textContent=p.note;
-    view.className='view'+(p.flow?' flowv':'');tabs.innerHTML='';
-    if(p.flow){view.innerHTML=FLOW;tabs.hidden=true}
-    else{
-      if(p.shots.length>1){tabs.hidden=false;p.shots.forEach(function(sh,k){var t=document.createElement('button');t.type='button';t.textContent=sh[0];t.setAttribute('aria-pressed','false');t.addEventListener('click',function(){setShot(p,k)});tabs.appendChild(t)})}else tabs.hidden=true;
-      setShot(p,0);
-    }
-    if(!first&&!reduce){view.classList.remove('wipe');void view.offsetWidth;view.classList.add('wipe')}
-    pinfo.classList.remove('sw');void pinfo.offsetWidth;if(!first)pinfo.classList.add('sw');
-    pinfo.innerHTML='<span class="st"><i></i></span><p><span>O problema</span></p><p><span>O que fiz</span></p><div class="tg"></div><div class="act"></div>';
-    $('.st',pinfo).appendChild(document.createTextNode(p.status));
-    var ps=$$('p',pinfo);ps[0].appendChild(document.createTextNode(p.dor));ps[1].appendChild(document.createTextNode(p.feito));
-    p.stack.forEach(function(t){var s=document.createElement('span');s.textContent=t;$('.tg',pinfo).appendChild(s)});
-    var act=$('.act',pinfo);
+  /* como era antes: a bagunça que cada projeto resolve (ilustração) */
+  var MESS={
+   central:'<div class="bub w" style="left:6%;top:14%">Oi, vcs fazem site?</div><div class="bub" style="left:30%;top:30%;transform:rotate(-3deg)">Mandei orçamento ontem...</div><div class="red" style="left:58%;top:10%">47 não lidas</div><div class="n b" style="left:56%;top:30%;transform:rotate(4deg)">E-mail do site: responder!!</div><div class="n" style="left:8%;top:52%;transform:rotate(-5deg)">Ver se o site caiu</div><div class="bub w" style="left:42%;top:62%;transform:rotate(2deg)">Cadê meu retorno?</div><div class="n p" style="left:72%;top:58%;transform:rotate(6deg)">Lead sem nome no Notion</div><div class="bub" style="left:20%;top:80%">Quanto custa?</div>',
+   gerontodata:'<div class="sheet" style="left:6%;top:14%;transform:rotate(-4deg)"></div><div class="sheet" style="left:30%;top:36%;transform:rotate(3deg)"></div><div class="sheet" style="left:58%;top:12%;transform:rotate(6deg)"></div><div class="n" style="left:8%;top:60%;transform:rotate(-6deg)">Escala: refazer a conta</div><div class="n g" style="left:44%;top:68%;transform:rotate(3deg)">Laudo atrasado</div><div class="n b" style="left:72%;top:54%;transform:rotate(-3deg)">Qual planilha é a certa?</div>',
+   manu:'<div class="pol" style="left:6%;top:12%;transform:rotate(-8deg)"><div></div></div><div class="pol" style="left:26%;top:34%;transform:rotate(6deg)"><div style="background:linear-gradient(135deg,#6f8b5a,#223a2a)"></div></div><div class="pol" style="left:50%;top:10%;transform:rotate(-3deg)"><div style="background:linear-gradient(135deg,#5a6f8b,#222a3a)"></div></div><div class="pol" style="left:68%;top:40%;transform:rotate(9deg)"><div></div></div><div class="n" style="left:10%;top:66%;transform:rotate(-4deg)">Mandar portfólio em PDF...</div><div class="bub w" style="left:44%;top:70%">Tem trabalhos mais recentes?</div>',
+   agente:'<div class="bub w" style="left:5%;top:10%">Oi, tem horário amanhã?</div><div class="bub w" style="left:34%;top:22%">Vocês atendem sábado?</div><div class="red" style="left:70%;top:8%">32 sem resposta</div><div class="bub w" style="left:12%;top:44%">Alô? alguém aí?</div><div class="bub w" style="left:48%;top:50%">Quanto é a visita?</div><div class="n" style="left:72%;top:36%;transform:rotate(5deg)">Responder todo mundo hoje!</div><div class="n p" style="left:8%;top:72%;transform:rotate(-4deg)">Anotar horários na agenda de papel</div><div class="bub w" style="left:56%;top:76%">Desisti, vou em outro</div>',
+   climatiza:'<div class="n" style="left:6%;top:14%;transform:rotate(-5deg)">Limpeza da Dona Rosa: quando foi?</div><div class="bub w" style="left:34%;top:20%">Meu ar não gela</div><div class="n b" style="left:62%;top:12%;transform:rotate(4deg)">Orçamento do split 12 mil BTU</div><div class="sheet" style="left:10%;top:50%;transform:rotate(3deg)"></div><div class="bub" style="left:46%;top:56%;transform:rotate(-2deg)">Pode vir hoje?</div><div class="n p" style="left:70%;top:60%;transform:rotate(6deg)">Cobrar o Sr. João!!</div>'
+  };
+
+  /* painel de comando: módulos e tela cheia */
+  var hud=$('#tiles'),mdl=document.createElement('div'),mcur=null,lastBtn=null;
+  mdl.className='pmod';mdl.setAttribute('role','dialog');mdl.setAttribute('aria-modal','true');mdl.setAttribute('aria-label','Projeto');
+  mdl.innerHTML='<button type="button" class="pmx" aria-label="Fechar">&times;</button><div class="pmc"><div class="pmL"><div class="pms" id="pms"></div><div class="pmt" id="pmt"></div><p class="pmn" id="pmn"></p></div><div class="pmR"><small id="pmty"></small><h3 id="pmnm"></h3><p class="pmp"><span>O problema</span><span id="pmd"></span></p><p class="pmp"><span>O que fiz</span><span id="pmf"></span></p><ol class="pmcl" id="pmcl"></ol><div class="tg" id="pmtg"></div><div class="act" id="pmact"></div></div></div>';
+  document.body.appendChild(mdl);
+  function shotBox(p,k){
+    var box=$('#pms');box.innerHTML='';box.className='pms';
+    if(p.flow){box.classList.add('flowv');box.innerHTML=FLOW;return[]}
+    var sh=p.shots[k],im=document.createElement('img');im.src=sh[1];im.alt=sh[2];im.decoding='async';box.appendChild(im);return sh[3]||[]}
+  function setCmp(p){
+    var box=$('#pms'),old=$('.cmpw',box);if(old)old.remove();
+    var w=document.createElement('div');w.className='cmpw';w.innerHTML='<div class="before"><div class="grain"></div><div class="mess">'+(MESS[p.id]||'')+'</div></div><span class="ctag cl">ANTES</span><span class="ctag cr">DEPOIS</span><div class="hand"></div><input type="range" min="3" max="97" value="50" aria-label="Comparar antes e depois">';
+    var r=$('input',w);r.addEventListener('input',function(){w.style.setProperty('--p',r.value+'%')});w.style.setProperty('--p','50%');box.appendChild(w)}
+  function renderPins(p,pins){
+    var box=$('#pms');$$('.ppin',box).forEach(function(n){n.remove()});var cl=$('#pmcl');cl.innerHTML='';
+    pins.forEach(function(q,k){var pin=document.createElement('span');pin.className='ppin';pin.style.left=q[0]+'%';pin.style.top=q[1]+'%';pin.textContent=k+1;box.appendChild(pin);
+      var li=document.createElement('li');li.innerHTML='<i>'+(k+1)+'</i><span></span>';$('span',li).textContent=q[2];cl.appendChild(li);
+      function hl(on){pin.classList.toggle('hl',on);li.classList.toggle('hl',on)}li.addEventListener('mouseenter',function(){hl(true)});li.addEventListener('mouseleave',function(){hl(false)})})}
+  function openP(i,btn){
+    var p=PRJ[i],L=LINKS[p.id]||{};mcur=i;lastBtn=btn||null;
+    $('#pmty').textContent=p.type+' · '+p.status;$('#pmnm').textContent=p.name;$('#pmd').textContent=p.dor;$('#pmf').textContent=p.feito;$('#pmn').textContent=p.note;
+    var pins=shotBox(p,0);renderPins(p,pins);
+    var tabs=$('#pmt');tabs.innerHTML='';
+    if(p.shots.length>1)p.shots.forEach(function(sh,k){var t=document.createElement('button');t.type='button';t.textContent=sh[0];t.setAttribute('aria-pressed',k===0);t.addEventListener('click',function(){$$('button',tabs).forEach(function(x,j){x.setAttribute('aria-pressed',j===k)});renderPins(p,shotBox(p,k))});tabs.appendChild(t)});
+    var cb=document.createElement('button');cb.type='button';cb.className='pcmp';cb.textContent='Ver como era antes';cb.setAttribute('aria-pressed','false');
+    cb.addEventListener('click',function(){var on=cb.getAttribute('aria-pressed')!=='true';cb.setAttribute('aria-pressed',on);cb.textContent=on?'Voltar ao sistema':'Ver como era antes';
+      var box=$('#pms');if(on){setCmp(p);box.classList.add('cmp')}else{var o=$('.cmpw',box);if(o)o.remove();box.classList.remove('cmp')}});
+    tabs.appendChild(cb);
+    var tg=$('#pmtg');tg.innerHTML='';p.stack.forEach(function(t){var s=document.createElement('span');s.textContent=t;tg.appendChild(s)});
+    var act=$('#pmact');act.innerHTML='';
     if(L.live){var a=document.createElement('a');a.className='btn btn-line btn-sm';a.href=L.live;a.target='_blank';a.rel='noopener';a.textContent='Abrir o '+(p.type==='app'?'app':'site');act.appendChild(a)}
     if(L.repo){var g=document.createElement('a');g.className='btn btn-line btn-sm';g.href=L.repo;g.target='_blank';g.rel='noopener';g.textContent='Ver o código';act.appendChild(g)}
     var w=document.createElement('a');w.className='btn btn-fill btn-sm';w.target='_blank';w.rel='noopener';w.href=WA+encodeURIComponent('Oi Kaio! Vi o projeto "'+p.name+'" no seu site e quero algo parecido.');w.textContent='Quero algo parecido';act.appendChild(w);
-  }
-  show(1);
-  /* inclinação do aparelho */
-  var pr=$('#pr');
-  if(!reduce&&matchMedia('(hover:hover)').matches){
-    pr.addEventListener('pointermove',function(e){var r=pr.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;dev.style.transform='rotateY('+(x*9).toFixed(2)+'deg) rotateX('+(-y*7).toFixed(2)+'deg)'});
-    pr.addEventListener('pointerleave',function(){dev.style.transform=''});
-  }
+    mdl.classList.add('on');document.documentElement.style.overflow='hidden';mdl.scrollTop=0;$('.pmx',mdl).focus()}
+  function closeP(){mdl.classList.remove('on');document.documentElement.style.overflow='';if(lastBtn)lastBtn.focus()}
+  $('.pmx',mdl).addEventListener('click',closeP);
+  mdl.addEventListener('click',function(e){if(e.target===mdl)closeP()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mdl.classList.contains('on'))closeP()});
+  PRJ.forEach(function(p,i){
+    var b=document.createElement('button');b.type='button';b.className='ptile'+(p.big?' big':'');
+    var th=document.createElement('div');th.className='pth';
+    if(p.flow){th.innerHTML=FLOW;th.classList.add('flowv')}else th.style.backgroundImage='url('+p.shots[0][1]+')';
+    b.appendChild(th);var sc=document.createElement('div');sc.className='pscan';b.appendChild(sc);
+    var tx=document.createElement('div');tx.className='ptx';tx.innerHTML='<div class="pst"><span class="led'+(p.status==='no ar'?'':' t')+'"></span><span></span></div><h3></h3><p></p>';
+    $('.pst span:last-child',tx).textContent=p.status+' · '+p.type;$('h3',tx).textContent=p.name;$('p',tx).textContent=p.feito.split('. ')[0].replace(/\.$/,'')+'.';
+    b.appendChild(tx);b.setAttribute('aria-label',p.name+', '+p.type+'. Abrir projeto.');
+    b.addEventListener('click',function(){openP(i,b)});hud.appendChild(b)});
+  var clk=$('#pclk');if(clk){var pclock=function(){var d=new Date();clk.textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+' · SINCRONIZADO'};pclock();setInterval(pclock,30000)}
 
   /* serviços */
   var SV=[
