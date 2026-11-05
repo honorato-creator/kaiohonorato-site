@@ -686,10 +686,22 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 .s.pp{padding-top:clamp(24px,3vw,48px)}
 .pp-cta{display:grid;gap:14px;justify-items:start;max-width:40ch}
 .pp-cta .lede{margin:0}
-.pp-cta small{font-size:15px;color:#52555A}
-.btn-acc{background:var(--acc);border-color:var(--acc);color:#fff;min-height:58px;padding:0 34px;font-size:18px;gap:12px}
-.btn-acc:hover{background:var(--base);border-color:var(--base)}
-.btn-acc span{transition:transform .25s}.btn-acc:hover span{transform:translateX(5px)}
+.btn3d{--rx:0deg;--ry:0deg;position:relative;display:inline-flex;align-items:center;gap:18px;min-height:68px;padding:0 10px 0 30px;border-radius:999px;text-decoration:none;color:#fff;font:700 20px var(--f-b);letter-spacing:.01em;overflow:hidden;isolation:isolate;
+ background:linear-gradient(180deg,#ff8247 0%,#E65516 52%,#c4410b 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.55),inset 0 -4px 0 rgba(0,0,0,.2),0 7px 0 #8f2f07,0 22px 30px -8px rgba(230,85,22,.6);
+ transform:perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .18s ease-out,box-shadow .18s ease-out}
+.btn3d::before{content:"";position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 14px),repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0 1px,transparent 1px 14px)}
+.btn3d::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-40%;width:30%;z-index:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);animation:b3sw 3.8s ease-in-out infinite;pointer-events:none}
+@keyframes b3sw{0%,55%{left:-40%}100%{left:130%}}
+.btn3d .led{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,.8);animation:b3p 1.8s infinite;flex:none}
+@keyframes b3p{to{box-shadow:0 0 0 11px rgba(255,255,255,0)}}
+.btn3d .ic{position:relative;z-index:1;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#26272b;box-shadow:inset 0 2px 4px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.35);color:#ff8247;transition:transform .25s}
+.btn3d .ic svg{width:22px;height:22px}
+.btn3d:hover{box-shadow:inset 0 2px 0 rgba(255,255,255,.6),inset 0 -4px 0 rgba(0,0,0,.2),0 9px 0 #8f2f07,0 30px 38px -8px rgba(230,85,22,.75)}
+.btn3d:hover .ic{transform:translateX(3px)}
+.btn3d:active{transform:translateY(6px);box-shadow:inset 0 2px 0 rgba(255,255,255,.4),inset 0 -2px 0 rgba(0,0,0,.2),0 1px 0 #8f2f07,0 6px 12px -4px rgba(230,85,22,.6);transition-duration:.06s}
+.btn3d:focus-visible{outline:3px solid var(--base);outline-offset:5px}
+@media (prefers-reduced-motion:reduce){.btn3d::after,.btn3d .led{animation:none}.btn3d{transform:none!important}}
 .pp .top2{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,56px)}
 .pp .h2{max-width:none}
 .pp-k{font:600 13px var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:#52555A;margin:0 0 14px}
@@ -868,7 +880,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 <section class="s pp" id="proposta" aria-labelledby="ppT">
   <div class="wrap">
-    <div class="top2"><h2 class="t h2" id="ppT">como eu trabalho.</h2><div class="pp-cta"><p class="lede">Do primeiro papo ao projeto no ar, sem surpresa. O escopo e o custo ficam combinados antes de eu programar.</p><a class="btn btn-acc" href="orcamento/">Pedir orçamento <span aria-hidden="true">→</span></a><small>Leva uns 5 minutos. Sem compromisso.</small></div></div>
+    <div class="top2"><h2 class="t h2" id="ppT">como eu trabalho.</h2><div class="pp-cta"><p class="lede">Do primeiro papo ao projeto no ar, sem surpresa. O escopo e o custo ficam combinados antes de eu programar.</p><a class="btn3d" href="orcamento/" id="cta3d"><span class="led" aria-hidden="true"></span>Pedir orçamento<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></div></div>
     <p class="pp-k" style="margin:clamp(36px,5vw,64px) 0 0">As etapas</p>
     <ol class="pp-steps" aria-label="Como funciona">
       <li><b>Conversa</b><span>Entendo a sua rotina.</span></li>
@@ -984,6 +996,8 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   if(PERFIL.instagram){var ig=$('#lnkInsta');ig.href=PERFIL.instagram;ig.hidden=false}
   if(!gh&&!li&&!PERFIL.instagram)$('#links2').hidden=true;
 
+  /* botão 3D */
+  (function(){var b=$('#cta3d');if(!b||reduce)return;b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;b.style.setProperty('--ry',(x*14).toFixed(1)+'deg');b.style.setProperty('--rx',(-y*14).toFixed(1)+'deg')});b.addEventListener('pointerleave',function(){b.style.setProperty('--ry','0deg');b.style.setProperty('--rx','0deg')})})();
   /* reator da abertura */
   var svg=$('#nodes'),ptr=null,t0=performance.now(),tick=$('#ticks'),tilt={x:0,y:0},heat=0,wv=-1;
   (function(){var h='';for(var i=0;i<72;i++){var a=i*Math.PI/36,l=i%6?7:15;h+='<line x1="'+(250+Math.cos(a)*226).toFixed(1)+'" y1="'+(250+Math.sin(a)*226).toFixed(1)+'" x2="'+(250+Math.cos(a)*(226+l)).toFixed(1)+'" y2="'+(250+Math.sin(a)*(226+l)).toFixed(1)+'" stroke-width="'+(i%6?1:2)+'"/>'}tick.innerHTML=h})();
