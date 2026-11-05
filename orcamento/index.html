@@ -116,13 +116,37 @@ h1 em{font-style:normal;color:var(--acc)}
 .svcbar button{background:none;border:0;padding:4px 0;color:var(--mut);font-size:15.5px;text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:4px}
 .svcbar button:hover{color:var(--base)}
 .wizard[hidden],.pick[hidden]{display:none!important}
-.wizard .step{padding-top:0!important;margin-top:0!important;border-top:0!important;min-height:min(46vh,420px);align-content:start}
-.wizard .step .lg{font-size:clamp(18px,2vw,20px);font-family:var(--f-b);font-weight:400;color:var(--mut);letter-spacing:.02em}
-.wizard .q>span.l{font:700 clamp(22px,2.6vw,28px)/1.2 var(--f-t);letter-spacing:-.02em}
-.wizard .q>span.l small{display:block;margin:6px 0 0;font:400 15.5px/1.3 var(--f-b);letter-spacing:0}
+.wizard .step{padding-top:0!important;margin-top:0!important;border-top:0!important;align-content:start;gap:0}
+.wizard .step .lg{font:700 clamp(30px,4vw,44px)/1.04 var(--f-t);letter-spacing:-.03em;margin:0 0 4px}
+.wizard .step .lead{color:var(--mut);margin:0 0 8px;font-size:18px}
+.wizard .step .q{padding:22px 0;border-top:1.5px solid var(--isa);gap:12px}
+.wizard .step .lead+.q{margin-top:14px}
+.wizard .q>span.l{font:700 clamp(19px,2.1vw,23px)/1.25 var(--f-t);letter-spacing:-.015em}
+.wizard .q>span.l small{display:block;margin:5px 0 0;font:400 15px/1.3 var(--f-b);letter-spacing:0}
+.wizard .step.fwd{animation:sFwd .5s cubic-bezier(.2,.8,.2,1) both}
+.wizard .step.bwd{animation:sBwd .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes sFwd{from{opacity:0;transform:translateX(36px)}}
+@keyframes sBwd{from{opacity:0;transform:translateX(-36px)}}
+.wizard .step .q{animation:qUp .5s cubic-bezier(.2,.8,.2,1) both}
+.wizard .step .q:nth-of-type(2){animation-delay:.05s}.wizard .step .q:nth-of-type(3){animation-delay:.1s}.wizard .step .q:nth-of-type(4){animation-delay:.15s}.wizard .step .q:nth-of-type(5){animation-delay:.2s}.wizard .step .q:nth-of-type(n+6){animation-delay:.25s}
+@keyframes qUp{from{opacity:0;transform:translateY(14px)}}
+.prog{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin:clamp(22px,3vw,34px) 0 12px}
+.prog button{all:unset;display:grid;gap:8px;cursor:default;min-width:0}
+.prog button i{display:block;height:6px;border-radius:6px;background:var(--isa);position:relative;overflow:hidden}
+.prog button i::after{content:"";position:absolute;inset:0;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.prog button.on i::after,.prog button.cur i::after{transform:scaleX(1)}
+.prog button span{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.6}
+.prog button.cur span{color:var(--base);font-weight:700;opacity:1}
+.prog button.on{cursor:pointer}
+.prog button.on:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+@media(max-width:620px){.prog button span{display:none}.prog button.cur span{display:block;position:absolute;left:0;margin-top:14px}.prog{margin-bottom:34px;position:relative}}
+.o{transition:border-color .2s,background-color .2s,transform .15s}
+.o:active{transform:scale(.985)}
+.o:has(input:checked) .mk{border-color:var(--acc)}
+.nav{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 28%);padding:22px 0 4px;margin-top:10px}
 .q[hidden]{display:none!important}
 .foot{max-width:880px;margin:0 auto;padding:0 20px 40px;font-size:15px;color:var(--mut)}
-@media(max-width:560px){.btn{width:100%}.nav{flex-direction:column-reverse;align-items:stretch}.btn.ghost{width:auto;align-self:center}}
+@media(max-width:560px){.nav{flex-wrap:nowrap}.btn{min-height:50px;padding:0 22px}.btn.ghost{padding:0 4px;font-size:15px}.btn.go{flex:1}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -183,6 +207,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="agente" data-name="O agente">
         <h2 class="lg">O agente de IA</h2>
+        <p class="lead">Conte o que ele precisa fazer e por onde vai atender.</p>
         <div class="q" data-req="agente_funcoes"><span class="l">O que o agente deve fazer? <small>marque quantas quiser</small></span>
           <div class="opts">
             <label class="o chk"><input type="checkbox" name="agente_funcoes" value="Responder dúvidas frequentes"><span class="mk"></span><span>Responder dúvidas frequentes</span></label>
@@ -211,6 +236,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="automacao" data-name="A automação">
         <h2 class="lg">A automação</h2>
+        <p class="lead">Me conte como a tarefa acontece hoje, do jeito que for.</p>
         <label class="q" data-req="auto_processo"><span class="l">Qual tarefa repetitiva você quer automatizar?</span><textarea name="auto_processo" placeholder="Conte do jeito que acontece hoje: quem faz, em que ordem, onde os dados entram e saem"></textarea><span class="err">Conte qual tarefa você quer automatizar.</span></label>
         <div class="q"><span class="l">Quanto tempo isso toma por semana? <small>escolha uma</small></span>
           <div class="opts">
@@ -233,6 +259,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="landing" data-name="A landing page">
         <h2 class="lg">A landing page</h2>
+        <p class="lead">Vamos definir a oferta e o que o visitante deve fazer.</p>
         <label class="q" data-req="landing_oferta"><span class="l">O que a página vai oferecer?</span><textarea name="landing_oferta" placeholder="Produto, serviço, evento, curso, consulta…"></textarea><span class="err">Conte o que a página vai oferecer.</span></label>
         <div class="q"><span class="l">O que o visitante deve fazer? <small>escolha uma</small></span>
           <div class="opts">
@@ -259,6 +286,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="app" data-name="O app">
         <h2 class="lg">O app sob medida</h2>
+        <p class="lead">Qual processo o app vai resolver e quem vai usar.</p>
         <label class="q" data-req="app_problema"><span class="l">Que problema o app vai resolver?</span><textarea name="app_problema" placeholder="O que hoje é feito na mão, em papel ou espalhado em planilhas"></textarea><span class="err">Conte que problema o app vai resolver.</span></label>
         <div class="q"><span class="l">Quem vai usar? <small>escolha uma</small></span>
           <div class="opts">
@@ -277,6 +305,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="site" data-name="O site">
         <h2 class="lg">O que você quer construir</h2>
+        <p class="lead">O objetivo e o formato do site.</p>
         <div class="q"><span class="l">Qual é o principal objetivo do site? <small>escolha uma</small></span>
           <div class="opts">
             <label class="o"><input type="radio" name="objetivo" value="Gerar vendas diretas"><span class="mk"></span><span>Gerar vendas diretas</span></label>
@@ -296,6 +325,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="site landing" data-name="Marca e conteúdo">
         <h2 class="lg">Marca, domínio e conteúdo</h2>
+        <p class="lead">O que você já tem pronto e o que eu preciso criar.</p>
         <div class="q"><span class="l">Identidade visual <small>escolha uma</small></span>
           <div class="opts">
             <label class="o"><input type="radio" name="identidade" value="Já tenho completa (logo, cores e fontes)"><span class="mk"></span><span>Já tenho identidade completa (logo, cores e fontes)</span></label>
@@ -321,6 +351,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-tabs="site" data-name="Recursos e referências">
         <h2 class="lg">Recursos e referências</h2>
+        <p class="lead">O que o site precisa fazer e o que te inspira.</p>
         <div class="q"><span class="l">Funcionalidades e integrações <small>marque quantas quiser</small></span>
           <div class="opts">
             <label class="o chk"><input type="checkbox" name="funcionalidades" value="Botão flutuante de WhatsApp"><span class="mk"></span><span>Botão flutuante de WhatsApp</span></label>
@@ -340,6 +371,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-name="Sobre você">
         <h2 class="lg">Sobre você</h2>
+        <p class="lead">Para eu saber com quem estou falando e como te responder.</p>
         <label class="q" id="q-empresa"><span class="l">Nome da empresa ou projeto</span><input type="text" name="empresa" autocomplete="organization" required><span class="err">Conte o nome da empresa ou do projeto.</span></label>
         <label class="q" id="q-nome"><span class="l">Seu nome (responsável)</span><input type="text" name="nome" autocomplete="name" required><span class="err">Conte o seu nome.</span></label>
         <div class="q" id="q-contato">
@@ -353,6 +385,7 @@ h1 em{font-style:normal;color:var(--acc)}
 
       <div role="group" class="step" data-name="Para fechar">
         <h2 class="lg">Para fechar</h2>
+        <p class="lead">Últimos detalhes e o pedido está pronto.</p>
         <label class="q"><span class="l">Existe prazo para ficar pronto? <small>opcional</small></span><input type="text" name="prazo"></label>
         <label class="q"><span class="l">Algo mais que eu deva saber? <small>opcional</small></span><textarea name="observacoes"></textarea></label>
       </div>
@@ -420,12 +453,15 @@ h1 em{font-style:normal;color:var(--acc)}
     else{note.className='note';note.textContent=N0}
     return ok;
   }
-  function mostrar(){
-    var atualQ=passos[idx],grupo=atualQ.parentNode;
-    $$('.step',f).forEach(function(st){st.hidden=st!==grupo});
-    passos.forEach(function(q){q.hidden=q!==atualQ});
-    var p=$('#prog');p.innerHTML='<i class="on" style="flex:none;width:'+Math.round((idx+1)/passos.length*100)+'%"></i><i></i>';
-    $('#stepname').textContent='Pergunta '+(idx+1)+' de '+passos.length+' · '+grupo.getAttribute('data-name');
+  function mostrar(dir){
+    var grupo=passos[idx];
+    $$('.step',f).forEach(function(st){st.hidden=st!==grupo;st.classList.remove('fwd','bwd')});
+    $$('.q',f).forEach(function(q){q.hidden=false});
+    if(dir){void grupo.offsetWidth;grupo.classList.add(dir>0?'fwd':'bwd')}
+    var p=$('#prog');p.innerHTML='';
+    passos.forEach(function(st,k){var b=document.createElement('button');b.type='button';b.className=k<idx?'on':(k===idx?'cur':'');b.innerHTML='<i></i><span></span>';$('span',b).textContent=st.getAttribute('data-name');b.setAttribute('aria-label','Etapa '+(k+1)+': '+st.getAttribute('data-name'));
+      if(k<idx)b.addEventListener('click',function(){idx=k;mostrar(-1);focar()});p.appendChild(b)});
+    $('#stepname').textContent='Etapa '+(idx+1)+' de '+passos.length;
     var ultimo=idx===passos.length-1;
     next.innerHTML=ultimo?'Enviar pedido <span aria-hidden="true">→</span>':'Continuar <span aria-hidden="true">→</span>';
     back.textContent=idx===0?'← Trocar serviço':'← Voltar';
@@ -439,12 +475,9 @@ h1 em{font-style:normal;color:var(--acc)}
       sec.setAttribute('data-off',on?'0':'1');
       $$('input,textarea,select',sec).forEach(function(x){x.disabled=!on});
     });
-    passos=[];
-    $$('.step',f).filter(function(st){return st.getAttribute('data-off')!=='1'}).forEach(function(st){
-      $$('.q',st).filter(function(q){return q.parentNode===st}).forEach(function(q){passos.push(q)});
-    });
+    passos=$$('.step',f).filter(function(st){return st.getAttribute('data-off')!=='1'});
     $('#servico').value=NOMES[t];$('#chip').textContent=NOMES[t];
-    pick.hidden=true;wiz.hidden=false;idx=0;mostrar();
+    pick.hidden=true;wiz.hidden=false;idx=0;mostrar(1);
     if(rolar)focar();
   }
   function escolher(){
@@ -453,11 +486,11 @@ h1 em{font-style:normal;color:var(--acc)}
   }
   $$('.svc').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-svc');try{history.replaceState(null,'','#'+t)}catch(e){}abrir(t,true)})});
   $('#trocar').addEventListener('click',escolher);
-  function focar(){card.scrollIntoView({block:'start',behavior:'smooth'});var c=$('input:not([type=hidden]),textarea',passos[idx]);if(c&&c.type!=='radio'&&c.type!=='checkbox')setTimeout(function(){c.focus({preventScroll:true})},350)}
-  back.addEventListener('click',function(){if(idx===0)escolher();else{idx--;mostrar();focar()}});
+  function focar(){card.scrollIntoView({block:'start',behavior:'smooth'});var c=$('input:not([type=hidden]):not([type=radio]):not([type=checkbox]),textarea',passos[idx]);if(c&&matchMedia('(min-width:700px)').matches)setTimeout(function(){c.focus({preventScroll:true})},450)}
+  back.addEventListener('click',function(){if(idx===0)escolher();else{idx--;mostrar(-1);focar()}});
   next.addEventListener('click',function(){
     if(!validarPasso(passos[idx]))return;
-    if(idx<passos.length-1){idx++;mostrar();focar()}
+    if(idx<passos.length-1){idx++;mostrar(1);focar()}
     else send();
   });
   var h0=(location.hash||'').replace('#','').toLowerCase();
