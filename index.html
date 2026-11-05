@@ -777,6 +777,31 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
  .pp-wk span{font-size:11px;letter-spacing:.04em}
 }
 @media (prefers-reduced-motion:reduce){.pp-row i,.pp-card li{animation:none}.pp-o{transition:none}}
+
+/* redesign: abertura maior, sem etiquetas, plano unificado, fechamento */
+.hero .grid{min-height:min(82vh,760px)}
+.hero-text{grid-column:1/8}
+.hero h1{font-size:clamp(42px,5.2vw,78px)}
+.hero-fig{grid-column:8/13;max-width:620px;margin-right:-4%}
+.hero h1{margin-top:0}
+.srv-sec{padding-bottom:clamp(24px,4vw,56px)}
+.hud-foot{text-transform:none;letter-spacing:.02em;font-size:15px}
+.sobre-foto{grid-column:1/7}.sobre-txt{grid-column:8/13}
+.pp-plan{margin-top:clamp(40px,5vw,72px);padding:clamp(20px,2.4vw,36px);border-radius:26px;background:#EAE8DF}
+.pl-wk,.pl-row{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(16px,3vw,48px);align-items:center}
+.pl-wk>div,.pl-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pl-wk span{font:600 15px var(--f-b);color:#52555A;padding-bottom:12px}
+.pl-row{padding:16px 0;border-top:1px solid rgba(49,50,54,.14)}
+.pl-t{display:flex;gap:16px;align-items:center}
+.pl-t em{flex:none;width:38px;height:38px;border-radius:50%;border:2px solid var(--acc);display:grid;place-items:center;font:600 16px var(--f-b);font-style:normal}
+.pl-t b{display:block;font:700 clamp(21px,2vw,27px)/1.1 var(--f-t);letter-spacing:-.02em}
+.pl-t span{display:block;font-size:17px;color:#52555A;margin-top:3px}
+.pl-bar i{font-style:normal;font-weight:600;font-size:16px;padding:11px 18px;border-radius:999px;background:var(--base);color:var(--linen);transform-origin:left;animation:ppbar .9s cubic-bezier(.2,.8,.2,1) both;white-space:nowrap}
+.pl-bar i.hot{background:var(--acc)}
+.pp-plan .pp-small{margin-top:14px}
+@media (max-width:860px){.pl-wk{display:none}.pl-row{grid-template-columns:1fr;gap:12px}.pl-bar i{font-size:14px;padding:9px 12px}}
+@media (max-width:900px){.hero-fig{grid-column:1/-1;margin-right:0;max-width:380px}.hero-text{grid-column:1/-1}.sobre-foto,.sobre-txt{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){.pl-bar i{animation:none}}
 </style>
 </head>
 <body>
@@ -813,7 +838,6 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="hero" id="inicio">
   <div class="wrap grid">
     <div class="hero-text">
-      <p class="label">sites, apps, automações e agentes de IA</p>
       <h1 class="t">soluções funcionais e criativas para o seu <b>negócio.</b></h1>
       <p class="lede">Sou o Kaio, desenvolvedor em Santos (SP), e atendo todo o Brasil. Aqui está o que já construí e o que posso resolver no seu negócio, do site ao agente de IA.</p>
       <div class="hero-act">
@@ -896,23 +920,15 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="s pp" id="proposta" aria-labelledby="ppT">
   <div class="wrap">
     <div class="pp-panel">
-      <div class="pp-pt"><p class="pp-k">Do primeiro papo ao projeto no ar</p><h2 class="t h2" id="ppT">como eu trabalho.</h2><p class="lede">Sem surpresa: o escopo e o custo ficam combinados antes de eu programar.</p></div>
+      <div class="pp-pt"><h2 class="t h2" id="ppT">como eu trabalho.</h2><p class="lede">Sem surpresa: o escopo e o custo ficam combinados antes de eu programar.</p></div>
       <div class="pp-pc"><a class="rbtn" href="orcamento/" aria-label="Pedir orçamento"><span class="rd" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><radialGradient id="rbg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#3c3d43"/><stop offset="1" stop-color="#1b1c1f"/></radialGradient><radialGradient id="rbc" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#ffa070"/><stop offset=".55" stop-color="#E65516"/><stop offset="1" stop-color="#a73508"/></radialGradient></defs><circle class="wave" cx="100" cy="100" r="96"/><circle class="wave" cx="100" cy="100" r="96" style="animation-delay:1.4s"/><circle cx="100" cy="100" r="98" fill="url(#rbg)" stroke="#E65516" stroke-width="3"/><g class="r1"><circle cx="100" cy="100" r="88" fill="none" stroke="#E65516" stroke-opacity=".55" stroke-width="2" stroke-dasharray="3 8"/></g><g class="r2"><circle cx="100" cy="100" r="70" fill="none" stroke="#E65516" stroke-width="4" stroke-dasharray="52 20 14 20"/><circle cx="100" cy="30" r="7" fill="#fff"/></g><g class="r3"><circle cx="100" cy="100" r="54" fill="none" stroke="#D8D6C9" stroke-opacity=".6" stroke-width="2" stroke-dasharray="4 9"/><circle cx="154" cy="100" r="6" fill="#E65516"/></g><g class="core"><circle cx="100" cy="100" r="42" fill="url(#rbc)"/><circle cx="100" cy="100" r="42" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g><path class="arr" d="M86 100h28M104 88l12 12-12 12" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx"><b>Pedir orçamento</b><span>Sem compromisso</span></span></a></div>
     </div>
-    <p class="pp-k" style="margin:clamp(36px,5vw,64px) 0 0">As etapas</p>
-    <ol class="pp-steps" aria-label="Como funciona">
-      <li><b>Conversa</b><span>Entendo a sua rotina.</span></li>
-      <li><b>Desenho</b><span>Fluxo, telas e custo.</span></li>
-      <li><b>Construção</b><span>Código sob medida, em ciclos.</span></li>
-      <li><b>No ar</b><span>Explico o uso e ajusto.</span></li>
-    </ol>
-    <div class="pp-cron" role="img" aria-label="Exemplo de cronograma em quatro semanas: conversa na semana 1, desenho nas semanas 1 e 2, construção nas semanas 2 e 3, testes nas semanas 3 e 4, no ar na semana 4.">
-      <div class="pp-wk"><span>Semana 1</span><span>Semana 2</span><span>Semana 3</span><span>Semana 4</span></div>
-      <div class="pp-row"><i style="grid-column:1/2">Conversa</i></div>
-      <div class="pp-row"><i style="grid-column:1/3">Desenho</i></div>
-      <div class="pp-row"><i style="grid-column:2/4" class="hot">Construção</i></div>
-      <div class="pp-row"><i style="grid-column:3/5">Testes e ajustes</i></div>
-      <div class="pp-row"><i style="grid-column:4/5" class="hot">No ar</i></div>
+    <div class="pp-plan" role="img" aria-label="Exemplo de plano em quatro semanas: conversa na semana 1, desenho nas semanas 1 e 2, construção com testes nas semanas 2 a 4, no ar na semana 4.">
+      <div class="pl-wk"><span></span><div><span>semana 1</span><span>semana 2</span><span>semana 3</span><span>semana 4</span></div></div>
+      <div class="pl-row"><div class="pl-t"><em>1</em><div><b>Conversa</b><span>Entendo a sua rotina.</span></div></div><div class="pl-bar"><i style="grid-column:1/2" class="">semana 1</i></div></div>
+      <div class="pl-row"><div class="pl-t"><em>2</em><div><b>Desenho</b><span>Fluxo, telas e custo.</span></div></div><div class="pl-bar"><i style="grid-column:1/3" class="">semanas 1 e 2</i></div></div>
+      <div class="pl-row"><div class="pl-t"><em>3</em><div><b>Construção</b><span>Código sob medida, em ciclos, com testes e ajustes.</span></div></div><div class="pl-bar"><i style="grid-column:2/5" class="hot">semanas 2 a 4</i></div></div>
+      <div class="pl-row"><div class="pl-t"><em>4</em><div><b>No ar</b><span>Explico o uso e ajusto.</span></div></div><div class="pl-bar"><i style="grid-column:4/5" class="hot">semana 4</i></div></div>
       <p class="pp-small">Exemplo. O prazo real depende do escopo e eu combino antes de começar.</p>
     </div>
     <ul class="pp-ben" id="ppBen"></ul>
@@ -965,6 +981,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 </section>
 
 </main>
+
 
 <footer class="on-dark">
   <div class="wrap foot">
@@ -1190,7 +1207,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   SV.forEach(function(v,i){
     var li=document.createElement('li'),a=document.createElement('a');a.target='_blank';a.rel='noopener';a.href=WA+encodeURIComponent('Oi Kaio! Vi o site e quero conversar sobre '+v[2]+'.');
     if(v[3])li.className='w2 dk';
-    a.innerHTML='<span class="n">0'+(i+1)+'</span><span class="art">'+v[4]+'</span><span class="ft"><span><span class="nm"></span><span class="ln"></span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 16 4M7 4h9v9"/></svg></span></span>';
+    a.innerHTML='<span class="art">'+v[4]+'</span><span class="ft"><span><span class="nm"></span><span class="ln"></span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 16 4M7 4h9v9"/></svg></span></span>';
     $('.nm',a).textContent=v[0];$('.ln',a).textContent=v[1];a.setAttribute('aria-label',v[0]+': '+v[1]+' Abrir conversa no WhatsApp.');
     li.appendChild(a);ul.appendChild(li);
   });
