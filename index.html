@@ -683,7 +683,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 /* proposta */
 .s.demo{padding-bottom:clamp(40px,5vw,72px)}
-.s.pp{padding-top:clamp(24px,3vw,48px)}
+.s.pp{padding-top:clamp(8px,1.5vw,24px)}
 .pp-cta{display:grid;gap:14px;justify-items:start;max-width:40ch}
 .pp-cta .lede{margin:0}
 .rbtn{display:inline-flex;align-items:center;gap:clamp(14px,2vw,24px);text-decoration:none;color:var(--base);-webkit-tap-highlight-color:transparent;border-radius:999px;outline-offset:8px}
@@ -706,6 +706,17 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 .rbtn .arr{transition:transform .3s}.rbtn:hover .arr{transform:translateX(5px)}
 @media (max-width:620px){.rbtn .wave{display:none}}
 @media (prefers-reduced-motion:reduce){.rbtn .r1,.rbtn .r2,.rbtn .r3,.rbtn .core,.rbtn .wave{animation:none}}
+.pp-panel{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center;background:var(--base);color:var(--linen);border-radius:30px;padding:clamp(28px,4.5vw,64px);position:relative;overflow:hidden}
+.pp-panel::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 50%,rgba(230,85,22,.22),transparent 55%),repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 44px),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 44px);pointer-events:none}
+.pp-panel>*{position:relative}
+.pp-panel .pp-k{color:var(--isa);margin:0 0 14px}
+.pp-panel .h2{font-size:clamp(40px,5.4vw,76px);margin:0 0 16px;color:var(--linen)}
+.pp-panel .lede{color:var(--isa);max-width:34ch;margin:0}
+.pp-pc{display:flex;justify-content:flex-start}
+.pp-panel .rbtn{color:var(--linen)}
+.pp-panel .rbtn .tx span{color:var(--isa)}
+.pp-panel .rbtn:focus-visible{outline-color:var(--linen)}
+@media (max-width:860px){.pp-panel{grid-template-columns:1fr;border-radius:24px}}
 .pp .top2{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,56px)}
 .pp .h2{max-width:none}
 .pp-k{font:600 13px var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:#52555A;margin:0 0 14px}
@@ -884,7 +895,10 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 <section class="s pp" id="proposta" aria-labelledby="ppT">
   <div class="wrap">
-    <div class="top2"><h2 class="t h2" id="ppT">como eu trabalho.</h2><div class="pp-cta"><p class="lede">Do primeiro papo ao projeto no ar, sem surpresa. O escopo e o custo ficam combinados antes de eu programar.</p><a class="rbtn" href="orcamento/" aria-label="Pedir orçamento"><span class="rd" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><radialGradient id="rbg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#3c3d43"/><stop offset="1" stop-color="#1b1c1f"/></radialGradient><radialGradient id="rbc" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#ffa070"/><stop offset=".55" stop-color="#E65516"/><stop offset="1" stop-color="#a73508"/></radialGradient></defs><circle class="wave" cx="100" cy="100" r="96"/><circle class="wave" cx="100" cy="100" r="96" style="animation-delay:1.4s"/><circle cx="100" cy="100" r="98" fill="url(#rbg)" stroke="#E65516" stroke-width="3"/><g class="r1"><circle cx="100" cy="100" r="88" fill="none" stroke="#E65516" stroke-opacity=".55" stroke-width="2" stroke-dasharray="3 8"/></g><g class="r2"><circle cx="100" cy="100" r="70" fill="none" stroke="#E65516" stroke-width="4" stroke-dasharray="52 20 14 20"/><circle cx="100" cy="30" r="7" fill="#fff"/></g><g class="r3"><circle cx="100" cy="100" r="54" fill="none" stroke="#D8D6C9" stroke-opacity=".6" stroke-width="2" stroke-dasharray="4 9"/><circle cx="154" cy="100" r="6" fill="#E65516"/></g><g class="core"><circle cx="100" cy="100" r="42" fill="url(#rbc)"/><circle cx="100" cy="100" r="42" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g><path class="arr" d="M86 100h28M104 88l12 12-12 12" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx"><b>Pedir orçamento</b><span>Sem compromisso</span></span></a></div></div>
+    <div class="pp-panel">
+      <div class="pp-pt"><p class="pp-k">Do primeiro papo ao projeto no ar</p><h2 class="t h2" id="ppT">como eu trabalho.</h2><p class="lede">Sem surpresa: o escopo e o custo ficam combinados antes de eu programar.</p></div>
+      <div class="pp-pc"><a class="rbtn" href="orcamento/" aria-label="Pedir orçamento"><span class="rd" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><radialGradient id="rbg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#3c3d43"/><stop offset="1" stop-color="#1b1c1f"/></radialGradient><radialGradient id="rbc" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#ffa070"/><stop offset=".55" stop-color="#E65516"/><stop offset="1" stop-color="#a73508"/></radialGradient></defs><circle class="wave" cx="100" cy="100" r="96"/><circle class="wave" cx="100" cy="100" r="96" style="animation-delay:1.4s"/><circle cx="100" cy="100" r="98" fill="url(#rbg)" stroke="#E65516" stroke-width="3"/><g class="r1"><circle cx="100" cy="100" r="88" fill="none" stroke="#E65516" stroke-opacity=".55" stroke-width="2" stroke-dasharray="3 8"/></g><g class="r2"><circle cx="100" cy="100" r="70" fill="none" stroke="#E65516" stroke-width="4" stroke-dasharray="52 20 14 20"/><circle cx="100" cy="30" r="7" fill="#fff"/></g><g class="r3"><circle cx="100" cy="100" r="54" fill="none" stroke="#D8D6C9" stroke-opacity=".6" stroke-width="2" stroke-dasharray="4 9"/><circle cx="154" cy="100" r="6" fill="#E65516"/></g><g class="core"><circle cx="100" cy="100" r="42" fill="url(#rbc)"/><circle cx="100" cy="100" r="42" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g><path class="arr" d="M86 100h28M104 88l12 12-12 12" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx"><b>Pedir orçamento</b><span>Sem compromisso</span></span></a></div>
+    </div>
     <p class="pp-k" style="margin:clamp(36px,5vw,64px) 0 0">As etapas</p>
     <ol class="pp-steps" aria-label="Como funciona">
       <li><b>Conversa</b><span>Entendo a sua rotina.</span></li>
