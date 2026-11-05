@@ -766,7 +766,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       <a href="#projetos">projetos</a>
       <a href="#servicos">serviços</a>
       <a href="#agente">agente</a>
-      <a href="#proposta">proposta</a>
+      <a href="#proposta">como trabalho</a>
       <a href="#sobre">sobre</a>
     </nav>
     <a class="btn btn-fill btn-sm" href="https://wa.me/5513997319163?text=Oi%20Kaio%2C%20vim%20pelo%20site%20e%20quero%20conversar." target="_blank" rel="noopener">WhatsApp</a>
@@ -860,24 +860,9 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 <section class="s pp" id="proposta" aria-labelledby="ppT">
   <div class="wrap">
-    <div class="top2"><h2 class="t h2" id="ppT">monte sua proposta.</h2><p class="lede">Marque o que você precisa. Eu respondo com escopo, prazo e custo, sem compromisso.</p></div>
-    <div class="pp-grid">
-      <div class="pp-pick">
-        <p class="pp-k">O que você precisa</p>
-        <div class="pp-opts" id="ppMain" role="group" aria-label="Serviços"></div>
-        <p class="pp-k">Pode incluir</p>
-        <div class="pp-opts sm" id="ppExtra" role="group" aria-label="Extras"></div>
-      </div>
-      <aside class="pp-card" aria-live="polite">
-        <p class="pp-k">Sua proposta</p>
-        <ul id="ppList"></ul>
-        <p class="pp-empty" id="ppEmpty">Escolha ao menos um item ao lado.</p>
-        <a class="btn pp-go" id="ppGo" href="#" target="_blank" rel="noopener" aria-disabled="true">Enviar pelo WhatsApp</a>
-        <button type="button" class="pp-clear" id="ppClear" hidden>Limpar</button>
-        <p class="pp-note">Aqui não há valores. O custo vai na resposta, depois de entender o seu caso.</p>
-      </aside>
-    </div>
-    <p class="pp-k" style="margin:clamp(48px,6vw,88px) 0 0">Como trabalho</p>
+    <div class="top2"><h2 class="t h2" id="ppT">como eu trabalho.</h2><p class="lede">Do primeiro papo ao projeto no ar, sem surpresa. O escopo e o custo ficam combinados antes de eu programar.</p></div>
+    <p><a class="btn btn-fill" href="orcamento/">Pedir orçamento</a></p>
+    <p class="pp-k" style="margin:clamp(36px,5vw,64px) 0 0">As etapas</p>
     <ol class="pp-steps" aria-label="Como funciona">
       <li><b>Conversa</b><span>Entendo a sua rotina.</span></li>
       <li><b>Desenho</b><span>Fluxo, telas e custo.</span></li>
@@ -1175,24 +1160,9 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
 
   /* proposta */
   (function(){
-    var MAIN=[['Agente de IA no WhatsApp'],['Automação com n8n'],['Landing page'],['Site sob medida'],['App sob medida']],
-        EXT=[['Ligar ao WhatsApp'],['Painel de acompanhamento'],['Colocar no ar'],['Explicação de uso']],
-        BEN=['Sob medida, sem template','Testado antes de ir ao ar','Escopo e custo combinados antes de programar','Você fala direto comigo','Explico como usar','Ajusto com você depois'],
+    var         BEN=['Sob medida, sem template','Testado antes de ir ao ar','Escopo e custo combinados antes de programar','Você fala direto comigo','Explico como usar','Ajusto com você depois'],
         sel={},CK='<svg viewBox="0 0 20 20" fill="none" stroke="#F5F5F5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 8.2 14.5 16 5.5"/></svg>';
-    function mk(box,arr){arr.forEach(function(a){var b=document.createElement('button');b.type='button';b.className='pp-o';b.setAttribute('aria-pressed','false');b.innerHTML='<span class="bx">'+CK+'</span><span></span>';b.lastChild.textContent=a[0];b.addEventListener('click',function(){sel[a[0]]=!sel[a[0]];if(!sel[a[0]])delete sel[a[0]];b.setAttribute('aria-pressed',sel[a[0]]?'true':'false');upd()});box.appendChild(b)})}
-    mk($('#ppMain'),MAIN);mk($('#ppExtra'),EXT);
-    var ul=$('#ppList'),em=$('#ppEmpty'),go=$('#ppGo'),cl=$('#ppClear');
-    function upd(){
-      var ks=MAIN.concat(EXT).map(function(a){return a[0]}).filter(function(k){return sel[k]});
-      ul.innerHTML='';ks.forEach(function(k){var li=document.createElement('li');li.textContent=k;ul.appendChild(li)});
-      em.hidden=ks.length>0;cl.hidden=!ks.length;
-      if(ks.length){go.setAttribute('aria-disabled','false');go.href=WA+encodeURIComponent('Oi Kaio! Montei uma proposta no site e quero conversar sobre: '+ks.join(', ')+'.')}
-      else{go.setAttribute('aria-disabled','true');go.href='#'}
-    }
-    cl.addEventListener('click',function(){sel={};$$('.pp-o').forEach(function(b){b.setAttribute('aria-pressed','false')});upd()});
-    go.addEventListener('click',function(e){if(go.getAttribute('aria-disabled')==='true')e.preventDefault()});
     var bl=$('#ppBen');BEN.forEach(function(x){var li=document.createElement('li');li.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5 10.5 15.5 16.5 9"/></svg><span></span>';li.lastChild.textContent=x;bl.appendChild(li)});
-    upd();
   })();
 
 /* 04 agente */
