@@ -24,9 +24,10 @@ Um site estático de apresentação com três páginas:
 |---|---|
 | Páginas | HTML, CSS e JavaScript puros, sem framework e sem build |
 | Formulários | Netlify Forms (`contato` e `orcamento`), com campo anti-spam escondido |
+| Iris (agente) | Rosto 3D holográfico em Three.js (`js/iris/`), inteligência no n8n e voz no ElevenLabs, via Netlify Functions (`netlify/functions/`) |
 | Hospedagem | Netlify |
 | Segurança | Arquivo `_headers` com Content-Security-Policy, X-Frame-Options, nosniff, Referrer-Policy e Permissions-Policy |
 | Desempenho | Cache de 30 dias para imagens e ícones; páginas sempre revalidadas |
 | SEO | Dados estruturados (JSON-LD), `sitemap.xml`, `robots.txt` e verificação do Google Search Console |
 
-Não há chaves nem segredos no código: o site não chama nenhuma API externa.
+Não há chaves nem segredos no código: o navegador só fala com `/api/iris` e `/api/iris-voz`, e as chaves do n8n e do ElevenLabs ficam nas variáveis de ambiente da Netlify. Como configurar: [docs/iris.md](docs/iris.md).

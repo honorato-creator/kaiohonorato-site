@@ -172,8 +172,8 @@ button{cursor:pointer}
 
 /* 03 agente: converse de verdade */
 .demo .grid{align-items:center}
-.demo-text{grid-column:1/7}
-.demo-phone{grid-column:8/13}
+.demo-text{grid-column:1/6}
+.demo-holo{grid-column:7/13}
 .demo-text h2{margin-top:22px}
 .demo-text .lede{margin-top:24px}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
@@ -206,7 +206,45 @@ button{cursor:pointer}
 .say input::placeholder{color:rgba(49,50,54,.55)}
 .say button{min-height:48px;padding:0 22px;border-radius:999px;border:0;background:var(--base);color:var(--linen);font:700 16px var(--f-b)}
 .say button:hover{background:var(--acc)}
-@media (max-width:900px){.demo-text,.demo-phone{grid-column:1/-1}.demo-phone{margin-top:44px;max-width:500px}}
+@media (max-width:900px){.demo-text,.demo-holo{grid-column:1/-1}.demo-holo{margin-top:44px;max-width:560px}}
+/* painel holográfico da Iris */
+.holo{position:relative;display:flex;flex-direction:column;border-radius:28px;overflow:hidden;background:#111315;color:var(--linen);border:1px solid rgba(95,227,240,.28);box-shadow:0 30px 80px -30px rgba(17,19,21,.55),0 0 40px rgba(95,227,240,.1)}
+.holo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(120,240,255,.03) 50%);background-size:100% 4px}
+.holo-top{position:relative;z-index:2;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 18px 14px 22px;border-bottom:1px solid rgba(95,227,240,.14)}
+.holo-id{display:grid;gap:2px;margin-right:auto}
+.holo-id b{font:700 24px/1 var(--f-t);letter-spacing:-.02em}
+.holo-id small{font-size:14px;color:#a9b4b6}
+.holo-voz{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;border:1.5px solid rgba(95,227,240,.55);background:transparent;color:#BFF5F8;font:600 14.5px var(--f-b);cursor:pointer;transition:background-color .2s,color .2s}
+.holo-voz svg{width:18px;height:18px}.holo-voz .on{opacity:.35}
+.holo-voz:hover{background:rgba(95,227,240,.12)}
+.holo-voz[aria-pressed="true"]{background:#5FE3F0;color:#0d1416;border-color:#5FE3F0}.holo-voz[aria-pressed="true"] .on{opacity:1}
+.holo-stage{position:relative;height:clamp(360px,40vw,520px);background:radial-gradient(ellipse at 50% 42%,#1d3033 0%,#111315 68%)}
+.holo-stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;pointer-events:none;background:linear-gradient(rgba(17,19,21,0),#111315)}
+.holo-stage canvas,.holo-stage .iris-poster{position:absolute;inset:0;width:100%;height:100%;display:block}
+.holo-stage .iris-poster{object-fit:contain;opacity:.9;transition:opacity .6s}
+.holo-stage.on .iris-poster{opacity:0}
+.holo .chat{position:relative;z-index:2;height:230px;margin-top:-40px;padding:12px 18px}
+.holo .b-a{background:#2a2d31;color:var(--linen)}
+.holo .b-c{background:#DDF7F8;color:#0f1416}
+.holo .typing{background:#2a2d31}
+.holo .quick{position:relative;z-index:2}
+.holo .quick button{border-color:rgba(245,245,245,.4);color:var(--linen)}
+.holo .quick button:hover{background:var(--linen);color:var(--base)}
+.holo .say{position:relative;z-index:2;border-top-color:rgba(95,227,240,.14)}
+.holo .say input{background:#1b1e21;color:var(--linen);border-color:rgba(245,245,245,.3)}
+.holo .say input::placeholder{color:rgba(245,245,245,.5)}
+.holo .say button{background:var(--acc);color:var(--linen)}
+.holo .say button:hover{background:#ff6a26}
+@media (max-width:560px){.holo-stage{height:380px}.holo .chat{height:260px}.holo-top{padding-left:18px}.iris-live{order:3;width:100%}}
+/* Iris: status e ondas de voz */
+.iris-live{display:flex;align-items:center;gap:10px;font:500 11.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.16em;text-transform:uppercase;color:#7FE9F4}
+.iris-wave{display:flex;align-items:center;gap:3px;height:16px}
+.iris-wave i{width:3px;height:100%;border-radius:2px;background:#5FE3F0;opacity:.4;transform:scaleY(.3)}
+.iris-wave i:nth-child(odd){background:var(--acc)}
+.talk .iris-wave i{opacity:1;animation:iwav .8s ease-in-out infinite}
+.iris-wave i:nth-child(2){animation-delay:.15s}.iris-wave i:nth-child(3){animation-delay:.3s}.iris-wave i:nth-child(4){animation-delay:.45s}
+@keyframes iwav{50%{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.talk .iris-wave i{animation:none;transform:scaleY(.8)}}
 
 /* bloco de palavra */
 .word{background:var(--acc);color:var(--linen);padding-block:clamp(56px,8vw,104px)}
@@ -345,7 +383,7 @@ footer{background:var(--base);color:var(--linen);border-top:1px solid rgba(216,2
 .demo.light .btn-fill{background:var(--base);color:var(--linen);border-color:var(--base)}
 .demo.light .btn-fill:hover{background:var(--acc);border-color:var(--acc)}
 .demo.light .small{color:#52555A}
-.demo.light .phone{border-color:var(--base)}
+
 
 /* ===== v8 mapa ===== */
 .mapa .head{display:grid;gap:22px;max-width:900px;margin-bottom:clamp(40px,5vw,72px)}
@@ -896,7 +934,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
   <div class="wrap grid">
     <div class="demo-text">
       <h2 class="t h2" id="demoT">converse com um agente de verdade.</h2>
-      <p class="lede">Faça um teste!<br>Defina o tipo de negócio abaixo e escreva como se fosse um cliente. Em um projeto real, o agente é treinado com os dados e o tom do seu negócio.</p>
+      <p class="lede">Faça um teste com a Iris, minha agente de IA!<br>Defina o tipo de negócio abaixo e escreva como se fosse um cliente. Em um projeto real, o agente é treinado com os dados e o tom do seu negócio.</p>
       <div class="chips" id="chips" role="group" aria-label="Tipo de negócio">
         <button class="chip" type="button" data-k="estudio" aria-pressed="true">estúdio de tatuagem</button>
         <button class="chip" type="button" data-k="clinica" aria-pressed="false">clínica</button>
@@ -906,9 +944,15 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       <div class="demo-act"><a class="btn btn-fill" id="demoCta" href="#" target="_blank" rel="noopener">Quero um assim</a></div>
       <p class="small">Demonstração com respostas de exemplo. Nomes, horários e endereços são ilustrativos.</p>
     </div>
-    <div class="demo-phone">
-      <div class="phone" aria-label="Conversa de demonstração com o agente">
-        <div class="phone-top"><div class="av" id="av" aria-hidden="true">E</div><div><b id="demoNome">Estúdio de tatuagem</b><small>atendimento automático</small></div></div>
+    <div class="demo-holo">
+      <div class="holo" id="iris" aria-label="Conversa com a Iris, agente de IA do Kaio">
+        <div class="holo-top">
+          <div class="holo-id"><b>Iris</b><small>atendendo como <span id="demoNome">Estúdio de tatuagem</span></small></div>
+          <span class="iris-live" aria-hidden="true"><span id="irisSt">sistema ativo</span><span class="iris-wave"><i></i><i></i><i></i><i></i></span></span>
+          <button type="button" class="holo-voz" id="irisVoz" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Ouvir a Iris</span></button>
+          <span id="av" hidden>E</span>
+        </div>
+        <div class="holo-stage" id="irisStage" aria-hidden="true"><img class="iris-poster" src="img/iris-holo-poster.jpg" width="368" height="552" alt="" decoding="async" loading="lazy"></div>
         <div class="chat" id="chat" aria-live="polite"></div>
         <div class="quick" id="quick"><button type="button">Tem horário essa semana?</button><button type="button">Quanto custa?</button><button type="button">Onde fica?</button></div>
         <form class="say" id="say" autocomplete="off"><label for="msg" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Sua mensagem</label><input id="msg" type="text" placeholder="Escreva sua mensagem" maxlength="140"><button type="submit">Enviar</button></form>
@@ -1226,10 +1270,10 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   Chat.prototype.say=function(w,t){var d=document.createElement('div');d.className='b '+(w==='c'?'b-c':'b-a');d.appendChild(document.createTextNode(t));var tm=document.createElement('time');tm.textContent=hhmm();d.appendChild(tm);return this.add(d)};
   Chat.prototype.tag=function(t){var d=document.createElement('div');d.className='tag';d.textContent=t;return this.add(d)};
   var AG={
-    estudio:{nome:'Estúdio de tatuagem',av:'E',txt:'um estúdio de tatuagem',hi:'Oi! Eu sou o agente do estúdio. Pode perguntar o que um cliente perguntaria.',slots:'Tenho quinta às 14h e sábado às 10h. Quer mandar uma referência do desenho para eu reservar?',price:'O valor depende do tamanho e do estilo. Me manda a referência e o local do corpo que eu já passo uma estimativa.',where:'Ficamos na Rua das Flores, 120, com estacionamento na porta.'},
-    clinica:{nome:'Clínica',av:'C',txt:'uma clínica',hi:'Boa tarde! Eu sou o agente da clínica. Em que posso ajudar?',slots:'Tenho quarta às 15h ou sexta às 8h. Qual fica melhor para você?',price:'Os valores variam conforme a especialidade. Me diz qual você procura e eu passo certinho.',where:'Atendemos na Avenida Central, 500, sala 12, com acesso para cadeira de rodas.'},
-    loja:{nome:'Loja online',av:'L',txt:'uma loja online',hi:'Oi! Eu sou o agente da loja. Pergunte sobre pedidos, trocas ou produtos.',slots:'Posso agendar a retirada amanhã entre 10h e 18h. Qual horário prefere?',price:'Me diz qual produto você quer que eu confirmo o preço e as formas de pagamento.',where:'A loja é online. Enviamos para todo o Brasil e o prazo aparece antes de fechar o pedido.'},
-    agencia:{nome:'Agência de marketing',av:'A',txt:'uma agência de marketing',hi:'Olá! Eu sou o agente da agência. Me conta o que você quer divulgar.',slots:'Tenho uma conversa de diagnóstico quinta às 10h ou sexta às 15h. Qual prefere?',price:'Cada projeto tem um escopo próprio. Com duas perguntas sobre sua meta e sua verba eu já te passo um caminho.',where:'Trabalhamos de forma remota, com reuniões por vídeo.'}
+    estudio:{nome:'Estúdio de tatuagem',av:'E',txt:'um estúdio de tatuagem',hi:'Oi! Eu sou a Iris, agente do estúdio. Pode perguntar o que um cliente perguntaria.',slots:'Tenho quinta às 14h e sábado às 10h. Quer mandar uma referência do desenho para eu reservar?',price:'O valor depende do tamanho e do estilo. Me manda a referência e o local do corpo que eu já passo uma estimativa.',where:'Ficamos na Rua das Flores, 120, com estacionamento na porta.'},
+    clinica:{nome:'Clínica',av:'C',txt:'uma clínica',hi:'Boa tarde! Eu sou a Iris, agente da clínica. Em que posso ajudar?',slots:'Tenho quarta às 15h ou sexta às 8h. Qual fica melhor para você?',price:'Os valores variam conforme a especialidade. Me diz qual você procura e eu passo certinho.',where:'Atendemos na Avenida Central, 500, sala 12, com acesso para cadeira de rodas.'},
+    loja:{nome:'Loja online',av:'L',txt:'uma loja online',hi:'Oi! Eu sou a Iris, agente da loja. Pergunte sobre pedidos, trocas ou produtos.',slots:'Posso agendar a retirada amanhã entre 10h e 18h. Qual horário prefere?',price:'Me diz qual produto você quer que eu confirmo o preço e as formas de pagamento.',where:'A loja é online. Enviamos para todo o Brasil e o prazo aparece antes de fechar o pedido.'},
+    agencia:{nome:'Agência de marketing',av:'A',txt:'uma agência de marketing',hi:'Olá! Eu sou a Iris, agente da agência. Me conta o que você quer divulgar.',slots:'Tenho uma conversa de diagnóstico quinta às 10h ou sexta às 15h. Qual prefere?',price:'Cada projeto tem um escopo próprio. Com duas perguntas sobre sua meta e sua verba eu já te passo um caminho.',where:'Trabalhamos de forma remota, com reuniões por vídeo.'}
   };
   function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
   function reply(k,text){
@@ -1248,19 +1292,62 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     cta.href=WA+encodeURIComponent('Oi Kaio! Vi o site e quero um agente de IA para '+a.txt+'.');
     chat.el.innerHTML='';agentSay(a.hi,null);
   }
+  var iris=$('#iris'),irisSt=$('#irisSt'),irisT;
+  function irisState(s){
+    if(!iris)return;clearTimeout(irisT);
+    iris.classList.toggle('talk',s!=='idle');
+    irisSt.textContent=s==='think'?'processando':s==='talk'?'respondendo':'sistema ativo';
+  }
+  /* agentSay aceita um texto pronto ou uma promessa de [texto, etiqueta] vinda da Iris real */
   function agentSay(text,tag){
-    var tk=chat.tk;busy=true;
+    var tk=chat.tk,t0=Date.now();busy=true;irisState('think');
     var ty=document.createElement('div');ty.className='typing';ty.innerHTML='<i></i><i></i><i></i>';chat.add(ty);
-    setTimeout(function(){
-      if(tk!==chat.tk)return;ty.remove();chat.say('a',text);
-      if(tag)setTimeout(function(){if(tk===chat.tk){chat.tag(tag);free()}},350);else free();
-    },reduce?0:800+text.length*10);
+    var p=typeof text==='string'?Promise.resolve([text,tag]):text;
+    p.then(function(r){
+      var wait=reduce?0:Math.max(0,Math.min(800+r[0].length*10,2600)-(Date.now()-t0));
+      setTimeout(function(){
+        if(tk!==chat.tk)return;ty.remove();chat.say('a',r[0]);
+        irisSpeak(r[0]);
+        irisState('talk');irisT=setTimeout(function(){irisState('idle')},reduce?600:Math.min(1400+r[0].length*25,6000));
+        if(r[1])setTimeout(function(){if(tk===chat.tk){chat.tag(r[1]);free()}},350);else free();
+      },wait);
+    });
   }
   function free(){busy=false;if(pend.length)send(pend.shift())}
+  /* voz da Iris: com "Ouvir a Iris" ligado, a resposta vira áudio do ElevenLabs e a boca segue o som;
+     desligado (ou se a voz falhar), ela fala em silêncio, só com o movimento da boca */
+  var vozOn=false,vozBtn=$('#irisVoz');
+  if(vozBtn)vozBtn.addEventListener('click',function(){
+    vozOn=!vozOn;vozBtn.setAttribute('aria-pressed',vozOn);
+    $('span',vozBtn).textContent=vozOn?'Som ligado':'Ouvir a Iris';
+    if(window.irisHolo){if(vozOn)irisHolo.unlock();else irisHolo.stop()}
+  });
+  function irisSpeak(text){
+    var h=window.irisHolo;if(!h)return;
+    if(!vozOn||!window.fetch){h.say(text);return}
+    fetch('/api/iris-voz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})})
+      .then(function(r){return r.ok?r.arrayBuffer():Promise.reject(r.status)})
+      .then(function(b){return h.speakBuffer(b)})
+      .catch(function(){h.say(text)});
+  }
+  /* Iris real: o chat passa pela função /api/iris, que conversa com o fluxo da Iris no n8n.
+     Se a função não responder, o chat volta às respostas de exemplo, sem quebrar a demonstração. */
+  var irisOff=false,sid;
+  try{sid=sessionStorage.getItem('irisSid')}catch(e){}
+  if(!sid){sid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Math.random()).slice(2)+Date.now();try{sessionStorage.setItem('irisSid',sid)}catch(e){}}
+  function askIris(text){
+    var fb=function(){return reply(cur,text)};
+    if(irisOff||!window.fetch)return Promise.resolve(fb());
+    var k=cur;
+    return fetch('/api/iris',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,sessionId:sid+'-'+k,segmento:AG[k].txt})})
+      .then(function(r){if(r.status===404||r.status===503)irisOff=true;return r.ok?r.json():Promise.reject(r.status)})
+      .then(function(d){return d&&d.reply?[d.reply,null]:fb()})
+      .catch(function(){return fb()});
+  }
   function send(text){
     text=text.trim();if(!text)return;if(busy){if(pend.length<2)pend.push(text);msg.value='';return}
     chat.say('c',text);msg.value='';
-    var r=reply(cur,text);agentSay(r[0],r[1]);
+    agentSay(askIris(text));
   }
   chips.forEach(function(c){c.addEventListener('click',function(){setSeg(c.dataset.k)})});
   $$('#quick button').forEach(function(b){b.addEventListener('click',function(){send(b.textContent)})});
@@ -1422,6 +1509,22 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   if(reduce){frame(performance.now());addEventListener('scroll',function(){frame(performance.now())},{passive:true});addEventListener('resize',function(){frame(performance.now())})}
   else requestAnimationFrame(frame);
 })();
+</script>
+<script type="module">
+  /* Iris holográfica: carrega o 3D só quando a seção do agente se aproxima da tela */
+  const stage = document.getElementById('irisStage');
+  if (stage && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(async es => {
+      if (!es.some(e => e.isIntersecting)) return;
+      io.disconnect();
+      try {
+        const { createIrisHolo } = await import('./js/iris/iris-holo.js');
+        window.irisHolo = createIrisHolo(stage, { src: 'img/iris-holo.webp' });
+        stage.classList.add('on');
+      } catch (e) { /* sem WebGL: fica a imagem parada */ }
+    }, { rootMargin: '400px 0px' });
+    io.observe(stage);
+  }
 </script>
 </body>
 </html>
