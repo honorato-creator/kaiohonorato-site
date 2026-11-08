@@ -125,6 +125,14 @@ button{cursor:pointer}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
 .globe{position:relative;width:100%;aspect-ratio:1}.globe canvas{position:absolute;inset:-12%;width:124%!important;height:124%!important;display:block}
 .globe::before{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle at 50% 45%,#1b1d3a,#07080f 70%);box-shadow:0 30px 70px -20px rgba(40,46,120,.55);transition:opacity .8s}.globe.on::before{opacity:0}
+.globe-labels{position:absolute;inset:0;pointer-events:none;z-index:2}
+.globe-label{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:7px;margin:-42px 0 0 12px;padding:7px 12px 7px 10px;border-radius:999px;background:rgba(17,19,30,.9);border:1px solid rgba(255,106,38,.6);color:#F5F5F5;font:600 13.5px/1 var(--f-b);white-space:nowrap;opacity:0;will-change:transform,opacity;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
+.globe-label i{width:7px;height:7px;border-radius:50%;background:#FF6A26;box-shadow:0 0 8px #FF6A26}
+.globe-label small{font-weight:400;color:#B4BACB;font-size:12.5px}
+.globe-hint{margin:6px 0 0;text-align:center;font:500 12.5px/1.2 var(--f-b);letter-spacing:.14em;text-transform:uppercase;color:#52555A;transition:opacity .6s}
+.globe-hint.gone{opacity:0}
+.globe-label.flip{translate:-100% 0;margin-left:-12px}
+@media (max-width:480px){.globe-hint span{display:none}.globe-label{font-size:12.5px;padding:6px 10px 6px 8px}}
 .rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
@@ -886,7 +894,8 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       </div>
     </div>
     <div class="hero-fig" aria-hidden="true">
-      <div class="globe" id="globe" title="Arraste para girar o mundo"></div>
+      <div class="globe" id="globe"></div>
+      <p class="globe-hint" id="globeHint" hidden>arraste para girar<span> · toque para enviar</span></p>
     </div>
   </div>
 </section>
@@ -1502,7 +1511,17 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
 <script type="module">
   /* globo da abertura */
   const globeEl = document.getElementById('globe');
-  if (globeEl) import('./js/globo/globe.js').then(m => { m.createGlobe(globeEl); globeEl.classList.add('on'); }).catch(() => {});
+  /* só carrega o 3D depois que a página abriu; quem economiza dados fica com o globo parado */
+  const saveData = navigator.connection && navigator.connection.saveData;
+  if (globeEl && !saveData) {
+    const startGlobe = () => import('./js/globo/globe.js').then(m => {
+      const hint = document.getElementById('globeHint');
+      m.createGlobe(globeEl, { onInteract: () => hint && hint.classList.add('gone') });
+      globeEl.classList.add('on'); if (hint) hint.hidden = false;
+    }).catch(() => {});
+    const later = () => ('requestIdleCallback' in window) ? requestIdleCallback(startGlobe, { timeout: 1500 }) : setTimeout(startGlobe, 300);
+    if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
+  }
   /* Iris holográfica: carrega o 3D só quando a seção do agente se aproxima da tela */
   const stage = document.getElementById('irisStage');
   if (stage && 'IntersectionObserver' in window) {
