@@ -86,11 +86,11 @@ export function createGlobe(host, opts = {}) {
   /* brilho em volta (sprite radial; funciona sobre o fundo claro do site) */
   const gc = document.createElement('canvas'); gc.width = gc.height = 256; const gg = gc.getContext('2d');
   const grd = gg.createRadialGradient(128, 128, 62, 128, 128, 128);
-  grd.addColorStop(0, 'rgba(110,125,255,.5)'); grd.addColorStop(.35, 'rgba(125,115,255,.22)'); grd.addColorStop(.7, 'rgba(255,110,50,.07)'); grd.addColorStop(1, 'rgba(255,110,50,0)');
+  grd.addColorStop(0, 'rgba(110,125,255,.5)'); grd.addColorStop(.35, 'rgba(125,115,255,.2)'); grd.addColorStop(.7, 'rgba(140,120,255,.05)'); grd.addColorStop(.92, 'rgba(140,120,255,0)');
   gg.fillStyle = grd; gg.fillRect(0, 0, 256, 256);
   const glowTex = new THREE.CanvasTexture(gc); glowTex.colorSpace = THREE.SRGBColorSpace;
   const atmo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, transparent: true, depthWrite: false }));
-  atmo.scale.setScalar(R * 3.3); atmo.position.z = -.6; scene.add(atmo);
+  atmo.scale.setScalar(R * 2.75); atmo.position.z = -.6; scene.add(atmo);
 
   /* pontos com dia e noite: no lado dia brilham azul-claro; no lado noite ficam fracos */
   function cloud(pts, dayCol, nightCol, size, alpha) {

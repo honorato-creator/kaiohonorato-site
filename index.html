@@ -123,7 +123,7 @@ button{cursor:pointer}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
-.globe{position:relative;width:100%;aspect-ratio:1}.globe canvas{position:absolute;inset:-12%;width:124%!important;height:124%!important;display:block}
+.globe{position:relative;width:100%;aspect-ratio:1}.globe canvas{position:absolute;inset:-12%;width:124%!important;height:124%!important;display:block;-webkit-mask-image:radial-gradient(circle,#000 62%,transparent 71%);mask-image:radial-gradient(circle,#000 62%,transparent 71%)}
 .globe::before{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle at 50% 45%,#1b1d3a,#07080f 70%);box-shadow:0 30px 70px -20px rgba(40,46,120,.55);transition:opacity .8s}.globe.on::before{opacity:0}
 .globe-labels{position:absolute;inset:0;pointer-events:none;z-index:2}
 .globe-label{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:7px;margin:-42px 0 0 12px;padding:7px 12px 7px 10px;border-radius:999px;background:rgba(17,19,30,.9);border:1px solid rgba(255,106,38,.6);color:#F5F5F5;font:600 13.5px/1 var(--f-b);white-space:nowrap;opacity:0;will-change:transform,opacity;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
