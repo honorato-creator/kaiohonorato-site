@@ -7,7 +7,8 @@
      IRIS_VOICE_MODEL     opcional; padrão = eleven_flash_v2_5 (rápido e econômico)
 */
 
-const DEFAULT_VOICE = 'dE4UHrF86QhrHso7ckyc';
+const DEFAULT_VOICE = 'dE4UHrF86QhrHso7ckyc';   // voz "IRIS" (biblioteca, pt-BR)
+const FALLBACK_VOICE = 'XrExE9yKIg1WjnnlVkGX';  // voz feminina padrão do ElevenLabs, liberada no plano grátis
 const MAX_CHARS = 400;                         // respostas longas são cortadas para poupar créditos
 const WINDOW_MS = 60_000, MAX_PER_WINDOW = 10;  // por visitante
 const hits = new Map();
@@ -33,19 +34,26 @@ export default async (req, context) => {
 
   const voice = process.env.IRIS_VOICE_ID || DEFAULT_VOICE;
   const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 9000);
+  const tts = v => fetch(`https://api.elevenlabs.io/v1/text-to-speech/${v}?output_format=mp3_44100_64`, {
+    method: 'POST', signal: ctrl.signal,
+    headers: { 'xi-api-key': key, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
+    body: JSON.stringify({
+      text,
+      model_id: process.env.IRIS_VOICE_MODEL || 'eleven_flash_v2_5',
+      language_code: 'pt',
+      voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.2, use_speaker_boost: true },
+    }),
+  });
   try {
-    const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice}?output_format=mp3_44100_64`, {
-      method: 'POST', signal: ctrl.signal,
-      headers: { 'xi-api-key': key, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
-      body: JSON.stringify({
-        text,
-        model_id: process.env.IRIS_VOICE_MODEL || 'eleven_flash_v2_5',
-        language_code: 'pt',
-        voice_settings: { stability: 0.45, similarity_boost: 0.8, style: 0.2, use_speaker_boost: true },
-      }),
-    });
-    if (!r.ok) return err(r.status === 401 ? 'bad_key' : r.status === 402 || r.status === 429 ? 'quota' : 'upstream', 502);
-    return new Response(await r.arrayBuffer(), { headers: { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'no-store' } });
+    let r = await tts(voice), used = 'iris';
+    // plano grátis não libera vozes da biblioteca pela API: cai para uma voz padrão do ElevenLabs
+    if (r.status === 402 || r.status === 403) { r = await tts(process.env.IRIS_VOICE_FALLBACK || FALLBACK_VOICE); used = 'padrao'; }
+    if (!r.ok) {
+      let detail = ''; try { const j = await r.json(); detail = j?.detail?.code || j?.detail?.status || ''; } catch {}
+      return new Response(JSON.stringify({ error: r.status === 401 ? 'bad_key' : r.status === 402 || r.status === 429 ? 'quota' : 'upstream', status: r.status, detail }),
+        { status: 502, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+    }
+    return new Response(await r.arrayBuffer(), { headers: { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'no-store', 'X-Iris-Voz': used } });
   } catch (e) {
     return err(e.name === 'AbortError' ? 'timeout' : 'upstream_unreachable', 504);
   } finally { clearTimeout(timer); }
