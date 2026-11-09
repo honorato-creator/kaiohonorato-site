@@ -117,13 +117,44 @@ button{cursor:pointer}
 /* abertura */
 .hero{padding-block:clamp(48px,7vw,104px) clamp(72px,9vw,128px)}
 .hero .grid{align-items:center;min-height:min(70vh,640px)}
-.hero-text{grid-column:1/8}
+.hero-text{grid-column:1/7}
 .hero h1{font-size:clamp(42px,5.6vw,84px);margin-top:28px}
 .hero h1 b{font-weight:700;color:var(--acc)}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
-.rx{position:relative;will-change:transform}.rx .orb{position:absolute;left:-14%;top:-14%;width:128%;height:128%;pointer-events:none}#orbB{z-index:0}.rx #nodes{position:relative;z-index:1}#neu{z-index:2}#orbF{z-index:3}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
+.rx{position:relative;will-change:transform}
+.rx .ro-b,.rx .ro-c,.rx .ro-core,.rx .cab,.cab-p,.cab-arm{transform-box:view-box;transform-origin:250px 250px}
+.rx .ro-b,.rx .ro-c,.rx .ro-core{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.rx .cab{opacity:0;transform:scale(.6);transition:opacity .45s,transform .7s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.rx #neu{transition:opacity .45s,transform .7s cubic-bezier(.2,.8,.2,1),filter .45s}
+.rx.open .ro-b{transform:scale(1.2) rotate(18deg);opacity:.55}
+.rx.open .ro-c{transform:scale(1.5) rotate(-30deg);opacity:0}
+.rx.open .ro-core{transform:scale(1.42)}
+.rx.open #neu{opacity:0;transform:scale(1.7);filter:blur(6px)}
+.rx.open #orbF{opacity:.45}
+.rx #orbF{transition:opacity .5s}
+.rx.open .cab{opacity:1;transform:scale(1);transition-delay:.12s}
+.cab-p{opacity:0;transform:translateY(10px) scale(.9);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1)}
+.rx.open .cab-p{opacity:1;transform:none}
+.rx.open .cab-p1{transition-delay:.35s}.rx.open .cab-p2{transition-delay:.48s}.rx.open .cab-p3{transition-delay:.6s}
+.rx.open .cab-p{animation:cabf 4s ease-in-out .9s infinite}
+.rx.open .cab-p2{animation-delay:1.4s}.rx.open .cab-p3{animation-delay:1.9s}
+@keyframes cabf{50%{transform:translateY(-4px)}}
+.cab-arm-l{transform-origin:224px 276px}.cab-arm-r{transform-origin:276px 276px}
+.rx.open .cab-arm-l{animation:cabl 1.6s ease-in-out infinite}
+.rx.open .cab-arm-r{animation:cabr 1.9s ease-in-out infinite}
+@keyframes cabl{50%{transform:rotate(-7deg)}}
+@keyframes cabr{50%{transform:rotate(8deg)}}
+.cab-link path{stroke-dasharray:3 4;animation:cabd 1s linear infinite}
+@keyframes cabd{to{stroke-dashoffset:-14}}
+.cab-flow{stroke-dasharray:4 3;animation:cabd 1.2s linear infinite}
+.cab-bar{transform-box:fill-box;transform-origin:bottom;animation:cabb 1.8s ease-in-out infinite}
+.cab-bar.b2{animation-delay:.3s}.cab-bar.b3{animation-delay:.6s}.cab-bar.b4{animation-delay:.9s}
+@keyframes cabb{50%{transform:scaleY(.55)}}
+.cab-msg{animation:cabm 3s ease-in-out infinite}.cab-msg.m2{animation-delay:1s}.cab-msg.m3{animation-delay:2s}
+@keyframes cabm{0%,100%{opacity:.25}40%,70%{opacity:.9}}
+@media (prefers-reduced-motion:reduce){.rx .cab-p,.cab-arm,.cab-link path,.cab-flow,.cab-bar,.cab-msg{animation:none!important}}.rx .orb{position:absolute;left:-14%;top:-14%;width:128%;height:128%;pointer-events:none}#orbB{z-index:0}.rx #nodes{position:relative;z-index:1}#neu{z-index:2}#orbF{z-index:3}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
   .hero-fig{grid-column:1/-1;justify-self:start;max-width:340px}
@@ -825,9 +856,9 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 
 /* redesign: abertura maior, sem etiquetas, plano unificado, fechamento */
 .hero .grid{min-height:min(82vh,760px)}
-.hero-text{grid-column:1/8}
+.hero-text{grid-column:1/7}
 .hero h1{font-size:clamp(42px,5.2vw,78px)}
-.hero-fig{grid-column:8/13;max-width:620px;margin-right:-4%}
+.hero-fig{grid-column:7/13;max-width:760px;margin-right:-8%}
 .hero h1{margin-top:0}
 .srv-sec{padding-bottom:clamp(24px,4vw,56px)}
 .hud-foot{text-transform:none;letter-spacing:.02em;font-size:15px}
@@ -845,7 +876,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 .pl-bar i.hot{background:var(--acc)}
 .pp-plan .pp-small{margin-top:14px}
 @media (max-width:860px){.pl-wk{display:none}.pl-row{grid-template-columns:1fr;gap:12px}.pl-bar i{font-size:14px;padding:9px 12px}}
-@media (max-width:900px){.hero-fig{grid-column:1/-1;margin-right:0;max-width:380px}.hero-text{grid-column:1/-1}.sobre-foto,.sobre-txt{grid-column:1/-1}}
+@media (max-width:900px){.hero-fig{grid-column:1/-1;margin-right:0;max-width:min(100%,480px);justify-self:center}.hero-text{grid-column:1/-1}.sobre-foto,.sobre-txt{grid-column:1/-1}}
 @media (prefers-reduced-motion:reduce){.pl-bar i{animation:none}}
 </style>
 </head>
@@ -902,12 +933,53 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
         <g id="ticks" stroke="#313236"></g>
         <circle cx="250" cy="250" r="214" fill="none" stroke="#313236" stroke-width="1.5"/>
         <circle id="rA" cx="250" cy="250" r="196" fill="none" stroke="#313236" stroke-width="1.5" stroke-dasharray="3 9"/>
-        <circle id="rB" cx="250" cy="250" r="160" fill="none" stroke="#313236" stroke-width="30" stroke-dasharray="78 23.7"/>
+        <g class="ro-b"><circle id="rB" cx="250" cy="250" r="160" fill="none" stroke="#313236" stroke-width="30" stroke-dasharray="78 23.7"/></g>
         <circle cx="250" cy="250" r="132" fill="none" stroke="#D8D6C9" stroke-width="1.5"/>
-        <g id="rC"><circle cx="250" cy="250" r="112" fill="none" stroke="#E65516" stroke-width="2.5" stroke-dasharray="160 40"/>
-          <circle cx="250" cy="138" r="7" fill="#E65516"/><circle cx="347" cy="306" r="7" fill="#313236"/><circle cx="153" cy="306" r="7" fill="#313236"/></g>
-        <circle cx="250" cy="250" r="106" fill="#313236"/>
+        <g class="ro-c"><g id="rC"><circle cx="250" cy="250" r="112" fill="none" stroke="#E65516" stroke-width="2.5" stroke-dasharray="160 40"/>
+          <circle cx="250" cy="138" r="7" fill="#E65516"/><circle cx="347" cy="306" r="7" fill="#313236"/><circle cx="153" cy="306" r="7" fill="#313236"/></g></g>
+        <circle class="ro-core" cx="250" cy="250" r="106" fill="#313236"/>
         <circle id="wave" cx="250" cy="250" r="90" fill="none" stroke="#E65516" stroke-width="3" opacity="0"/>
+        <g class="cab" aria-hidden="true">
+          <defs>
+            <clipPath id="cabClip"><circle cx="250" cy="250" r="150"/></clipPath>
+            <radialGradient id="cabAmb" cx="50%" cy="42%" r="55%"><stop offset="0" stop-color="#1d4a55"/><stop offset=".6" stop-color="#16171b"/><stop offset="1" stop-color="#101114"/></radialGradient>
+            <linearGradient id="cabBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2d34"/><stop offset="1" stop-color="#121317"/></linearGradient>
+          </defs>
+          <g clip-path="url(#cabClip)">
+            <rect x="100" y="100" width="300" height="300" fill="url(#cabAmb)"/>
+            <g stroke="#5FE3F0" stroke-width=".8" opacity=".28" fill="none">
+              <path d="M110 336H390M110 352H390M110 372H390M110 398H390"/>
+              <path d="M250 320L250 400M250 320L190 400M250 320L310 400M250 320L130 400M250 320L370 400"/>
+            </g>
+            <g class="cab-p cab-p1"><g transform="translate(146 172) rotate(-9)">
+              <rect width="80" height="54" rx="6" fill="rgba(95,227,240,.13)" stroke="#5FE3F0" stroke-width="1.3"/>
+              <g fill="none" stroke="#7FE9F4" stroke-width="1.4"><circle cx="16" cy="27" r="6"/><circle cx="40" cy="16" r="6"/><circle cx="40" cy="38" r="6"/><circle cx="64" cy="27" r="6"/><path class="cab-flow" d="M22 25L34 18M22 29L34 36M46 18L58 25M46 36L58 29"/></g>
+              <text x="8" y="50" fill="#7FE9F4" font-size="6" font-family="ui-monospace,monospace" letter-spacing="1">AUTOMAÇÃO</text>
+            </g></g>
+            <g class="cab-p cab-p2"><g transform="translate(212 124)">
+              <rect width="76" height="46" rx="6" fill="rgba(230,85,22,.14)" stroke="#FF8A4C" stroke-width="1.3"/>
+              <rect class="cab-msg" x="7" y="8" width="38" height="8" rx="4" fill="#FF8A4C" opacity=".85"/>
+              <rect class="cab-msg m2" x="31" y="20" width="38" height="8" rx="4" fill="#F5F5F5" opacity=".75"/>
+              <rect class="cab-msg m3" x="7" y="32" width="28" height="8" rx="4" fill="#FF8A4C" opacity=".85"/>
+            </g></g>
+            <g class="cab-p cab-p3"><g transform="translate(274 172) rotate(9)">
+              <rect width="80" height="54" rx="6" fill="rgba(95,227,240,.13)" stroke="#5FE3F0" stroke-width="1.3"/>
+              <g fill="#5FE3F0"><rect class="cab-bar" x="12" y="20" width="8" height="26"/><rect class="cab-bar b2" x="26" y="12" width="8" height="34"/><rect class="cab-bar b3" x="40" y="26" width="8" height="20"/><rect class="cab-bar b4" x="54" y="8" width="8" height="38"/></g>
+            </g></g>
+            <g stroke="#7FE9F4" stroke-width="1" fill="none" class="cab-link"><path d="M206 246L196 214"/><path d="M294 244L306 212"/><path d="M250 214L250 172"/></g>
+            <path d="M160 322Q250 296 340 322L340 338Q250 314 160 338Z" fill="#1b1c21" stroke="#FF8A4C" stroke-width="1.4"/>
+            <path d="M168 321Q250 297 332 321" fill="none" stroke="#FFB27A" stroke-width="2" opacity=".8"/>
+            <g class="cab-op">
+              <path d="M214 330Q214 276 250 266Q286 276 286 330Z" fill="url(#cabBody)" stroke="#FF8A4C" stroke-width="1.2" stroke-opacity=".75"/>
+              <rect x="243" y="250" width="14" height="18" rx="5" fill="#1a1b20"/>
+              <circle cx="250" cy="236" r="17" fill="url(#cabBody)" stroke="#FF8A4C" stroke-width="1.2" stroke-opacity=".75"/>
+              <g class="cab-arm cab-arm-l"><path d="M224 276Q210 262 204 246" fill="none" stroke="#202127" stroke-width="10" stroke-linecap="round"/><path d="M224 276Q210 262 204 246" fill="none" stroke="#FF8A4C" stroke-width="1" stroke-opacity=".6"/><circle cx="204" cy="245" r="3.4" fill="#7FE9F4"/></g>
+              <g class="cab-arm cab-arm-r"><path d="M276 276Q290 262 296 244" fill="none" stroke="#202127" stroke-width="10" stroke-linecap="round"/><path d="M276 276Q290 262 296 244" fill="none" stroke="#FF8A4C" stroke-width="1" stroke-opacity=".6"/><circle cx="296" cy="243" r="3.4" fill="#7FE9F4"/></g>
+            </g>
+          </g>
+          <circle cx="250" cy="250" r="150" fill="none" stroke="#E65516" stroke-width="2" opacity=".8"/>
+        </g>
+
       </svg><canvas id="neu"></canvas><canvas class="orb" id="orbF"></canvas></div>
     </div>
   </div>
@@ -1089,7 +1161,9 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   var rA=$('#rA'),rB=$('#rB'),rC=$('#rC'),halo=$('#halo'),wave=$('#wave'),tk=tick;
   document.addEventListener('pointermove',function(e){var r=svg.getBoundingClientRect();ptr={x:(e.clientX-(r.left+r.width/2))/(r.width/2),y:(e.clientY-(r.top+r.height/2))/(r.height/2)};if(Math.abs(ptr.x)>3||Math.abs(ptr.y)>3)ptr=null},{passive:true});
   document.addEventListener('pointerleave',function(){ptr=null});
-  var rxEl=$('#rx');rxEl.addEventListener('pointerdown',function(){if(!reduce){wv=0;if(window.neuBurst)window.neuBurst()}});
+  var rxEl=$('#rx');rxEl.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'){rxEl.classList.toggle('open');return}if(!reduce){wv=0;if(window.neuBurst)window.neuBurst()}});
+  rxEl.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')rxEl.classList.add('open')});
+  rxEl.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')rxEl.classList.remove('open')});
   function rot(el,a){el.setAttribute('transform','rotate('+a.toFixed(2)+' 250 250)')}
   var ang=[0,0,0,0],last=performance.now();
   function drawHero(t){
