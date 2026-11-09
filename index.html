@@ -123,28 +123,6 @@ button{cursor:pointer}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
-/* reator da abertura: HUD 3D em ciano, num cartão escuro */
-.hudr{position:relative;width:min(100%,500px);aspect-ratio:1;margin-inline:auto;border-radius:24px;overflow:hidden;user-select:none;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#22d3ee;
-  background:linear-gradient(to right,rgba(6,182,212,.1) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(to bottom,rgba(6,182,212,.1) 1px,transparent 1px) 0 0/48px 48px,radial-gradient(ellipse at center,rgba(8,51,68,.35),#030712 60%,#010204);
-  box-shadow:0 30px 60px -20px rgba(3,7,18,.55)}
-.hudr-top{position:absolute;top:16px;left:0;right:0;z-index:2;text-align:center;pointer-events:none}
-.hudr-top small{display:block;font-size:9.5px;letter-spacing:.3em;color:rgba(6,182,212,.8)}
-.hudr-top b{display:block;margin-top:4px;font:900 clamp(15px,1.6vw,19px)/1.1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;color:#67e8f9;text-shadow:0 0 10px rgba(6,182,212,.6)}
-.hudr-top b span{font-weight:300;color:#06b6d4}
-.hudr-foot{position:absolute;bottom:12px;left:0;right:0;z-index:2;margin:0;text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(6,182,212,.75);pointer-events:none}
-.hudr-3d{position:absolute;inset:11% 8% 9%;transition:transform .15s ease-out;transform-style:preserve-3d;will-change:transform}
-.hudr-3d svg{display:block;width:100%;height:100%;overflow:visible}
-.hud-orb,.hud-pulse,.hud-ping{transform-box:view-box;transform-origin:250px 250px}
-.hud-orb{animation:hud-spin 10s linear infinite}.hud-orb.rev{animation-direction:reverse}
-.hud-pulse{animation:hud-fade 2s cubic-bezier(.4,0,.6,1) infinite}
-.hud-ping{transform-box:fill-box;transform-origin:center;animation:hud-ping 1s cubic-bezier(0,0,.2,1) infinite}
-.hud-plasma{transition:r .3s}
-@keyframes hud-spin{to{transform:rotate(360deg)}}
-@keyframes hud-fade{50%{opacity:.5}}
-@keyframes hud-ping{75%,100%{transform:scale(2);opacity:0}}
-@media (prefers-reduced-motion:reduce){.hud-orb,.hud-pulse,.hud-ping{animation:none}.hudr-3d{transition:none}}
-@media (max-width:560px){.hudr-foot{font-size:8.5px;letter-spacing:.08em}.hudr-top small{font-size:8px}}
-@media (hover:none){.hudr-foot{display:none}}
 .rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
@@ -913,63 +891,24 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       </div>
     </div>
     <div class="hero-fig" aria-hidden="true">
-      <div class="hudr" id="reactor">
-        <div class="hudr-top"><small>SYSTEM CORE // NEURAL HUD V4.2</small><b>KAIO HONORATO <span>// REACTOR</span></b></div>
-        <div class="hudr-3d" id="hudr3d">
-          <svg viewBox="0 0 500 500" role="presentation">
-            <defs>
-              <radialGradient id="cyanCore" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stop-color="#22d3ee"/><stop offset=".45" stop-color="#0891b2" stop-opacity=".85"/><stop offset=".8" stop-color="#164e63" stop-opacity=".9"/><stop offset="1" stop-color="#030712" stop-opacity=".98"/>
-              </radialGradient>
-              <filter id="cyanGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <filter id="intenseGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b1"/><feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b2"/><feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            </defs>
-            <g opacity=".4">
-              <polygon points="250,30 395,114 395,282 250,366 105,282 105,114" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="6 6"/>
-              <polygon points="250,60 370,129 370,270 250,340 130,270 130,129" fill="none" stroke="#22d3ee" stroke-width=".7" opacity=".6"/>
-              <path d="M50 50 L140 140 M450 50 L360 140 M50 450 L140 360 M450 450 L360 360" stroke="#06b6d4" stroke-width="1.5"/>
-              <circle cx="50" cy="50" r="4" fill="#22d3ee"/><circle cx="450" cy="50" r="4" fill="#22d3ee"/><circle cx="50" cy="450" r="4" fill="#22d3ee"/><circle cx="450" cy="450" r="4" fill="#22d3ee"/>
-              <path d="M250 10 L250 490 M10 250 L490 250" stroke="#0891b2" stroke-width=".5" stroke-dasharray="3 9"/>
-            </g>
-            <g id="hudL2" filter="url(#cyanGlow)">
-              <circle cx="250" cy="250" r="215" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="15 25 5 25"/>
-              <circle cx="250" cy="250" r="200" fill="none" stroke="#22d3ee" stroke-width="1" stroke-dasharray="2 10" opacity=".8"/>
-              <path d="M250 32 L250 45 M250 455 L250 468 M32 250 L45 250 M455 250 L468 250" stroke="#22d3ee" stroke-width="3"/>
-            </g>
-            <g id="hudL3" filter="url(#cyanGlow)">
-              <path d="M 80,165 A 175,175 0 0,1 250,75" fill="none" stroke="#0891b2" stroke-width="14" stroke-linecap="round"/>
-              <path d="M 310,410 A 175,175 0 0,1 120,380" fill="none" stroke="#0891b2" stroke-width="10" stroke-linecap="round"/>
-              <path d="M 410,200 A 175,175 0 0,1 350,380" fill="none" stroke="#22d3ee" stroke-width="8" stroke-dasharray="12 6" stroke-linecap="round"/>
-              <circle cx="250" cy="250" r="145" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="20 40 10 20" opacity=".9"/>
-            </g>
-            <g id="hudL4">
-              <polygon points="250,135 349,192 349,307 250,364 151,307 151,192" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="8 4" opacity=".8"/>
-              <text x="250" y="125" fill="#22d3ee" font-size="9" text-anchor="middle" opacity=".7" letter-spacing="2">SYS.ON // 0x889F</text>
-              <text x="390" y="253" fill="#22d3ee" font-size="9" opacity=".7" letter-spacing="2">FPS:60</text>
-            </g>
-            <g filter="url(#intenseGlow)">
-              <circle class="hud-pulse" cx="250" cy="250" r="110" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4 8"/>
-              <circle cx="250" cy="250" r="85" fill="url(#cyanCore)" stroke="#67e8f9" stroke-width="2"/>
-              <g opacity=".9">
-                <ellipse class="hud-orb" cx="250" cy="250" rx="85" ry="30" fill="none" stroke="#a5f3fc" stroke-width="1"/>
-                <ellipse class="hud-orb rev" cx="250" cy="250" rx="30" ry="85" fill="none" stroke="#a5f3fc" stroke-width="1"/>
-                <circle cx="250" cy="250" r="60" fill="none" stroke="#fff" stroke-width=".6" stroke-dasharray="3 6" opacity=".6"/>
-              </g>
-              <circle class="hud-plasma" id="hudPlasma" cx="250" cy="250" r="20" fill="#fff"/>
-              <circle class="hud-ping" cx="250" cy="250" r="10" fill="#0891b2"/>
-            </g>
-            <g>
-              <path d="M250 365 L250 440 L310 440" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".8"/>
-              <circle class="hud-ping" cx="310" cy="440" r="3.5" fill="#22d3ee"/><circle cx="310" cy="440" r="2" fill="#fff"/>
-              <text x="258" y="432" fill="#67e8f9" font-size="10" letter-spacing="1">CORE_TEMP: 36.4°C [NOMINAL]</text>
-              <path d="M250 135 L250 80 L180 80" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".8"/>
-              <circle cx="180" cy="80" r="2.5" fill="#22d3ee"/>
-              <text x="135" y="72" fill="#67e8f9" font-size="10" letter-spacing="1">AI_AGENT: ACTIVE</text>
-            </g>
-          </svg>
-        </div>
-        <p class="hudr-foot" id="hudFoot">[ mova o cursor para interagir com o hud 3d ]</p>
-      </div>
+      <div class="rx" id="rx"><svg id="nodes" viewBox="0 0 500 500" role="presentation">
+        <defs>
+          <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#FFE9D6"/><stop offset=".28" stop-color="#FF8A4C"/><stop offset=".7" stop-color="#E65516"/><stop offset="1" stop-color="#E65516" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+        </defs>
+        <circle id="halo" cx="250" cy="250" r="150" fill="#E65516" opacity=".18" filter="url(#gl)"/>
+        <g id="ticks" stroke="#313236"></g>
+        <circle cx="250" cy="250" r="214" fill="none" stroke="#313236" stroke-width="1.5"/>
+        <circle id="rA" cx="250" cy="250" r="196" fill="none" stroke="#313236" stroke-width="1.5" stroke-dasharray="3 9"/>
+        <circle id="rB" cx="250" cy="250" r="160" fill="none" stroke="#313236" stroke-width="30" stroke-dasharray="78 23.7"/>
+        <circle cx="250" cy="250" r="132" fill="none" stroke="#D8D6C9" stroke-width="1.5"/>
+        <g id="rC"><circle cx="250" cy="250" r="112" fill="none" stroke="#E65516" stroke-width="2.5" stroke-dasharray="160 40"/>
+          <circle cx="250" cy="138" r="7" fill="#E65516"/><circle cx="347" cy="306" r="7" fill="#313236"/><circle cx="153" cy="306" r="7" fill="#313236"/></g>
+        <circle cx="250" cy="250" r="106" fill="#313236"/>
+        <circle id="wave" cx="250" cy="250" r="90" fill="none" stroke="#E65516" stroke-width="3" opacity="0"/>
+      </svg><canvas id="neu"></canvas></div>
     </div>
   </div>
 </section>
@@ -1144,26 +1083,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   if(PERFIL.instagram){var ig=$('#lnkInsta');ig.href=PERFIL.instagram;ig.hidden=false}
   if(!gh&&!li&&!PERFIL.instagram)$('#links2').hidden=true;
 
-  /* reator da abertura (HUD): três camadas giram e aceleram no hover; o painel inclina em 3D com o mouse; o núcleo pulsa */
-  (function(){
-    var box=$('#reactor'),tilt=$('#hudr3d');if(!box||!tilt)return;
-    var foot=$('#hudFoot'),plasma=$('#hudPlasma'),L=[[$('#hudL2'),30,12,1],[$('#hudL3'),20,8,-1],[$('#hudL4'),15,6,1]];
-    if(plasma&&!reduce)setInterval(function(){plasma.style.r='28px';setTimeout(function(){plasma.style.r='20px'},800)},3000);
-    if(reduce)return;
-    var on=true,over=false,last=performance.now(),ang=[0,0,0],spd=L.map(function(l){return 360/l[1]});
-    if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(box);
-    box.addEventListener('mousemove',function(e){var r=box.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)/15,y=(e.clientY-r.top-r.height/2)/15;tilt.style.transform='perspective(1000px) rotateX('+(-y).toFixed(2)+'deg) rotateY('+x.toFixed(2)+'deg) scale(1.03)'});
-    box.addEventListener('mouseenter',function(){over=true;foot.textContent='⚡ reator em sobrecarga [hover detectado]'});
-    box.addEventListener('mouseleave',function(){over=false;tilt.style.transform='';foot.textContent='[ mova o cursor para interagir com o hud 3d ]'});
-    (function tick(now){
-      var dt=Math.min(.05,(now-last)/1000);last=now;
-      if(on)L.forEach(function(l,i){spd[i]+=((360/(over?l[2]:l[1]))-spd[i])*.05;ang[i]=(ang[i]+l[3]*spd[i]*dt)%360;l[0].setAttribute('transform','rotate('+ang[i].toFixed(2)+' 250 250)')});
-      requestAnimationFrame(tick);
-    })(last);
-  })();
-  /* reator antigo (SVG): o código só roda se ele existir */
-  var HAS_RX=!!$('#nodes');
-  if(HAS_RX){
+  /* reator da abertura */
   var svg=$('#nodes'),ptr=null,t0=performance.now(),tick=$('#ticks'),tilt={x:0,y:0},heat=0,wv=-1;
   (function(){var h='';for(var i=0;i<72;i++){var a=i*Math.PI/36,l=i%6?7:15;h+='<line x1="'+(250+Math.cos(a)*226).toFixed(1)+'" y1="'+(250+Math.sin(a)*226).toFixed(1)+'" x2="'+(250+Math.cos(a)*(226+l)).toFixed(1)+'" y2="'+(250+Math.sin(a)*(226+l)).toFixed(1)+'" stroke-width="'+(i%6?1:2)+'"/>'}tick.innerHTML=h})();
   var rA=$('#rA'),rB=$('#rB'),rC=$('#rC'),halo=$('#halo'),wave=$('#wave'),tk=tick;
@@ -1188,10 +1108,8 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   }
 
 
-  }
   /* rede neural no núcleo */
   (function(){
-    if(!$('#neu'))return;
     var cv=$('#neu'),cx=cv.getContext('2d'),S=0,dpr=1;
     function fit(){dpr=Math.min(2,devicePixelRatio||1);S=cv.clientWidth||200;cv.width=cv.height=Math.round(S*dpr)}
     fit();addEventListener('resize',fit);
@@ -1505,7 +1423,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     $('#again').addEventListener('click',function(){f.reset();card.classList.remove('done');ok.hidden=true;f.nome.focus()});
   })();
   function loop(now){drawHero(now);requestAnimationFrame(loop)}
-  if(HAS_RX){if(reduce)drawHero(0);else requestAnimationFrame(loop);}
+  if(reduce)drawHero(0);else requestAnimationFrame(loop);
 })();
 </script>
 <script>
