@@ -1251,6 +1251,8 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   /* rede neural no núcleo */
   (function(){
     var cv=$('#neu'),cx=cv.getContext('2d'),S=0,dpr=1;
+    /* pausa quando o reator sai da tela: economiza processador e bateria */
+    var vis=true,parado=false;if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&parado&&!reduce){parado=false;last=performance.now();requestAnimationFrame(frame)}}).observe(cv);
     function fit(){dpr=Math.min(2,devicePixelRatio||1);S=cv.clientWidth||200;cv.width=cv.height=Math.round(S*dpr)}
     fit();addEventListener('resize',fit);
     var N=84,P=[],ga=Math.PI*(3-Math.sqrt(5)),i,j;
@@ -1297,7 +1299,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
         if(o.act>.05){cx.globalAlpha=o.act*.35;cx.fillStyle='#E65516';cx.beginPath();cx.arc(c+o.s[0]*R,c+o.s[1]*R,r*2.6,0,6.3);cx.fill()}
         cx.globalAlpha=.45+Math.max(0,(z+1)/2)*.55;cx.fillStyle=o.act>.3?'#FF7A3C':'#F5F5F5';cx.beginPath();cx.arc(c+o.s[0]*R,c+o.s[1]*R,r,0,6.3);cx.fill()}
       cx.globalAlpha=1;cx.restore();
-      if(!reduce)requestAnimationFrame(frame)
+      if(!reduce){if(vis)requestAnimationFrame(frame);else parado=true}
     }
     requestAnimationFrame(frame);
   })();
