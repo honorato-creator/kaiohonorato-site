@@ -123,6 +123,16 @@ button{cursor:pointer}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
+/* reator da abertura */
+.reactor{position:relative;width:min(100%,460px);aspect-ratio:1;margin-inline:auto;display:flex;justify-content:center;align-items:center;transition:transform .3s ease;will-change:transform}
+.reactor:hover{transform:scale(1.05)}
+.r-hud{position:absolute;inset:0;border:2px dashed rgba(234,88,12,.45);border-radius:50%;animation:r-spin 20s linear infinite}
+.r-seg{position:absolute;width:85%;height:85%;border-radius:50%;border:clamp(10px,1.8vw,18px) solid transparent;border-top-color:#262626;border-bottom-color:#262626;box-shadow:0 0 15px rgba(234,88,12,.2);animation:r-spin 10s linear infinite reverse}
+.r-core{position:absolute;width:50%;height:50%;border-radius:50%;display:flex;justify-content:center;align-items:center;background:radial-gradient(circle,rgba(234,88,12,.8) 0%,rgba(20,20,20,.95) 70%);box-shadow:0 0 30px rgba(234,88,12,.6),inset 0 0 15px rgba(255,255,255,.3);animation:r-pulse 3s ease-in-out infinite}
+.r-mesh{width:80%;height:80%;border-radius:50%;border:1px dotted rgba(255,255,255,.4);background:radial-gradient(circle,transparent 40%,rgba(234,88,12,.4) 100%);animation:r-spin 8s linear infinite}
+@keyframes r-spin{to{transform:rotate(360deg)}}
+@keyframes r-pulse{0%,100%{box-shadow:0 0 20px rgba(234,88,12,.4),inset 0 0 15px rgba(255,255,255,.3)}50%{box-shadow:0 0 45px rgba(234,88,12,.9),inset 0 0 15px rgba(255,255,255,.3)}}
+@media (prefers-reduced-motion:reduce){.r-hud,.r-seg,.r-core,.r-mesh{animation:none}.reactor{transition:none}}
 .rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
@@ -891,24 +901,11 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       </div>
     </div>
     <div class="hero-fig" aria-hidden="true">
-      <div class="rx" id="rx"><svg id="nodes" viewBox="0 0 500 500" role="presentation">
-        <defs>
-          <radialGradient id="cg" cx="50%" cy="50%" r="50%">
-            <stop offset="0" stop-color="#FFE9D6"/><stop offset=".28" stop-color="#FF8A4C"/><stop offset=".7" stop-color="#E65516"/><stop offset="1" stop-color="#E65516" stop-opacity="0"/>
-          </radialGradient>
-          <filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
-        </defs>
-        <circle id="halo" cx="250" cy="250" r="150" fill="#E65516" opacity=".18" filter="url(#gl)"/>
-        <g id="ticks" stroke="#313236"></g>
-        <circle cx="250" cy="250" r="214" fill="none" stroke="#313236" stroke-width="1.5"/>
-        <circle id="rA" cx="250" cy="250" r="196" fill="none" stroke="#313236" stroke-width="1.5" stroke-dasharray="3 9"/>
-        <circle id="rB" cx="250" cy="250" r="160" fill="none" stroke="#313236" stroke-width="30" stroke-dasharray="78 23.7"/>
-        <circle cx="250" cy="250" r="132" fill="none" stroke="#D8D6C9" stroke-width="1.5"/>
-        <g id="rC"><circle cx="250" cy="250" r="112" fill="none" stroke="#E65516" stroke-width="2.5" stroke-dasharray="160 40"/>
-          <circle cx="250" cy="138" r="7" fill="#E65516"/><circle cx="347" cy="306" r="7" fill="#313236"/><circle cx="153" cy="306" r="7" fill="#313236"/></g>
-        <circle cx="250" cy="250" r="106" fill="#313236"/>
-        <circle id="wave" cx="250" cy="250" r="90" fill="none" stroke="#E65516" stroke-width="3" opacity="0"/>
-      </svg><canvas id="neu"></canvas></div>
+      <div class="reactor" id="reactor">
+        <div class="r-hud"></div>
+        <div class="r-seg"></div>
+        <div class="r-core"><div class="r-mesh"></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1083,7 +1080,18 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   if(PERFIL.instagram){var ig=$('#lnkInsta');ig.href=PERFIL.instagram;ig.hidden=false}
   if(!gh&&!li&&!PERFIL.instagram)$('#links2').hidden=true;
 
-  /* reator da abertura */
+  /* reator da abertura: segue o mouse suavemente (só enquanto o topo está na tela) */
+  (function(){
+    var re=$('#reactor');if(!re||reduce)return;
+    var on=true,tx=0,ty=0,cx=0,cy=0,raf=0;
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(re);
+    function step(){cx+=(tx-cx)*.12;cy+=(ty-cy)*.12;re.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px) scale(1.02)';if(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1)raf=requestAnimationFrame(step);else raf=0}
+    document.addEventListener('mousemove',function(e){if(!on)return;tx=(innerWidth/2-e.clientX)/25;ty=(innerHeight/2-e.clientY)/25;if(!raf)raf=requestAnimationFrame(step)},{passive:true});
+    document.documentElement.addEventListener('mouseleave',function(){tx=ty=0;if(!raf)raf=requestAnimationFrame(step)});
+  })();
+  /* reator antigo (SVG): o código só roda se ele existir */
+  var HAS_RX=!!$('#nodes');
+  if(HAS_RX){
   var svg=$('#nodes'),ptr=null,t0=performance.now(),tick=$('#ticks'),tilt={x:0,y:0},heat=0,wv=-1;
   (function(){var h='';for(var i=0;i<72;i++){var a=i*Math.PI/36,l=i%6?7:15;h+='<line x1="'+(250+Math.cos(a)*226).toFixed(1)+'" y1="'+(250+Math.sin(a)*226).toFixed(1)+'" x2="'+(250+Math.cos(a)*(226+l)).toFixed(1)+'" y2="'+(250+Math.sin(a)*(226+l)).toFixed(1)+'" stroke-width="'+(i%6?1:2)+'"/>'}tick.innerHTML=h})();
   var rA=$('#rA'),rB=$('#rB'),rC=$('#rC'),halo=$('#halo'),wave=$('#wave'),tk=tick;
@@ -1108,8 +1116,10 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   }
 
 
+  }
   /* rede neural no núcleo */
   (function(){
+    if(!$('#neu'))return;
     var cv=$('#neu'),cx=cv.getContext('2d'),S=0,dpr=1;
     function fit(){dpr=Math.min(2,devicePixelRatio||1);S=cv.clientWidth||200;cv.width=cv.height=Math.round(S*dpr)}
     fit();addEventListener('resize',fit);
@@ -1423,7 +1433,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     $('#again').addEventListener('click',function(){f.reset();card.classList.remove('done');ok.hidden=true;f.nome.focus()});
   })();
   function loop(now){drawHero(now);requestAnimationFrame(loop)}
-  if(reduce)drawHero(0);else requestAnimationFrame(loop);
+  if(HAS_RX){if(reduce)drawHero(0);else requestAnimationFrame(loop);}
 })();
 </script>
 <script>
