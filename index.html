@@ -596,13 +596,20 @@ footer{background:var(--base);color:var(--linen);border-top:1px solid rgba(216,2
 .sv{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.4vw,20px);list-style:none;padding:0;margin:0}
 .sv li{display:flex}
 .sv .w2{grid-column:span 2}
-.sv a{text-decoration:none;position:relative;flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:clamp(270px,25vw,340px);padding:clamp(20px,2vw,28px);border-radius:26px;background:#EAE8DF;color:var(--base);overflow:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),background-color .35s,color .35s}
-.sv .dk a{background:var(--base);color:var(--linen)}
-.sv a:hover,.sv a:focus-visible{transform:translateY(-6px)}
+.sv a{text-decoration:none;position:relative;flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:clamp(320px,29vw,380px);padding:clamp(24px,2.4vw,32px);border-radius:32px;background:#F4F4F0;color:#171717;border:2px solid rgba(23,23,23,.06);box-shadow:0 10px 30px -10px rgba(0,0,0,.06);overflow:hidden;transition:transform .4s cubic-bezier(.4,0,.2,1),border-color .4s,box-shadow .4s}
+.sv .dk a{background:#1A1A1A;color:#fff;border-color:transparent;box-shadow:0 10px 40px -10px rgba(0,0,0,.4)}
+.sv a:hover,.sv a:focus-visible{transform:translateY(-8px) scale(1.02);border-color:var(--acc);box-shadow:0 25px 40px -15px rgba(230,85,22,.22)}
 .sv a:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
-.sv .art{flex:1;display:grid;place-items:center;min-height:0;padding:6px 0 10px}
-.sv .art svg{width:100%;max-width:300px;height:auto;max-height:150px;overflow:visible}
-.sv .w2 .art svg{max-width:420px;max-height:170px}
+.sv .art{flex:1;display:grid;place-items:center;min-height:clamp(150px,15vw,210px);padding:4px 0 12px}
+.ico3d{position:relative;width:clamp(112px,10vw,144px);aspect-ratio:1;pointer-events:none}
+.ico3d span{position:absolute;inset:0;transform:translate(calc(var(--i)*.2px),calc(var(--i)*-.2px));transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.ico3d span:first-child{filter:drop-shadow(6px 12px 12px rgba(0,0,0,.25))}
+.ico3d svg{display:block;width:100%;height:100%}
+.sv a:hover .ico3d span,.sv a:focus-visible .ico3d span{transform:translate(calc(var(--i)*1.5px),calc(var(--i)*-1.5px))}
+.sv .ln{max-width:90%}
+.sv .dk .ln{color:#9CA3AF;opacity:1}
+.acc-t{color:var(--acc)}
+.srv-sub{margin:14px 0 0;font-size:clamp(17px,1.4vw,19px);color:#52555A}
 .sv .ft{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
 .sv .nm{display:block;font:700 clamp(24px,2.1vw,32px)/1.05 var(--f-t);letter-spacing:-.03em}
 .sv .ln{display:block;margin-top:6px;font-size:17px;opacity:.72}
@@ -640,7 +647,7 @@ footer{background:var(--base);color:var(--linen);border-top:1px solid rgba(216,2
  .etapas::before{left:18px;right:auto;top:18px;bottom:18px;width:2px;height:auto}
  .etapas li{flex-direction:row;align-items:center}
 }
-@media (prefers-reduced-motion:reduce){.sv .bub,.sv .dot,.sv .gbar,.sv .btnp,.sv .cur{animation:none}.sv .bub{opacity:1}.sv a{transition:none}}
+@media (prefers-reduced-motion:reduce){.sv a,.ico3d span{transition:none}}
 .sobre .links2{margin-top:6px}
 .cta-end{margin-top:clamp(56px,7vw,110px);padding-top:clamp(40px,5vw,72px);border-top:1px solid rgba(216,214,201,.35);display:grid;gap:22px;max-width:760px}
 .cta-end .contatos{display:flex;gap:24px;flex-wrap:wrap;color:var(--isa);font-size:17px}
@@ -923,7 +930,8 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="s srv-sec" id="servicos" aria-labelledby="srvT">
   <div class="wrap">
     <div class="top2">
-      <h2 class="t h2" id="srvT">o que eu posso construir.</h2>
+      <h2 class="t h2" id="srvT">o que eu posso <span class="acc-t">construir.</span></h2>
+      <p class="srv-sub">Soluções digitais com tecnologia e muita personalidade.</p>
     </div>
     <ul class="sv" id="srv"></ul>
 
@@ -1240,18 +1248,27 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   var clk=$('#pclk');if(clk){var pclock=function(){var d=new Date();clk.textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+' · SINCRONIZADO'};pclock();setInterval(pclock,30000)}
 
   /* serviços */
+  /* ícones em camadas: a mesma arte empilhada 12 vezes; no hover as camadas se afastam e o ícone "salta" em 3D */
+  var ICO={
+    robo:function(t){var m=t?'#ea580c':'#9a3412',d=t?'#c2410c':'#7c2d12',g=t?'#fde047':'#ca8a04';return '<rect x="11.5" y="2" width="1" height="4" fill="'+m+'"/><circle cx="12" cy="2" r="1.5" fill="'+g+'"/><rect x="3" y="11" width="2" height="6" rx="1" fill="'+d+'"/><rect x="19" y="11" width="2" height="6" rx="1" fill="'+d+'"/><rect x="5" y="6" width="14" height="14" rx="3" fill="'+m+'"/><rect x="6" y="14" width="12" height="5" rx="1.5" fill="'+d+'"/><rect x="7" y="9" width="3" height="2" rx="1" fill="'+g+'"/><rect x="14" y="9" width="3" height="2" rx="1" fill="'+g+'"/><rect x="9" y="16" width="1" height="2" fill="'+g+'"/><rect x="11" y="15.5" width="1" height="3" fill="'+g+'"/><rect x="13" y="16" width="1" height="2" fill="'+g+'"/>'},
+    varinha:function(t){var b=t?'#374151':'#1f2937',p=t?'#e5e7eb':'#9ca3af',e=t?'#fbbf24':'#b45309';return '<line x1="5" y1="19" x2="15" y2="9" stroke="'+b+'" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="12" x2="15" y2="9" stroke="'+p+'" stroke-width="2.5" stroke-linecap="round"/><path d="M16 2 L17 6 L21 7 L17 8 L16 12 L15 8 L11 7 L15 6 Z" fill="'+e+'"/><path d="M7 3 L7.5 4.5 L9 5 L7.5 5.5 L7 7 L6.5 5.5 L5 5 L6.5 4.5 Z" fill="'+e+'"/><path d="M21 14 L21.5 15.5 L23 16 L21.5 16.5 L21 18 L20.5 16.5 L19 16 L20.5 15.5 Z" fill="'+e+'"/><path d="M9 13 L9.3 14 L10.3 14.3 L9.3 14.6 L9 15.6 L8.7 14.6 L7.7 14.3 L8.7 14 L9 13 Z" fill="'+e+'"/>'},
+    ima:function(t){var s=t?'#e5e7eb':'#9ca3af',sd=t?'#9ca3af':'#4b5563',r=t?'#ef4444':'#991b1b',o=t?'#ea580c':'#9a3412';return '<rect x="5" y="4" width="4" height="8" fill="'+s+'"/><rect x="15" y="4" width="4" height="8" fill="'+s+'"/><rect x="5" y="4" width="4" height="2" fill="'+r+'"/><rect x="15" y="4" width="4" height="2" fill="'+r+'"/><rect x="5" y="10" width="4" height="2" fill="'+sd+'"/><rect x="15" y="10" width="4" height="2" fill="'+sd+'"/><path d="M 5 12 V 15 A 7 7 0 0 0 19 15 V 12 H 15 V 15 A 3 3 0 0 1 9 15 V 12 Z" fill="'+o+'"/>'},
+    monitor:function(t){var b=t?'#f43f5e':'#be123c',sc=t?'#171717':'#0a0a0a',c=t?'#10b981':'#047857',st=t?'#a3a3a3':'#525252';return '<path d="M7 21 L17 21 L15 17 L9 17 Z" fill="'+st+'"/><rect x="5" y="21" width="14" height="2" rx="1" fill="'+st+'"/><rect x="2" y="3" width="20" height="15" rx="3" fill="'+b+'"/><rect x="4" y="5" width="16" height="11" rx="1.5" fill="'+sc+'"/><rect x="6" y="7" width="8" height="1" rx=".5" fill="'+c+'"/><rect x="6" y="9" width="4" height="1" rx=".5" fill="'+c+'"/><rect x="6" y="11" width="10" height="1" rx=".5" fill="'+c+'"/><rect x="6" y="13" width="6" height="1" rx=".5" fill="'+c+'"/>'},
+    celular:function(t){var k=t?'#3b82f6':'#1e3a8a',sc=t?'#dbeafe':'#1e40af',n=t?'#1e40af':'#172554',a=t?'#2563eb':'#1e3a8a';return '<rect x="5" y="1" width="14" height="22" rx="3" fill="'+k+'"/><rect x="6" y="3" width="12" height="18" rx="1.5" fill="'+sc+'"/><rect x="10" y="4" width="4" height="1.5" rx=".75" fill="'+n+'"/><rect x="8" y="7" width="3" height="3" rx=".5" fill="'+a+'"/><rect x="13" y="7" width="3" height="3" rx=".5" fill="'+a+'"/><rect x="8" y="12" width="3" height="3" rx=".5" fill="'+a+'"/><rect x="13" y="12" width="3" height="3" rx=".5" fill="'+a+'"/>'}
+  };
+  function ico3d(k){var h='<span class="ico3d">',D=12;for(var i=0;i<D;i++)h+='<span style="--i:'+i+';z-index:'+i+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+ICO[k](i===D-1)+'</svg></span>';return h+'</span>'}
   var SV=[
-    ["Agente de IA","Atende no WhatsApp, 24 horas.","um agente de IA no WhatsApp",true,"<svg viewBox=\"0 0 420 170\" aria-hidden=\"true\"><g class=\"bub\"><rect x=\"10\" y=\"12\" width=\"190\" height=\"42\" rx=\"21\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" opacity=\".7\"/><circle cx=\"34\" cy=\"33\" r=\"5\" fill=\"currentColor\" opacity=\".7\"/><rect x=\"48\" y=\"29\" width=\"120\" height=\"8\" rx=\"4\" fill=\"currentColor\" opacity=\".4\"/></g><g class=\"bub b2\"><rect x=\"150\" y=\"66\" width=\"250\" height=\"42\" rx=\"21\" fill=\"#E65516\"/><rect x=\"176\" y=\"83\" width=\"170\" height=\"8\" rx=\"4\" fill=\"#F5F5F5\" opacity=\".9\"/></g><g class=\"bub b3\"><rect x=\"150\" y=\"120\" width=\"100\" height=\"40\" rx=\"20\" fill=\"#E65516\"/><g fill=\"#F5F5F5\"><circle class=\"dot\" cx=\"184\" cy=\"140\" r=\"5\"/><circle class=\"dot\" cx=\"200\" cy=\"140\" r=\"5\"/><circle class=\"dot\" cx=\"216\" cy=\"140\" r=\"5\"/></g></g></svg>"],
-    ["Automação","Fim do copia e cola.","uma automação com n8n",false,"<svg viewBox=\"0 0 300 130\" aria-hidden=\"true\"><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" opacity=\".7\"><path id=\"al1\" d=\"M70 65H130\"/><path id=\"al2\" d=\"M170 65H230\"/></g><rect x=\"14\" y=\"40\" width=\"56\" height=\"50\" rx=\"12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"/><circle cx=\"150\" cy=\"65\" r=\"26\" fill=\"#E65516\"/><rect x=\"230\" y=\"40\" width=\"56\" height=\"50\" rx=\"12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"/><g fill=\"currentColor\"><circle r=\"5\"><animateMotion dur=\"2s\" begin=\"-0.4s\" repeatCount=\"indefinite\" path=\"M70 65H130\"/></circle><circle r=\"5\"><animateMotion dur=\"2s\" begin=\"-1.4s\" repeatCount=\"indefinite\" path=\"M170 65H230\"/></circle></g><path d=\"M141 65l7 7 12-14\" fill=\"none\" stroke=\"#F5F5F5\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"],
-    ["Landing page","Uma página feita para capturar leads e gerar conversões.","uma landing page",false,"<svg viewBox=\"0 0 300 130\" aria-hidden=\"true\"><rect x=\"40\" y=\"6\" width=\"220\" height=\"118\" rx=\"12\" fill=\"#F5F5F5\" stroke=\"currentColor\" stroke-width=\"2.5\"/><path d=\"M40 28H260\" stroke=\"currentColor\" stroke-width=\"2.5\"/><g fill=\"currentColor\"><circle cx=\"54\" cy=\"17\" r=\"3\"/><circle cx=\"66\" cy=\"17\" r=\"3\"/></g><rect x=\"62\" y=\"44\" width=\"130\" height=\"12\" rx=\"6\" fill=\"currentColor\"/><rect x=\"62\" y=\"64\" width=\"90\" height=\"8\" rx=\"4\" fill=\"currentColor\" opacity=\".35\"/><g class=\"btnp\"><rect x=\"62\" y=\"86\" width=\"74\" height=\"22\" rx=\"11\" fill=\"#E65516\"/></g></svg>"],
-    ["Site sob medida","O seu negócio com mais credibilidade.","um site sob medida",false,"<svg viewBox=\"0 0 300 130\" aria-hidden=\"true\"><g class=\"pg pg1\"><rect x=\"48\" y=\"14\" width=\"150\" height=\"100\" rx=\"10\" fill=\"#F5F5F5\" stroke=\"currentColor\" stroke-width=\"2.5\" opacity=\".55\"/></g><g class=\"pg pg3\"><rect x=\"102\" y=\"14\" width=\"150\" height=\"100\" rx=\"10\" fill=\"#F5F5F5\" stroke=\"currentColor\" stroke-width=\"2.5\" opacity=\".55\"/></g><g class=\"pg\"><rect x=\"75\" y=\"8\" width=\"150\" height=\"104\" rx=\"10\" fill=\"#F5F5F5\" stroke=\"currentColor\" stroke-width=\"2.5\"/><rect x=\"88\" y=\"22\" width=\"40\" height=\"7\" rx=\"3.5\" fill=\"currentColor\"/><rect x=\"88\" y=\"40\" width=\"124\" height=\"38\" rx=\"6\" fill=\"#E65516\"/><rect x=\"88\" y=\"88\" width=\"56\" height=\"7\" rx=\"3.5\" fill=\"currentColor\" opacity=\".4\"/></g></svg>"],
-    ["App sob medida","Sistema do tamanho do seu processo.","um app sob medida",false,"<svg viewBox=\"0 0 300 130\" aria-hidden=\"true\"><rect x=\"70\" y=\"4\" width=\"160\" height=\"122\" rx=\"12\" fill=\"#F5F5F5\" stroke=\"currentColor\" stroke-width=\"2.5\"/><g><rect class=\"gbar\" x=\"90\" y=\"60\" width=\"22\" height=\"50\" rx=\"4\" fill=\"currentColor\" opacity=\".35\"/><rect class=\"gbar\" x=\"120\" y=\"40\" width=\"22\" height=\"70\" rx=\"4\" fill=\"currentColor\"/><rect class=\"gbar\" x=\"150\" y=\"52\" width=\"22\" height=\"58\" rx=\"4\" fill=\"currentColor\" opacity=\".35\"/><rect class=\"gbar\" x=\"180\" y=\"26\" width=\"22\" height=\"84\" rx=\"4\" fill=\"#E65516\"/></g><rect x=\"90\" y=\"16\" width=\"50\" height=\"6\" rx=\"3\" fill=\"currentColor\" opacity=\".5\"/></svg>"],
+    ["Agente de IA","Atende no WhatsApp, 24 horas por dia.","um agente de IA no WhatsApp",true,"robo"],
+    ["Automação","Fim do copia e cola. Um passe de mágica.","uma automação com n8n",false,"varinha"],
+    ["Landing page","Página feita para atrair e capturar leads.","uma landing page",false,"ima"],
+    ["Site sob medida","Seu endereço oficial na internet.","um site sob medida",false,"monitor"],
+    ["App sob medida","Seu processo inteiro na palma da mão.","um app sob medida",false,"celular"]
   ];
   var ul=$('#srv');
   SV.forEach(function(v,i){
     var li=document.createElement('li'),a=document.createElement('a');a.target='_blank';a.rel='noopener';a.href=WA+encodeURIComponent('Oi Kaio! Vi o site e quero conversar sobre '+v[2]+'.');
     if(v[3])li.className='w2 dk';
-    a.innerHTML='<span class="art">'+v[4]+'</span><span class="ft"><span><span class="nm"></span><span class="ln"></span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 16 4M7 4h9v9"/></svg></span></span>';
+    a.innerHTML='<span class="art">'+ico3d(v[4])+'</span><span class="ft"><span><span class="nm"></span><span class="ln"></span></span><span class="go" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 16 4M7 4h9v9"/></svg></span></span>';
     $('.nm',a).textContent=v[0];$('.ln',a).textContent=v[1];a.setAttribute('aria-label',v[0]+': '+v[1]+' Abrir conversa no WhatsApp.');
     li.appendChild(a);ul.appendChild(li);
   });
