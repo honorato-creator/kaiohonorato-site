@@ -123,21 +123,28 @@ button{cursor:pointer}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
-/* reator da abertura */
-.reactor{position:relative;width:min(100%,440px);aspect-ratio:1;margin-inline:auto;user-select:none;will-change:transform;background:#09090b;border-radius:24px;padding:16px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
-.reactor svg{position:relative;display:block;width:100%;height:100%;overflow:visible}
-.rp-glow{position:absolute;inset:0;background:linear-gradient(to top right,rgba(234,88,12,.1),transparent 50%);opacity:0;transition:opacity .7s}
-.reactor:hover .rp-glow{opacity:1}
-.rp-bg{opacity:.4;transition:opacity .5s}
-.reactor:hover .rp-bg{opacity:.75}
-.rp-hud,.rp-seg{transform-box:view-box;transform-origin:200px 200px}
-.rp-seg{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
-.reactor:hover .rp-seg{transform:scale(1.05)}
-.rp-ping{transform-box:fill-box;transform-origin:center;animation:rp-ping 4s cubic-bezier(0,0,.2,1) infinite}
-@keyframes rp-ping{75%,100%{transform:scale(2);opacity:0}}
-.rp-pulse{animation:rp-pulse 2s cubic-bezier(.4,0,.6,1) infinite}
-@keyframes rp-pulse{50%{opacity:.5}}
-@media (prefers-reduced-motion:reduce){.rp-ping,.rp-pulse{animation:none}.rp-seg{transition:none}}
+/* reator da abertura: HUD 3D em ciano, num cartão escuro */
+.hudr{position:relative;width:min(100%,500px);aspect-ratio:1;margin-inline:auto;border-radius:24px;overflow:hidden;user-select:none;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#22d3ee;
+  background:linear-gradient(to right,rgba(6,182,212,.1) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(to bottom,rgba(6,182,212,.1) 1px,transparent 1px) 0 0/48px 48px,radial-gradient(ellipse at center,rgba(8,51,68,.35),#030712 60%,#010204);
+  box-shadow:0 30px 60px -20px rgba(3,7,18,.55)}
+.hudr-top{position:absolute;top:16px;left:0;right:0;z-index:2;text-align:center;pointer-events:none}
+.hudr-top small{display:block;font-size:9.5px;letter-spacing:.3em;color:rgba(6,182,212,.8)}
+.hudr-top b{display:block;margin-top:4px;font:900 clamp(15px,1.6vw,19px)/1.1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.08em;color:#67e8f9;text-shadow:0 0 10px rgba(6,182,212,.6)}
+.hudr-top b span{font-weight:300;color:#06b6d4}
+.hudr-foot{position:absolute;bottom:12px;left:0;right:0;z-index:2;margin:0;text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(6,182,212,.75);pointer-events:none}
+.hudr-3d{position:absolute;inset:11% 8% 9%;transition:transform .15s ease-out;transform-style:preserve-3d;will-change:transform}
+.hudr-3d svg{display:block;width:100%;height:100%;overflow:visible}
+.hud-orb,.hud-pulse,.hud-ping{transform-box:view-box;transform-origin:250px 250px}
+.hud-orb{animation:hud-spin 10s linear infinite}.hud-orb.rev{animation-direction:reverse}
+.hud-pulse{animation:hud-fade 2s cubic-bezier(.4,0,.6,1) infinite}
+.hud-ping{transform-box:fill-box;transform-origin:center;animation:hud-ping 1s cubic-bezier(0,0,.2,1) infinite}
+.hud-plasma{transition:r .3s}
+@keyframes hud-spin{to{transform:rotate(360deg)}}
+@keyframes hud-fade{50%{opacity:.5}}
+@keyframes hud-ping{75%,100%{transform:scale(2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.hud-orb,.hud-pulse,.hud-ping{animation:none}.hudr-3d{transition:none}}
+@media (max-width:560px){.hudr-foot{font-size:8.5px;letter-spacing:.08em}.hudr-top small{font-size:8px}}
+@media (hover:none){.hudr-foot{display:none}}
 .rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
@@ -906,46 +913,62 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       </div>
     </div>
     <div class="hero-fig" aria-hidden="true">
-      <div class="reactor" id="reactor">
-        <div class="rp-glow"></div>
-        <svg viewBox="0 0 400 400" role="presentation">
-          <defs>
-            <radialGradient id="rcGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="#ea580c"/><stop offset=".7" stop-color="#7c2d12" stop-opacity=".9"/><stop offset="1" stop-color="#09090b"/>
-            </radialGradient>
-            <filter id="rcShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="blur"/><feOffset dx="0" dy="4" result="offsetBlur"/>
-              <feComponentTransfer><feFuncA type="linear" slope=".6"/></feComponentTransfer>
-              <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-          <g class="rp-bg">
-            <circle cx="200" cy="200" r="185" fill="none" stroke="#ea580c" stroke-width=".8" stroke-dasharray="3 12"/>
-            <circle cx="200" cy="200" r="160" fill="none" stroke="#ea580c" stroke-width=".5" stroke-opacity=".5"/>
-            <path d="M200 10 L200 390 M10 200 L390 200" stroke="#ea580c" stroke-width=".6" stroke-dasharray="2 10"/>
-            <path d="M70 50 L90 40 L110 50 L110 70 L90 80 L70 70 Z" fill="none" stroke="#ea580c" stroke-width=".7"/>
-            <path d="M310 330 L330 320 L350 330 L350 350 L330 360 L310 350 Z" fill="none" stroke="#ea580c" stroke-width=".7"/>
-            <path d="M260 260 L330 330 L380 330" fill="none" stroke="#ea580c" stroke-width="1"/>
-            <circle class="rp-ping" cx="380" cy="330" r="3.5" fill="#ea580c"/>
-            <circle cx="330" cy="330" r="2" fill="#ea580c"/>
-          </g>
-          <g id="rpHud"><circle cx="200" cy="200" r="135" fill="none" stroke="#ea580c" stroke-width="2" stroke-dasharray="12 24 4 24" opacity=".85"/></g>
-          <g id="rpRing"><circle cx="200" cy="200" r="115" fill="none" stroke="#18181b" stroke-width="8" stroke-dasharray="30 40 10 50" opacity=".6"/></g>
-          <g class="rp-seg" filter="url(#rcShadow)">
-            <path d="M 60,110 A 130,130 0 0,1 180,65" fill="none" stroke="#121215" stroke-width="26" stroke-linecap="round"/>
-            <path d="M 315,140 A 130,130 0 0,1 300,265" fill="none" stroke="#121215" stroke-width="26" stroke-linecap="round"/>
-            <path d="M 85,275 A 130,130 0 0,1 200,325" fill="none" stroke="#121215" stroke-width="26" stroke-linecap="round"/>
-          </g>
-          <circle cx="200" cy="200" r="80" fill="url(#rcGlow)" stroke="#ea580c" stroke-width="2"/>
-          <g opacity=".75">
-            <ellipse cx="200" cy="200" rx="80" ry="28" fill="none" stroke="#ffedd5" stroke-width="1"/>
-            <ellipse cx="200" cy="200" rx="28" ry="80" fill="none" stroke="#ffedd5" stroke-width="1"/>
-            <circle cx="200" cy="200" r="55" fill="none" stroke="#ea580c" stroke-width=".8" stroke-dasharray="3 4"/>
-          </g>
-          <circle class="rp-pulse" cx="225" cy="170" r="4.5" fill="#fff"/>
-          <circle cx="160" cy="220" r="3" fill="#ea580c"/><circle cx="220" cy="235" r="3.5" fill="#ea580c"/>
-          <path d="M225 170 L160 220 L220 235 Z" fill="none" stroke="#fff" stroke-width=".8" opacity=".8"/>
-        </svg>
+      <div class="hudr" id="reactor">
+        <div class="hudr-top"><small>SYSTEM CORE // NEURAL HUD V4.2</small><b>KAIO HONORATO <span>// REACTOR</span></b></div>
+        <div class="hudr-3d" id="hudr3d">
+          <svg viewBox="0 0 500 500" role="presentation">
+            <defs>
+              <radialGradient id="cyanCore" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#22d3ee"/><stop offset=".45" stop-color="#0891b2" stop-opacity=".85"/><stop offset=".8" stop-color="#164e63" stop-opacity=".9"/><stop offset="1" stop-color="#030712" stop-opacity=".98"/>
+              </radialGradient>
+              <filter id="cyanGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="intenseGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b1"/><feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b2"/><feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <g opacity=".4">
+              <polygon points="250,30 395,114 395,282 250,366 105,282 105,114" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="6 6"/>
+              <polygon points="250,60 370,129 370,270 250,340 130,270 130,129" fill="none" stroke="#22d3ee" stroke-width=".7" opacity=".6"/>
+              <path d="M50 50 L140 140 M450 50 L360 140 M50 450 L140 360 M450 450 L360 360" stroke="#06b6d4" stroke-width="1.5"/>
+              <circle cx="50" cy="50" r="4" fill="#22d3ee"/><circle cx="450" cy="50" r="4" fill="#22d3ee"/><circle cx="50" cy="450" r="4" fill="#22d3ee"/><circle cx="450" cy="450" r="4" fill="#22d3ee"/>
+              <path d="M250 10 L250 490 M10 250 L490 250" stroke="#0891b2" stroke-width=".5" stroke-dasharray="3 9"/>
+            </g>
+            <g id="hudL2" filter="url(#cyanGlow)">
+              <circle cx="250" cy="250" r="215" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="15 25 5 25"/>
+              <circle cx="250" cy="250" r="200" fill="none" stroke="#22d3ee" stroke-width="1" stroke-dasharray="2 10" opacity=".8"/>
+              <path d="M250 32 L250 45 M250 455 L250 468 M32 250 L45 250 M455 250 L468 250" stroke="#22d3ee" stroke-width="3"/>
+            </g>
+            <g id="hudL3" filter="url(#cyanGlow)">
+              <path d="M 80,165 A 175,175 0 0,1 250,75" fill="none" stroke="#0891b2" stroke-width="14" stroke-linecap="round"/>
+              <path d="M 310,410 A 175,175 0 0,1 120,380" fill="none" stroke="#0891b2" stroke-width="10" stroke-linecap="round"/>
+              <path d="M 410,200 A 175,175 0 0,1 350,380" fill="none" stroke="#22d3ee" stroke-width="8" stroke-dasharray="12 6" stroke-linecap="round"/>
+              <circle cx="250" cy="250" r="145" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="20 40 10 20" opacity=".9"/>
+            </g>
+            <g id="hudL4">
+              <polygon points="250,135 349,192 349,307 250,364 151,307 151,192" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="8 4" opacity=".8"/>
+              <text x="250" y="125" fill="#22d3ee" font-size="9" text-anchor="middle" opacity=".7" letter-spacing="2">SYS.ON // 0x889F</text>
+              <text x="390" y="253" fill="#22d3ee" font-size="9" opacity=".7" letter-spacing="2">FPS:60</text>
+            </g>
+            <g filter="url(#intenseGlow)">
+              <circle class="hud-pulse" cx="250" cy="250" r="110" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4 8"/>
+              <circle cx="250" cy="250" r="85" fill="url(#cyanCore)" stroke="#67e8f9" stroke-width="2"/>
+              <g opacity=".9">
+                <ellipse class="hud-orb" cx="250" cy="250" rx="85" ry="30" fill="none" stroke="#a5f3fc" stroke-width="1"/>
+                <ellipse class="hud-orb rev" cx="250" cy="250" rx="30" ry="85" fill="none" stroke="#a5f3fc" stroke-width="1"/>
+                <circle cx="250" cy="250" r="60" fill="none" stroke="#fff" stroke-width=".6" stroke-dasharray="3 6" opacity=".6"/>
+              </g>
+              <circle class="hud-plasma" id="hudPlasma" cx="250" cy="250" r="20" fill="#fff"/>
+              <circle class="hud-ping" cx="250" cy="250" r="10" fill="#0891b2"/>
+            </g>
+            <g>
+              <path d="M250 365 L250 440 L310 440" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".8"/>
+              <circle class="hud-ping" cx="310" cy="440" r="3.5" fill="#22d3ee"/><circle cx="310" cy="440" r="2" fill="#fff"/>
+              <text x="258" y="432" fill="#67e8f9" font-size="10" letter-spacing="1">CORE_TEMP: 36.4°C [NOMINAL]</text>
+              <path d="M250 135 L250 80 L180 80" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".8"/>
+              <circle cx="180" cy="80" r="2.5" fill="#22d3ee"/>
+              <text x="135" y="72" fill="#67e8f9" font-size="10" letter-spacing="1">AI_AGENT: ACTIVE</text>
+            </g>
+          </svg>
+        </div>
+        <p class="hudr-foot" id="hudFoot">[ mova o cursor para interagir com o hud 3d ]</p>
       </div>
     </div>
   </div>
@@ -1121,21 +1144,20 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   if(PERFIL.instagram){var ig=$('#lnkInsta');ig.href=PERFIL.instagram;ig.hidden=false}
   if(!gh&&!li&&!PERFIL.instagram)$('#links2').hidden=true;
 
-  /* reator da abertura: o anel externo gira (acelera com o mouse em cima) e o reator segue o mouse suavemente */
+  /* reator da abertura (HUD): três camadas giram e aceleram no hover; o painel inclina em 3D com o mouse; o núcleo pulsa */
   (function(){
-    var re=$('#reactor'),hud=$('#rpHud'),ring=$('#rpRing');if(!re||reduce)return;
-    var on=true,over=false,ang=0,spd=360/45,ang2=0,spd2=360/30,tx=0,ty=0,cx=0,cy=0,last=performance.now();
-    if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(re);
-    re.addEventListener('mouseenter',function(){over=true});re.addEventListener('mouseleave',function(){over=false});
-    document.addEventListener('mousemove',function(e){tx=(innerWidth/2-e.clientX)/25;ty=(innerHeight/2-e.clientY)/25},{passive:true});
-    document.documentElement.addEventListener('mouseleave',function(){tx=ty=0});
+    var box=$('#reactor'),tilt=$('#hudr3d');if(!box||!tilt)return;
+    var foot=$('#hudFoot'),plasma=$('#hudPlasma'),L=[[$('#hudL2'),30,12,1],[$('#hudL3'),20,8,-1],[$('#hudL4'),15,6,1]];
+    if(plasma&&!reduce)setInterval(function(){plasma.style.r='28px';setTimeout(function(){plasma.style.r='20px'},800)},3000);
+    if(reduce)return;
+    var on=true,over=false,last=performance.now(),ang=[0,0,0],spd=L.map(function(l){return 360/l[1]});
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(box);
+    box.addEventListener('mousemove',function(e){var r=box.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)/15,y=(e.clientY-r.top-r.height/2)/15;tilt.style.transform='perspective(1000px) rotateX('+(-y).toFixed(2)+'deg) rotateY('+x.toFixed(2)+'deg) scale(1.03)'});
+    box.addEventListener('mouseenter',function(){over=true;foot.textContent='⚡ reator em sobrecarga [hover detectado]'});
+    box.addEventListener('mouseleave',function(){over=false;tilt.style.transform='';foot.textContent='[ mova o cursor para interagir com o hud 3d ]'});
     (function tick(now){
       var dt=Math.min(.05,(now-last)/1000);last=now;
-      if(on){
-        spd+=((over?360/20:360/45)-spd)*.04;ang=(ang+spd*dt)%360;hud.setAttribute('transform','rotate('+ang.toFixed(2)+' 200 200)');
-        spd2+=((over?360/12:360/30)-spd2)*.04;ang2=(ang2-spd2*dt)%360;ring.setAttribute('transform','rotate('+ang2.toFixed(2)+' 200 200)');
-        cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;re.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px)';
-      }
+      if(on)L.forEach(function(l,i){spd[i]+=((360/(over?l[2]:l[1]))-spd[i])*.05;ang[i]=(ang[i]+l[3]*spd[i]*dt)%360;l[0].setAttribute('transform','rotate('+ang[i].toFixed(2)+' 250 250)')});
       requestAnimationFrame(tick);
     })(last);
   })();
