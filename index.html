@@ -132,7 +132,7 @@ button{cursor:pointer}
 .rx.open .ro-c{transform:scale(1.5) rotate(-30deg);opacity:0}
 .rx.open .ro-core{transform:scale(1.42)}
 .rx.open #neu{opacity:0;transform:scale(1.7);filter:blur(6px)}
-.rx.open #orbF{opacity:.45}
+.rx.open #orbF{opacity:0}
 .rx #orbF{transition:opacity .5s}
 .rx.open .cab{opacity:1;transform:scale(1);transition-delay:.12s}
 .cab-p{opacity:0;transform:translateY(10px) scale(.9);transition:opacity .45s,transform .55s cubic-bezier(.2,.8,.2,1)}
@@ -141,6 +141,16 @@ button{cursor:pointer}
 .rx.open .cab-p{animation:cabf 4s ease-in-out .9s infinite}
 .rx.open .cab-p2{animation-delay:1.4s}.rx.open .cab-p3{animation-delay:1.9s}
 @keyframes cabf{50%{transform:translateY(-4px)}}
+.kong{transform-box:view-box;transform-origin:250px 250px;transform:scale(1.12);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.rx.open .kong{transform:scale(1)}
+.kg{opacity:0;filter:blur(10px)}
+.rx.open .kg{animation:kgp 2.6s ease-in-out infinite}
+.rx.open .kg2{animation-delay:.6s}.rx.open .kg3{animation-delay:1.2s}.rx.open .kg4{animation-duration:.9s}
+@keyframes kgp{0%,100%{opacity:.05}50%{opacity:.32}}
+.kong-scan{opacity:0}
+.rx.open .kong-scan{opacity:1;animation:kscan 3.2s linear infinite}
+@keyframes kscan{from{transform:translateY(0)}to{transform:translateY(290px)}}
+@media (prefers-reduced-motion:reduce){.kong{transition:none}.rx.open .kg,.rx.open .kong-scan{animation:none}}
 .cab-arm-l{transform-origin:224px 276px}.cab-arm-r{transform-origin:276px 276px}
 .rx.open .cab-arm-l{animation:cabl 1.6s ease-in-out infinite}
 .rx.open .cab-arm-r{animation:cabr 1.9s ease-in-out infinite}
@@ -943,39 +953,19 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
           <defs>
             <clipPath id="cabClip"><circle cx="250" cy="250" r="150"/></clipPath>
             <radialGradient id="cabAmb" cx="50%" cy="42%" r="55%"><stop offset="0" stop-color="#1d4a55"/><stop offset=".6" stop-color="#16171b"/><stop offset="1" stop-color="#101114"/></radialGradient>
-            <linearGradient id="cabBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2d34"/><stop offset="1" stop-color="#121317"/></linearGradient>
+            <linearGradient id="kongScan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FE9F4" stop-opacity="0"/><stop offset=".5" stop-color="#7FE9F4" stop-opacity=".22"/><stop offset="1" stop-color="#7FE9F4" stop-opacity="0"/></linearGradient>
           </defs>
           <g clip-path="url(#cabClip)">
-            <rect x="100" y="100" width="300" height="300" fill="url(#cabAmb)"/>
-            <g stroke="#5FE3F0" stroke-width=".8" opacity=".28" fill="none">
-              <path d="M110 336H390M110 352H390M110 372H390M110 398H390"/>
-              <path d="M250 320L250 400M250 320L190 400M250 320L310 400M250 320L130 400M250 320L370 400"/>
+            <g class="kong">
+              <image href="img/dev-kong.webp" x="93.75" y="93.75" width="312.50" height="312.50" preserveAspectRatio="xMidYMid slice"/>
+              <g class="kong-glow" style="mix-blend-mode:screen">
+                <ellipse class="kg kg1" cx="145.3" cy="195.3" rx="30" ry="20" fill="#5FE3F0"/>
+                <ellipse class="kg kg2" cx="246.9" cy="175.0" rx="40" ry="26" fill="#5FE3F0"/>
+                <ellipse class="kg kg3" cx="343.8" cy="206.2" rx="26" ry="18" fill="#FF8A4C"/>
+                <ellipse class="kg kg4" cx="167.2" cy="250.0" rx="22" ry="10" fill="#7FE9F4"/>
+              </g>
             </g>
-            <g class="cab-p cab-p1"><g transform="translate(146 172) rotate(-9)">
-              <rect width="80" height="54" rx="6" fill="rgba(95,227,240,.13)" stroke="#5FE3F0" stroke-width="1.3"/>
-              <g fill="none" stroke="#7FE9F4" stroke-width="1.4"><circle cx="16" cy="27" r="6"/><circle cx="40" cy="16" r="6"/><circle cx="40" cy="38" r="6"/><circle cx="64" cy="27" r="6"/><path class="cab-flow" d="M22 25L34 18M22 29L34 36M46 18L58 25M46 36L58 29"/></g>
-              <text x="8" y="50" fill="#7FE9F4" font-size="6" font-family="ui-monospace,monospace" letter-spacing="1">AUTOMAÇÃO</text>
-            </g></g>
-            <g class="cab-p cab-p2"><g transform="translate(212 124)">
-              <rect width="76" height="46" rx="6" fill="rgba(230,85,22,.14)" stroke="#FF8A4C" stroke-width="1.3"/>
-              <rect class="cab-msg" x="7" y="8" width="38" height="8" rx="4" fill="#FF8A4C" opacity=".85"/>
-              <rect class="cab-msg m2" x="31" y="20" width="38" height="8" rx="4" fill="#F5F5F5" opacity=".75"/>
-              <rect class="cab-msg m3" x="7" y="32" width="28" height="8" rx="4" fill="#FF8A4C" opacity=".85"/>
-            </g></g>
-            <g class="cab-p cab-p3"><g transform="translate(274 172) rotate(9)">
-              <rect width="80" height="54" rx="6" fill="rgba(95,227,240,.13)" stroke="#5FE3F0" stroke-width="1.3"/>
-              <g fill="#5FE3F0"><rect class="cab-bar" x="12" y="20" width="8" height="26"/><rect class="cab-bar b2" x="26" y="12" width="8" height="34"/><rect class="cab-bar b3" x="40" y="26" width="8" height="20"/><rect class="cab-bar b4" x="54" y="8" width="8" height="38"/></g>
-            </g></g>
-            <g stroke="#7FE9F4" stroke-width="1" fill="none" class="cab-link"><path d="M206 246L196 214"/><path d="M294 244L306 212"/><path d="M250 214L250 172"/></g>
-            <path d="M160 322Q250 296 340 322L340 338Q250 314 160 338Z" fill="#1b1c21" stroke="#FF8A4C" stroke-width="1.4"/>
-            <path d="M168 321Q250 297 332 321" fill="none" stroke="#FFB27A" stroke-width="2" opacity=".8"/>
-            <g class="cab-op">
-              <path d="M214 330Q214 276 250 266Q286 276 286 330Z" fill="url(#cabBody)" stroke="#FF8A4C" stroke-width="1.2" stroke-opacity=".75"/>
-              <rect x="243" y="250" width="14" height="18" rx="5" fill="#1a1b20"/>
-              <circle cx="250" cy="236" r="17" fill="url(#cabBody)" stroke="#FF8A4C" stroke-width="1.2" stroke-opacity=".75"/>
-              <g class="cab-arm cab-arm-l"><path d="M224 276Q210 262 204 246" fill="none" stroke="#202127" stroke-width="10" stroke-linecap="round"/><path d="M224 276Q210 262 204 246" fill="none" stroke="#FF8A4C" stroke-width="1" stroke-opacity=".6"/><circle cx="204" cy="245" r="3.4" fill="#7FE9F4"/></g>
-              <g class="cab-arm cab-arm-r"><path d="M276 276Q290 262 296 244" fill="none" stroke="#202127" stroke-width="10" stroke-linecap="round"/><path d="M276 276Q290 262 296 244" fill="none" stroke="#FF8A4C" stroke-width="1" stroke-opacity=".6"/><circle cx="296" cy="243" r="3.4" fill="#7FE9F4"/></g>
-            </g>
+            <rect class="kong-scan" x="100" y="100" width="300" height="14" fill="url(#kongScan)"/>
           </g>
           <circle cx="250" cy="250" r="150" fill="none" stroke="#E65516" stroke-width="2" opacity=".8"/>
         </g>
