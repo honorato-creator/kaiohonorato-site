@@ -188,7 +188,7 @@ button{cursor:pointer}
 .phone-top b{display:block;font:700 17px/1.2 var(--f-t)}
 .phone-top small{font-size:14px;color:var(--isa)}
 .chat{display:flex;flex-direction:column;gap:10px;padding:20px 18px 14px;height:400px;overflow-y:auto;scrollbar-width:thin}
-.b{max-width:86%;padding:12px 16px 8px;font-size:17.5px;line-height:1.38;animation:surge .35s ease both}
+.b{white-space:pre-line;max-width:86%;padding:12px 16px 8px;font-size:17.5px;line-height:1.38;animation:surge .35s ease both}
 .b time{display:block;text-align:right;font-size:12.5px;margin-top:4px;opacity:.7}
 .b-c{align-self:flex-end;background:var(--isa);color:var(--base)}
 .b-a{align-self:flex-start;background:var(--base);color:var(--linen)}
@@ -218,7 +218,7 @@ button{cursor:pointer}
 .holo-voz svg{width:18px;height:18px}.holo-voz .on{opacity:.35}
 .holo-voz:hover{background:rgba(95,227,240,.12)}
 .holo-voz[aria-pressed="true"]{background:#5FE3F0;color:#0d1416;border-color:#5FE3F0}.holo-voz[aria-pressed="true"] .on{opacity:1}
-.holo-stage{position:relative;height:clamp(360px,40vw,520px);background:radial-gradient(ellipse at 50% 42%,#1d3033 0%,#111315 68%)}
+.holo-stage{position:relative;height:clamp(380px,42vw,560px);background:radial-gradient(ellipse at 50% 85%,#0c2a33 0%,#05080d 55%,#030509 100%)}
 .holo-stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;pointer-events:none;background:linear-gradient(rgba(17,19,21,0),#111315)}
 .holo-stage canvas,.holo-stage .iris-poster{position:absolute;inset:0;width:100%;height:100%;display:block}
 .holo-stage .iris-poster{object-fit:contain;opacity:.9;transition:opacity .6s}
@@ -235,6 +235,12 @@ button{cursor:pointer}
 .holo .say input::placeholder{color:rgba(245,245,245,.5)}
 .holo .say button{background:var(--acc);color:var(--linen)}
 .holo .say button:hover{background:#ff6a26}
+.holo .say .mic{flex:none;width:48px;padding:0;display:grid;place-items:center;background:transparent;border:1.5px solid rgba(245,245,245,.4);color:var(--linen)}
+.holo .say .mic svg{width:20px;height:20px}
+.holo .say .mic:hover{background:rgba(245,245,245,.12)}
+.holo .say .mic[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);animation:micp 1.2s ease-in-out infinite}
+@keyframes micp{50%{box-shadow:0 0 0 8px rgba(230,85,22,.25)}}
+@media (prefers-reduced-motion:reduce){.holo .say .mic[aria-pressed="true"]{animation:none}}
 @media (max-width:560px){.holo-stage{height:380px}.holo .chat{height:260px}.holo-top{padding-left:18px}.iris-live{order:3;width:100%}}
 /* Iris: status e ondas de voz */
 .iris-live{display:flex;align-items:center;gap:10px;font:500 11.5px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.16em;text-transform:uppercase;color:#7FE9F4}
@@ -942,28 +948,20 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
   <div class="wrap grid">
     <div class="demo-text">
       <h2 class="t h2" id="demoT">converse com um agente de verdade.</h2>
-      <p class="lede">Faça um teste com a Iris, minha agente de IA!<br>Defina o tipo de negócio abaixo e escreva como se fosse um cliente. Em um projeto real, o agente é treinado com os dados e o tom do seu negócio.</p>
-      <div class="chips" id="chips" role="group" aria-label="Tipo de negócio">
-        <button class="chip" type="button" data-k="estudio" aria-pressed="true">estúdio de tatuagem</button>
-        <button class="chip" type="button" data-k="clinica" aria-pressed="false">clínica</button>
-        <button class="chip" type="button" data-k="loja" aria-pressed="false">loja online</button>
-        <button class="chip" type="button" data-k="agencia" aria-pressed="false">agência</button>
-      </div>
+      <p class="lede">Pergunte o que quiser para a Iris, minha agente de IA: o que eu faço, quanto tempo leva, como funciona um agente no WhatsApp... Pode escrever ou <b>falar pelo microfone</b>.</p>
       <div class="demo-act"><a class="btn btn-fill" id="demoCta" href="#" target="_blank" rel="noopener">Quero um assim</a></div>
-      <p class="small">Demonstração com respostas de exemplo. Nomes, horários e endereços são ilustrativos.</p>
+      <p class="small">A Iris é uma IA de verdade e pode errar. Não envie dados pessoais por aqui.</p>
     </div>
     <div class="demo-holo">
       <div class="holo" id="iris" aria-label="Conversa com a Iris, agente de IA do Kaio">
         <div class="holo-top">
-          <div class="holo-id"><b>Iris</b><small>atendendo como <span id="demoNome">Estúdio de tatuagem</span></small></div>
+          <div class="holo-id"><b>Iris</b><small>agente de IA do Kaio · online</small></div>
           <span class="iris-live" aria-hidden="true"><span id="irisSt">sistema ativo</span><span class="iris-wave"><i></i><i></i><i></i><i></i></span></span>
           <button type="button" class="holo-voz" id="irisVoz" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Ouvir a Iris</span></button>
-          <span id="av" hidden>E</span>
         </div>
         <div class="holo-stage" id="irisStage" aria-hidden="true"><img class="iris-poster" src="img/iris-holo-poster.jpg" width="368" height="552" alt="" decoding="async" loading="lazy"></div>
         <div class="chat" id="chat" aria-live="polite"></div>
-        <div class="quick" id="quick"><button type="button">Tem horário essa semana?</button><button type="button">Quanto custa?</button><button type="button">Onde fica?</button></div>
-        <form class="say" id="say" autocomplete="off"><label for="msg" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Sua mensagem</label><input id="msg" type="text" placeholder="Escreva sua mensagem" maxlength="140"><button type="submit">Enviar</button></form>
+        <form class="say" id="say" autocomplete="off"><label for="msg" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Sua mensagem</label><input id="msg" type="text" placeholder="Pergunte o que quiser" maxlength="400"><button type="button" class="mic" id="irisMic" aria-pressed="false" aria-label="Falar com a Iris pelo microfone" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="submit">Enviar</button></form>
       </div>
     </div>
   </div>
@@ -1286,34 +1284,14 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   function hhmm(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
   Chat.prototype.say=function(w,t){var d=document.createElement('div');d.className='b '+(w==='c'?'b-c':'b-a');d.appendChild(document.createTextNode(t));var tm=document.createElement('time');tm.textContent=hhmm();d.appendChild(tm);return this.add(d)};
   Chat.prototype.tag=function(t){var d=document.createElement('div');d.className='tag';d.textContent=t;return this.add(d)};
-  var AG={
-    estudio:{nome:'Estúdio de tatuagem',av:'E',txt:'um estúdio de tatuagem',hi:'Oi! Eu sou a Iris, agente do estúdio. Pode perguntar o que um cliente perguntaria.',slots:'Tenho quinta às 14h e sábado às 10h. Quer mandar uma referência do desenho para eu reservar?',price:'O valor depende do tamanho e do estilo. Me manda a referência e o local do corpo que eu já passo uma estimativa.',where:'Ficamos na Rua das Flores, 120, com estacionamento na porta.'},
-    clinica:{nome:'Clínica',av:'C',txt:'uma clínica',hi:'Boa tarde! Eu sou a Iris, agente da clínica. Em que posso ajudar?',slots:'Tenho quarta às 15h ou sexta às 8h. Qual fica melhor para você?',price:'Os valores variam conforme a especialidade. Me diz qual você procura e eu passo certinho.',where:'Atendemos na Avenida Central, 500, sala 12, com acesso para cadeira de rodas.'},
-    loja:{nome:'Loja online',av:'L',txt:'uma loja online',hi:'Oi! Eu sou a Iris, agente da loja. Pergunte sobre pedidos, trocas ou produtos.',slots:'Posso agendar a retirada amanhã entre 10h e 18h. Qual horário prefere?',price:'Me diz qual produto você quer que eu confirmo o preço e as formas de pagamento.',where:'A loja é online. Enviamos para todo o Brasil e o prazo aparece antes de fechar o pedido.'},
-    agencia:{nome:'Agência de marketing',av:'A',txt:'uma agência de marketing',hi:'Olá! Eu sou a Iris, agente da agência. Me conta o que você quer divulgar.',slots:'Tenho uma conversa de diagnóstico quinta às 10h ou sexta às 15h. Qual prefere?',price:'Cada projeto tem um escopo próprio. Com duas perguntas sobre sua meta e sua verba eu já te passo um caminho.',where:'Trabalhamos de forma remota, com reuniões por vídeo.'}
-  };
-  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
-  function reply(k,text){
-    var a=AG[k],n=norm(text);
-    if(/horario|hora|agenda|marcar|agendar|vaga|disponiv|semana|amanha|hoje|reuniao|consulta/.test(n))return[a.slots,'Agenda atualizada e equipe avisada'];
-    if(/preco|valor|quanto|orcamento|custa|pagamento|pix/.test(n))return[a.price,'Pedido de orçamento registrado'];
-    if(/onde|endereco|local|chegar|fica|entrega|mapa/.test(n))return[a.where,null];
-    if(/^(oi|ola|bom dia|boa tarde|boa noite|e ai)\b/.test(n))return[a.hi,null];
-    return['Entendi! Para te responder direito, me conta um pouco mais. Se for algo que só uma pessoa resolve, eu já aviso a equipe.','Equipe avisada'];
-  }
-  var chat=new Chat($('#chat')),cur='estudio',busy=false,pend=[],chips=$$('.chip'),cta=$('#demoCta'),msg=$('#msg');
-  function setSeg(k){
-    cur=k;var a=AG[k];busy=false;pend=[];chat.tk++;
-    chips.forEach(function(c){c.setAttribute('aria-pressed',c.dataset.k===k)});
-    $('#demoNome').textContent=a.nome;$('#av').textContent=a.av;
-    cta.href=WA+encodeURIComponent('Oi Kaio! Vi o site e quero um agente de IA para '+a.txt+'.');
-    chat.el.innerHTML='';agentSay(a.hi,null);
-  }
+  var HI='Oi! Eu sou a Iris, a agente de IA do Kaio. Pode me perguntar o que quiser, por texto ou pelo microfone.';
+  var OFFLINE='Agora eu não consegui me conectar. Fala direto com o Kaio pelo WhatsApp que ele te responde rapidinho.';
+  var chat=new Chat($('#chat')),busy=false,pend=[],cta=$('#demoCta'),msg=$('#msg');
   var iris=$('#iris'),irisSt=$('#irisSt'),irisT;
   function irisState(s){
     if(!iris)return;clearTimeout(irisT);
     iris.classList.toggle('talk',s!=='idle');
-    irisSt.textContent=s==='think'?'processando':s==='talk'?'respondendo':'sistema ativo';
+    irisSt.textContent=s==='listen'?'ouvindo':s==='think'?'processando':s==='talk'?'respondendo':'sistema ativo';
   }
   /* agentSay aceita um texto pronto ou uma promessa de [texto, etiqueta] vinda da Iris real */
   function agentSay(text,tag){
@@ -1324,7 +1302,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
       var wait=reduce?0:Math.max(0,Math.min(800+r[0].length*10,2600)-(Date.now()-t0));
       setTimeout(function(){
         if(tk!==chat.tk)return;ty.remove();chat.say('a',r[0]);
-        irisSpeak(r[0]);
+        irisSpeak(r[0],r[2]);
         irisState('talk');irisT=setTimeout(function(){irisState('idle')},reduce?600:Math.min(1400+r[0].length*25,6000));
         if(r[1])setTimeout(function(){if(tk===chat.tk){chat.tag(r[1]);free()}},350);else free();
       },wait);
@@ -1339,9 +1317,9 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     $('span',vozBtn).textContent=vozOn?'Som ligado':'Ouvir a Iris';
     if(window.irisHolo){if(vozOn)irisHolo.unlock();else irisHolo.stop()}
   });
-  function irisSpeak(text){
+  function irisSpeak(text,force){
     var h=window.irisHolo;if(!h)return;
-    if(!vozOn||!window.fetch){h.say(text);return}
+    if(!(vozOn||force)||!window.fetch){h.say(text);return}
     fetch('/api/iris-voz',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})})
       .then(function(r){return r.ok?r.arrayBuffer():Promise.reject(r.status)})
       .then(function(b){return h.speakBuffer(b)})
@@ -1352,26 +1330,44 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   var irisOff=false,sid;
   try{sid=sessionStorage.getItem('irisSid')}catch(e){}
   if(!sid){sid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Math.random()).slice(2)+Date.now();try{sessionStorage.setItem('irisSid',sid)}catch(e){}}
-  function askIris(text){
-    var fb=function(){return reply(cur,text)};
+  function askIris(text,voz){
+    var fb=function(){return [OFFLINE,null,voz]};
     if(irisOff||!window.fetch)return Promise.resolve(fb());
-    var k=cur;
-    return fetch('/api/iris',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,sessionId:sid+'-'+k,segmento:AG[k].txt})})
+    return fetch('/api/iris',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,sessionId:sid,canal:'site'})})
       .then(function(r){if(r.status===404||r.status===503)irisOff=true;return r.ok?r.json():Promise.reject(r.status)})
-      .then(function(d){return d&&d.reply?[d.reply,null]:fb()})
+      .then(function(d){return d&&d.reply?[d.reply,null,voz]:fb()})
       .catch(function(){return fb()});
   }
-  function send(text){
+  /* voz=true quando a pergunta veio do microfone: aí a Iris responde falando */
+  function send(text,voz){
     text=text.trim();if(!text)return;if(busy){if(pend.length<2)pend.push(text);msg.value='';return}
     chat.say('c',text);msg.value='';
-    agentSay(askIris(text));
+    agentSay(askIris(text,voz));
   }
-  chips.forEach(function(c){c.addEventListener('click',function(){setSeg(c.dataset.k)})});
-  $$('#quick button').forEach(function(b){b.addEventListener('click',function(){send(b.textContent)})});
   $('#say').addEventListener('submit',function(e){e.preventDefault();send(msg.value)});
-  cta.href=WA+encodeURIComponent('Oi Kaio! Vi o site e quero um agente de IA para um estúdio de tatuagem.');
+  cta.href=WA+encodeURIComponent('Oi Kaio! Conversei com a Iris no site e quero um agente de IA para o meu negócio.');
+
+  /* microfone: o navegador transcreve a fala (pt-BR) e a pergunta é enviada sozinha ao terminar de falar */
+  (function(){
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition,btn=$('#irisMic');
+    if(!SR||!btn)return;
+    btn.hidden=false;
+    var rec=null,ouvindo=false,final='';
+    function parar(){ouvindo=false;btn.setAttribute('aria-pressed','false');if(!busy)irisState('idle')}
+    btn.addEventListener('click',function(){
+      if(window.irisHolo)irisHolo.unlock();
+      if(ouvindo){rec&&rec.stop();return}
+      rec=new SR();rec.lang='pt-BR';rec.interimResults=true;rec.continuous=false;final='';
+      rec.onresult=function(e){var t='';for(var i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else t+=e.results[i][0].transcript}msg.value=(final+t).trim()};
+      rec.onerror=function(){parar()};
+      rec.onend=function(){var t=(final||msg.value).trim();parar();if(t)send(t,true)};
+      try{rec.start();ouvindo=true;btn.setAttribute('aria-pressed','true');irisState('listen');msg.value=''}catch(e){parar()}
+    });
+  })();
+
   var started=false;
-  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!started){started=true;setSeg(cur);io.disconnect()}})},{threshold:.3});io.observe($('#chat'))}else setSeg(cur);
+  function hello(){chat.el.innerHTML='';agentSay(HI,null)}
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!started){started=true;hello();io.disconnect()}})},{threshold:.3});io.observe($('#chat'))}else hello();
 
   
 

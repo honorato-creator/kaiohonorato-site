@@ -59,7 +59,10 @@ export function createIrisHolo(host, opts = {}) {
         e += texture2D(map, vUv+vec2(px.x,0.)).a + texture2D(map, vUv-vec2(px.x,0.)).a + texture2D(map, vUv+vec2(0.,px.y)).a + texture2D(map, vUv-vec2(0.,px.y)).a;
         float rim = clamp(a - e*.25 + .5, 0., 1.)*a; rim = smoothstep(.55,.95,rim)*0. + (1.-smoothstep(.0,.9,e*.25))*a;
         c += vec3(.37,.95,.9)*rim*.9;
-        float edge = smoothstep(0., .04, vUv.x)*smoothstep(1., .96, vUv.x)*smoothstep(0., .03, vUv.y)*smoothstep(1., .97, vUv.y);
+        float edge = smoothstep(0., .04, vUv.x)*smoothstep(1., .96, vUv.x)*smoothstep(.02, .26, vUv.y)*smoothstep(1., .97, vUv.y);
+        // perto da base o busto vira pixels soltos (dissolvendo no feixe)
+        float grain = fract(sin(dot(floor(vUv*vec2(90.,110.)), vec2(12.9898,78.233)))*43758.5453);
+        edge *= mix(step(grain, smoothstep(.04, .3, vUv.y)*1.15), 1., smoothstep(.22, .34, vUv.y));
         gl_FragColor = vec4(holo(c, vUv, vY), a*edge); }`,
   });
 
@@ -127,6 +130,109 @@ export function createIrisHolo(host, opts = {}) {
   const ring = new THREE.Mesh(new THREE.RingGeometry(W * .3, W * .31, 96), new THREE.MeshBasicMaterial({ color: '#5FE3F0', transparent: true, opacity: .5, side: THREE.DoubleSide }));
   ring.rotation.x = -Math.PI / 2.3; ring.position.set(0, -H * .5 + 4, PLANE_Z + 20); bust.add(ring);
 
+  /* ---------- palco de projeção: feixe de luz do chão, grade, circuitos e voxels coloridos ---------- */
+  if (opts.stage !== false) {
+    ring.visible = false;
+    const small = matchMedia('(max-width: 700px)').matches;
+    const FLOOR_Y = -H * .56, CHIN_Y = -H * .3, BZ = PLANE_Z + 30;
+    const add = (o, order) => { o.renderOrder = order; scene.add(o); return o; };
+    const glsl3 = { transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending };
+
+    // fundo: trilhas de circuito escuras
+    const cc = document.createElement('canvas'); cc.width = cc.height = 512; const cg = cc.getContext('2d');
+    cg.strokeStyle = 'rgba(70,200,230,.55)'; cg.fillStyle = 'rgba(120,230,255,.8)'; cg.lineWidth = 1.4;
+    for (let k = 0; k < 46; k++) {
+      let x = Math.round(Math.random() * 16) * 32, y = Math.round(Math.random() * 16) * 32; cg.beginPath(); cg.moveTo(x, y);
+      for (let j = 0; j < 4; j++) { if (Math.random() < .5) x += (Math.random() < .5 ? -1 : 1) * 32 * (1 + Math.floor(Math.random() * 3)); else y += (Math.random() < .5 ? -1 : 1) * 32 * (1 + Math.floor(Math.random() * 3)); cg.lineTo(x, y); }
+      cg.stroke(); cg.beginPath(); cg.arc(x, y, 2.6, 0, 7); cg.fill();
+    }
+    const ct = new THREE.CanvasTexture(cc); ct.wrapS = ct.wrapT = THREE.RepeatWrapping; ct.repeat.set(3, 2);
+    const circuit = add(new THREE.Mesh(new THREE.PlaneGeometry(W * 4, H * 2.6), new THREE.MeshBasicMaterial({ map: ct, color: '#1b6f80', ...glsl3, opacity: .55 })), -3);
+    circuit.position.set(0, H * .1, PLANE_Z - 700);
+
+    // luz suave por trás da cabeça: ela "acende" sobre o fundo escuro
+    const bc = document.createElement('canvas'); bc.width = bc.height = 128; const bg2 = bc.getContext('2d');
+    const br = bg2.createRadialGradient(64, 64, 0, 64, 64, 64); br.addColorStop(0, 'rgba(90,200,230,.32)'); br.addColorStop(.5, 'rgba(60,140,200,.1)'); br.addColorStop(1, 'rgba(40,90,160,0)');
+    bg2.fillStyle = br; bg2.fillRect(0, 0, 128, 128);
+    const back = add(new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(bc), ...glsl3 })), -1);
+    back.position.set(0, H * .08, PLANE_Z - 60); back.scale.set(W * 1.25, H * 1.0, 1);
+
+    // linha fina vertical vinda de cima (como na referência)
+    const topLine = add(new THREE.Mesh(new THREE.PlaneGeometry(2, H * 1.4), new THREE.ShaderMaterial({ ...glsl3,
+      vertexShader: `varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `varying vec2 vU; void main(){ gl_FragColor = vec4(vec3(.5,.9,1.)*.35*smoothstep(0.,.6,vU.y), 1.); }` })), -2);
+    topLine.position.set(0, H * .45, PLANE_Z - 40);
+
+    // chão: grade em perspectiva com brilho e ondas saindo do ponto de projeção
+    const floor = add(new THREE.Mesh(new THREE.PlaneGeometry(W * 4, W * 4), new THREE.ShaderMaterial({ ...glsl3,
+      uniforms: { uTime: uniforms.uTime },
+      vertexShader: `varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `uniform float uTime; varying vec2 vP;
+        void main(){ vec2 g = vP/44.; vec2 a = abs(fract(g - .5) - .5)/fwidth(g); float l = 1. - min(min(a.x, a.y), 1.);
+          float d = length(vP); float fade = 1. - smoothstep(60., 900., d);
+          float glow = exp(-d/70.)*1.6 + exp(-d/220.)*.35;
+          float wave = smoothstep(.06, 0., abs(fract(d/240. - uTime*.22) - .5) - .44)*(1. - smoothstep(100., 800., d));
+          vec3 c = vec3(.25,.85,1.)*(l*.32*fade + wave*.35) + vec3(.75,.95,1.)*glow;
+          gl_FragColor = vec4(c, 1.); }` })), -1);
+    floor.rotation.x = -Math.PI / 2; floor.position.set(0, FLOOR_Y, PLANE_Z);
+
+    // feixe de luz: do chão até o queixo, com fibras subindo
+    const beamH = CHIN_Y - FLOOR_Y;
+    const beam = add(new THREE.Mesh(new THREE.PlaneGeometry(W * .5, beamH), new THREE.ShaderMaterial({ ...glsl3,
+      uniforms: { uTime: uniforms.uTime, uTalk: uniforms.uTalk },
+      vertexShader: `varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `uniform float uTime; uniform float uTalk; varying vec2 vU;
+        void main(){ float u = (vU.x - .5)*2.; float t = vU.y;
+          float w = mix(.05, .55, t);                       // estreito no chão, abre perto do rosto
+          float core = exp(-pow(u/w*1.6, 2.));
+          float fib = pow(abs(sin(u*48. + floor(u*10.)*1.7)), 26.)*exp(-pow(u/w, 2.)*1.2);
+          fib *= .55 + .45*sin(t*38. - uTime*7. + u*21.);
+          float a = (core*.75 + fib*.9)*(1. - smoothstep(.72, 1., t))*(.55 + .45*(1. - t))*(1. + uTalk*.6);
+          gl_FragColor = vec4(mix(vec3(.35,.85,1.), vec3(.95,1.,1.), core*.6)*a, 1.); }` })), 3);
+    beam.position.set(0, FLOOR_Y + beamH / 2, BZ);
+
+    // clarão no ponto de projeção
+    const fc = document.createElement('canvas'); fc.width = fc.height = 128; const fg = fc.getContext('2d');
+    const fr = fg.createRadialGradient(64, 64, 0, 64, 64, 64); fr.addColorStop(0, 'rgba(255,255,255,1)'); fr.addColorStop(.25, 'rgba(160,240,255,.7)'); fr.addColorStop(1, 'rgba(60,180,255,0)');
+    fg.fillStyle = fr; fg.fillRect(0, 0, 128, 128);
+    const flare = add(new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(fc), ...glsl3 })), 4);
+    flare.position.set(0, FLOOR_Y + 6, BZ + 10); flare.scale.set(W * .55, W * .2, 1);
+
+    // voxels: quadradinhos coloridos flutuando e subindo, com profundidade
+    const pal = ['#5FE3F0', '#E04DFF', '#7CFF4F', '#4F9BFF', '#FF4FA8', '#B6F3FF'].map(c => new THREE.Color(c));
+    const VC = small ? 220 : 460, vp = new Float32Array(VC * 3), vc = new Float32Array(VC * 3), vs = new Float32Array(VC);
+    for (let i = 0; i < VC; i++) {
+      const fromBeam = i < VC * .22;
+      let x, z;
+      if (fromBeam) { x = (Math.random() - .5) * 90; z = BZ + (Math.random() - .5) * 60; }
+      else {
+        // mais denso nas laterais e atrás dela; poucos na frente do rosto
+        x = (Math.random() - .5) * W * 1.7; z = PLANE_Z - 320 + Math.random() * 420;
+        if (Math.abs(x) < W * .32 && z > PLANE_Z - 40) z = PLANE_Z - 60 - Math.random() * 260;
+      }
+      vp[i * 3] = x; vp[i * 3 + 1] = FLOOR_Y + Math.random() * (H * 1.3); vp[i * 3 + 2] = z;
+      (fromBeam ? pal[5] : pal[(Math.random() * pal.length) | 0]).toArray(vc, i * 3);
+      vs[i] = Math.random() + (fromBeam ? 2 : 0);
+    }
+    const vg = new THREE.BufferGeometry();
+    vg.setAttribute('position', new THREE.BufferAttribute(vp, 3)); vg.setAttribute('color', new THREE.BufferAttribute(vc, 3)); vg.setAttribute('seed', new THREE.BufferAttribute(vs, 1));
+    add(new THREE.Points(vg, new THREE.ShaderMaterial({ ...glsl3,
+      uniforms: { uTime: uniforms.uTime, uPx: { value: renderer.getPixelRatio() }, uFloor: { value: FLOOR_Y }, uSpan: { value: H * 1.3 } },
+      vertexShader: `attribute vec3 color; attribute float seed; uniform float uTime; uniform float uPx; uniform float uFloor; uniform float uSpan; varying vec3 vC; varying float vA;
+        void main(){ vec3 p = position; float beamP = step(2., seed); float s = fract(seed);
+          float sp = mix(6. + s*14., 60. + s*90., beamP);
+          p.y = uFloor + mod(p.y - uFloor + uTime*sp, uSpan);
+          p.x += sin(uTime*.4 + seed*9.)*6.*(1. - beamP);
+          float h = (p.y - uFloor)/uSpan;
+          vA = smoothstep(0., .06, h)*(1. - smoothstep(.85, 1., h))*(.45 + .55*abs(sin(uTime*1.7 + seed*13.)))*mix(1., 1. - smoothstep(.0, .45, h), beamP);
+          vC = color; vec4 mv = modelViewMatrix*vec4(p,1.);
+          gl_PointSize = mix(2.5 + s*5.5, 2. + s*2.5, beamP)*uPx*(2600./-mv.z); gl_Position = projectionMatrix*mv; }`,
+      fragmentShader: `varying vec3 vC; varying float vA;
+        void main(){ vec2 q = abs(gl_PointCoord - .5); float sq = 1. - smoothstep(.34, .5, max(q.x, q.y)); float core = 1. - smoothstep(.0, .3, max(q.x, q.y));
+          gl_FragColor = vec4(vC*(.8 + core*.6), sq*vA); }` })), 5);
+  }
+
+
   /* ---------- pesos dos "músculos" ---------- */
   const wBlink = new Float32Array(N), blinkTarget = new Float32Array(N), wJaw = new Float32Array(N), wUp = new Float32Array(N), wCorner = new Float32Array(N);
   EYES.forEach(e => {
@@ -167,8 +273,8 @@ export function createIrisHolo(host, opts = {}) {
   function resize() {
     const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const fit = Math.max(H * 1.08, (W * 1.08) / camera.aspect);
-    camera.position.set(0, 0, fit / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))));
+    const fit = opts.stage !== false ? Math.max(H * 1.22, (W * 1.3) / camera.aspect) : Math.max(H * 1.08, (W * 1.08) / camera.aspect);
+    camera.position.set(0, opts.stage !== false ? -H * .04 : 0, fit / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))));
     camera.updateProjectionMatrix();
   }
   new ResizeObserver(resize).observe(host); resize();
