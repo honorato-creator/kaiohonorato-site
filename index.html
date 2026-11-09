@@ -213,9 +213,9 @@ button{cursor:pointer}
 
 /* 03 agente: converse de verdade */
 .demo .grid{align-items:center}
-.demo-text{grid-column:1/6}
+.demo-text{grid-column:1/7}
 .demo-holo{grid-column:7/13}
-.demo-text h2{margin-top:22px}
+.demo-text h2{margin-top:0;font-size:clamp(40px,4.6vw,68px)}
 .demo-text .lede{margin-top:24px}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
 .chip{min-height:46px;padding:0 22px;border-radius:999px;border:1.5px solid var(--linen);background:transparent;color:var(--linen);font:500 17px var(--f-b);transition:background-color .2s,color .2s}
@@ -291,7 +291,8 @@ html.bgfx #agente,#agente{position:relative;overflow:hidden;background:radial-gr
 .holo .say button{background:var(--acc);color:var(--linen)}
 .holo .say button:hover{background:#ff6a26}
 .holo .say .mic{flex:none;width:48px;padding:0;display:grid;place-items:center;background:transparent;border:1.5px solid rgba(245,245,245,.4);color:var(--linen)}
-.holo .say .mic svg{width:20px;height:20px}
+.holo .say .mic{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.holo .say .mic svg{width:20px;height:20px;pointer-events:none}
 .holo .say .mic:hover{background:rgba(245,245,245,.12)}
 .holo .say .mic[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);animation:micp 1.2s ease-in-out infinite}
 @keyframes micp{50%{box-shadow:0 0 0 8px rgba(230,85,22,.25)}}
@@ -944,7 +945,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="hero" id="inicio">
   <div class="wrap grid">
     <div class="hero-text">
-      <h1 class="t">soluções funcionais e criativas para o seu <b>negócio.</b></h1>
+      <h1 class="t">Soluções funcionais e criativas para o seu <b>negócio.</b></h1>
       <p class="lede">Sou o Kaio, desenvolvedor em Santos (SP), e atendo todo o Brasil. Aqui está o que já construí e o que posso resolver no seu negócio, do site ao agente de IA.</p>
       <div class="hero-act">
         <a class="btn btn-fill" href="#projetos">Ver projetos</a>
@@ -998,7 +999,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="s dark on-dark pjs" id="projetos" aria-labelledby="projT">
   <div class="wrap">
     <div class="top2">
-      <h2 class="t h2" id="projT">o que já construí.</h2>
+      <h2 class="t h2" id="projT">O que já construí.</h2>
       <p>Abra um módulo para ver o problema, o que foi feito e o sistema por dentro.</p>
     </div>
     <div class="hud">
@@ -1012,7 +1013,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="s srv-sec" id="servicos" aria-labelledby="srvT">
   <div class="wrap">
     <div class="top2">
-      <h2 class="t h2" id="srvT">o que eu posso <span class="acc-t">construir.</span></h2>
+      <h2 class="t h2" id="srvT">O que eu posso <span class="acc-t">construir.</span></h2>
       <p class="srv-sub">Soluções digitais com tecnologia e muita personalidade.</p>
     </div>
     <ul class="sv" id="srv"></ul>
@@ -1024,8 +1025,8 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
   <div class="ag-rain" aria-hidden="true"><i></i><i></i></div>
   <div class="wrap grid">
     <div class="demo-text">
-      <h2 class="t h2" id="demoT">converse com um agente de verdade.</h2>
-      <p class="lede">Pergunte o que quiser para a Iris, minha agente de IA: o que eu faço, quanto tempo leva, como funciona um agente no WhatsApp... Pode escrever ou <b>falar pelo microfone</b>.</p>
+      <h2 class="t h2" id="demoT">Converse com um agente de verdade.</h2>
+      <p class="lede">Pergunte o que quiser para a Iris, minha agente de IA: o que eu faço, quanto tempo leva, como funciona um agente no WhatsApp... Pode escrever ou <b>segurar o microfone e falar</b>.</p>
       <div class="demo-act"><a class="btn btn-fill" id="demoCta" href="#" target="_blank" rel="noopener">Quero um assim</a></div>
       <p class="small">A Iris é uma IA de verdade e pode errar. Não envie dados pessoais por aqui.</p>
     </div>
@@ -1038,7 +1039,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
         </div>
         <div class="holo-stage" id="irisStage" aria-hidden="true"><img class="iris-poster" src="img/iris-holo-poster.jpg" width="368" height="552" alt="" decoding="async" loading="lazy"></div>
         <div class="chat" id="chat" aria-live="polite"></div>
-        <form class="say" id="say" autocomplete="off"><label for="msg" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Sua mensagem</label><input id="msg" type="text" placeholder="Pergunte o que quiser" maxlength="400"><button type="button" class="mic" id="irisMic" aria-pressed="false" aria-label="Falar com a Iris pelo microfone" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="submit">Enviar</button></form>
+        <form class="say" id="say" autocomplete="off"><label for="msg" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">Sua mensagem</label><input id="msg" type="text" placeholder="Pergunte o que quiser" maxlength="400"><button type="button" class="mic" id="irisMic" aria-pressed="false" aria-label="Segure para falar com a Iris" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button type="submit">Enviar</button></form>
       </div>
     </div>
   </div>
@@ -1047,7 +1048,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
 <section class="s pp" id="proposta" aria-labelledby="ppT">
   <div class="wrap">
     <div class="pp-panel">
-      <div class="pp-pt"><h2 class="t h2" id="ppT">como eu trabalho.</h2><p class="lede">Sem surpresa: o escopo e o custo ficam combinados antes de eu programar.</p></div>
+      <div class="pp-pt"><h2 class="t h2" id="ppT">Como eu trabalho.</h2><p class="lede">Sem surpresa: o escopo e o custo ficam combinados antes de eu programar.</p></div>
       <div class="pp-pc"><a class="rbtn" href="orcamento/" aria-label="Pedir orçamento"><span class="rd" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><radialGradient id="rbg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#3c3d43"/><stop offset="1" stop-color="#1b1c1f"/></radialGradient><radialGradient id="rbc" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#ffa070"/><stop offset=".55" stop-color="#E65516"/><stop offset="1" stop-color="#a73508"/></radialGradient></defs><circle class="wave" cx="100" cy="100" r="96"/><circle class="wave" cx="100" cy="100" r="96" style="animation-delay:1.4s"/><circle cx="100" cy="100" r="98" fill="url(#rbg)" stroke="#E65516" stroke-width="3"/><g class="r1"><circle cx="100" cy="100" r="88" fill="none" stroke="#E65516" stroke-opacity=".55" stroke-width="2" stroke-dasharray="3 8"/></g><g class="r2"><circle cx="100" cy="100" r="70" fill="none" stroke="#E65516" stroke-width="4" stroke-dasharray="52 20 14 20"/><circle cx="100" cy="30" r="7" fill="#fff"/></g><g class="r3"><circle cx="100" cy="100" r="54" fill="none" stroke="#D8D6C9" stroke-opacity=".6" stroke-width="2" stroke-dasharray="4 9"/><circle cx="154" cy="100" r="6" fill="#E65516"/></g><g class="core"><circle cx="100" cy="100" r="42" fill="url(#rbc)"/><circle cx="100" cy="100" r="42" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g><path class="arr" d="M86 100h28M104 88l12 12-12 12" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx"><b>Pedir orçamento</b><span>Sem compromisso</span></span></a></div>
     </div>
     <div class="pp-plan" role="img" aria-label="Exemplo de plano em quatro semanas: conversa na semana 1, desenho nas semanas 1 e 2, construção com testes nas semanas 2 a 4, no ar na semana 4.">
@@ -1066,7 +1067,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
     <div class="grid">
       <figure class="sobre-foto"><img src="img/kaio-duotone.jpg" alt="Retrato de Kaio Honorato, de óculos redondos e cabelo em dreads" width="896" height="1194" loading="lazy" decoding="async"></figure>
       <div class="sobre-txt">
-        <h2 class="t h2" id="sobT">quem constrói.</h2>
+        <h2 class="t h2" id="sobT">Quem constrói.</h2>
         <p>Sou Kaio Honorato, gerontólogo e desenvolvedor. Estudo engenharia de software e escrevo código em Python, Java e JavaScript, além de montar agentes de IA e automações.</p>
         <p>Antes de programar, passei anos perto da rotina de clínicas de saúde e atuei como cuidador de idosos. Por entender de pessoas, começo meu trabalho conhecendo o processo e quem vai usar, e só depois escolho a melhor ferramenta.</p>
         <div class="links2" id="links2">
@@ -1079,7 +1080,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
     </div>
     <div class="net" id="contato">
       <div class="cf-intro">
-        <h2 class="t h2">vamos conversar sobre o seu projeto.</h2>
+        <h2 class="t h2">Vamos conversar sobre o seu projeto.</h2>
         <p class="lede">Conte o que precisa. Eu leio e respondo pelo e-mail que você informar.</p>
       </div>
       <div class="cf-card">
@@ -1497,17 +1498,38 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     var SR=window.SpeechRecognition||window.webkitSpeechRecognition,btn=$('#irisMic');
     if(!SR||!btn)return;
     btn.hidden=false;
-    var rec=null,ouvindo=false,final='';
-    function parar(){ouvindo=false;btn.setAttribute('aria-pressed','false');if(!busy)irisState('idle')}
-    btn.addEventListener('click',function(){
+    /* segure para falar, solte para enviar (como no WhatsApp). Mouse, toque e teclado (espaço/enter).
+       Se o navegador encerrar a escuta antes de soltar (acontece no celular), retoma sem perder o que foi dito.
+       Limite de 60 s por mensagem. */
+    var rec=null,segurando=false,ativo=false,texto='',inicio=0,limite=null;
+    function iniciar(){
+      rec=new SR();rec.lang='pt-BR';rec.interimResults=true;rec.continuous=true;
+      var base=texto;
+      rec.onresult=function(e){var fin='',tmp='';for(var i=0;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';else tmp+=e.results[i][0].transcript}
+        texto=(base+' '+fin).replace(/\s+/g,' ').trim();msg.value=(texto+' '+tmp).trim()};
+      rec.onerror=function(ev){if(ev.error==='not-allowed'||ev.error==='service-not-allowed'){segurando=false;msg.placeholder='Libere o microfone no navegador para falar'}};
+      rec.onend=function(){
+        if(segurando&&Date.now()-inicio<60000){try{iniciar();return}catch(e){}}
+        ativo=false;clearTimeout(limite);btn.setAttribute('aria-pressed','false');if(!busy)irisState('idle');
+        var t=msg.value.trim();msg.value='';if(t)send(t,true);
+      };
+      rec.start();
+    }
+    function comecar(){
+      if(ativo)return;
       if(window.irisHolo)irisHolo.unlock();
-      if(ouvindo){rec&&rec.stop();return}
-      rec=new SR();rec.lang='pt-BR';rec.interimResults=true;rec.continuous=false;final='';
-      rec.onresult=function(e){var t='';for(var i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else t+=e.results[i][0].transcript}msg.value=(final+t).trim()};
-      rec.onerror=function(){parar()};
-      rec.onend=function(){var t=(final||msg.value).trim();parar();if(t)send(t,true)};
-      try{rec.start();ouvindo=true;btn.setAttribute('aria-pressed','true');irisState('listen');msg.value=''}catch(e){parar()}
-    });
+      segurando=true;ativo=true;texto='';inicio=Date.now();msg.value='';
+      try{iniciar()}catch(e){segurando=ativo=false;return}
+      btn.setAttribute('aria-pressed','true');irisState('listen');
+      limite=setTimeout(soltar,60000);
+    }
+    function soltar(){if(!ativo||!segurando)return;segurando=false;try{rec.stop()}catch(e){}}
+    btn.title='Segure para falar';
+    btn.addEventListener('pointerdown',function(e){e.preventDefault();try{btn.setPointerCapture(e.pointerId)}catch(_){}comecar()});
+    btn.addEventListener('pointerup',soltar);btn.addEventListener('pointercancel',soltar);btn.addEventListener('lostpointercapture',soltar);
+    btn.addEventListener('contextmenu',function(e){e.preventDefault()});
+    btn.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();comecar()}});
+    btn.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();soltar()}});
   })();
 
   var started=false;
