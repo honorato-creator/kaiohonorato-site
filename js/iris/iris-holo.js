@@ -16,14 +16,14 @@ const LIP_IN = [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308, 324, 318, 402,
 
 /* acabamento holográfico comum: varredura, linhas e cintilação sobre a textura */
 const holoChunk = `
-  uniform float uTime; uniform float uTalk; uniform float uGlow; uniform float uTint;
+  uniform float uTime; uniform float uTalk; uniform float uGlow; uniform float uTint; uniform vec3 uCol;
   vec3 holo(vec3 c, vec2 uv, float y){
     float l = dot(c, vec3(.299,.587,.114));
-    c = mix(c, vec3(.25,.95,.9)*(l*1.25+.04) + c*.25, uTint);
+    c = mix(c, uCol*(l*1.25+.04) + c*.25, uTint);
     float lines = .9 + .1*sin(y*1.6 + uTime*3.);
     float sweep = smoothstep(.06, 0., abs(fract(uv.y*.6 - uTime*.12) - .5) - .44);
     float flick = .97 + .03*sin(uTime*37.)*sin(uTime*13.);
-    vec3 teal = vec3(.37,.95,.9);
+    vec3 teal = uCol;
     c = pow(c, vec3(.85))*1.18; // clareia sem estourar
     return c*lines*flick*(1. + uGlow*.3 + uTalk*.2) + teal*sweep*.14;
   }`;
@@ -47,18 +47,23 @@ export function createIrisHolo(host, opts = {}) {
   const cx = W / 2, cy = H / 2;
 
   /* ---------- fundo: o busto inteiro como um painel de luz ---------- */
-  const uniforms = { uTime: { value: 0 }, uTalk: { value: 0 }, uGlow: { value: 0 }, uTint: { value: opts.tint ?? 0.1 }, map: { value: tex } };
+  const uniforms = { uTime: { value: 0 }, uTalk: { value: 0 }, uGlow: { value: 0 }, uTint: { value: opts.tint ?? 0.1 }, uCol: { value: new THREE.Color(opts.color || '#5FECE6') }, uVig: { value: opts.vignette ? 1 : 0 }, uDark: { value: opts.darkCut ?? 0 }, map: { value: tex } };
   const vtx = `varying vec2 vUv; varying float vY; void main(){ vUv = uv; vec4 wp = modelMatrix*vec4(position,1.); vY = wp.y; gl_Position = projectionMatrix*viewMatrix*wp; }`;
   const bgMat = new THREE.ShaderMaterial({
     uniforms, transparent: true,
     vertexShader: vtx,
     fragmentShader: `uniform sampler2D map; varying vec2 vUv; varying float vY; ${holoChunk}
+      uniform float uVig; uniform float uDark;
       void main(){ vec4 t4 = texture2D(map, vUv); vec3 c = t4.rgb; float a = t4.a;
+        // fotos sem recorte: some nas bordas (vinheta) e o fundo escuro vira transparência de holograma
+        float lum0 = dot(c, vec3(.299,.587,.114));
+        a *= mix(1., smoothstep(.62, .42, length((vUv - vec2(.5,.52))*vec2(1.,.82))), uVig);
+        a *= mix(1., smoothstep(.035, .2, lum0), uDark);
         // brilho ciano na silhueta, como borda de holograma
         float e = 0.; vec2 px = vec2(2.5)/vec2(textureSize(map,0));
         e += texture2D(map, vUv+vec2(px.x,0.)).a + texture2D(map, vUv-vec2(px.x,0.)).a + texture2D(map, vUv+vec2(0.,px.y)).a + texture2D(map, vUv-vec2(0.,px.y)).a;
         float rim = clamp(a - e*.25 + .5, 0., 1.)*a; rim = smoothstep(.55,.95,rim)*0. + (1.-smoothstep(.0,.9,e*.25))*a;
-        c += vec3(.37,.95,.9)*rim*.9;
+        c += uCol*rim*.9;
         float edge = smoothstep(0., .04, vUv.x)*smoothstep(1., .96, vUv.x)*smoothstep(0., .03, vUv.y)*smoothstep(1., .97, vUv.y);
         gl_FragColor = vec4(holo(c, vUv, vY), a*edge); }`,
   });
@@ -85,9 +90,10 @@ export function createIrisHolo(host, opts = {}) {
   geo.setIndex(TRI);
   const pos = geo.attributes.position;
   const faceMat = new THREE.ShaderMaterial({
-    uniforms, vertexShader: vtx,
-    fragmentShader: `uniform sampler2D map; varying vec2 vUv; varying float vY; ${holoChunk}
-      void main(){ gl_FragColor = vec4(holo(texture2D(map, vUv).rgb, vUv, vY), 1.); }`,
+    uniforms, vertexShader: vtx, transparent: true,
+    fragmentShader: `uniform sampler2D map; uniform float uDark; varying vec2 vUv; varying float vY; ${holoChunk}
+      void main(){ vec3 c = texture2D(map, vUv).rgb; float a = mix(1., smoothstep(.035, .2, dot(c, vec3(.299,.587,.114))), uDark);
+        gl_FragColor = vec4(holo(c, vUv, vY), a); }`,
   });
   const face = new THREE.Mesh(geo, faceMat);
 
@@ -116,15 +122,15 @@ export function createIrisHolo(host, opts = {}) {
   const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pp, 3)); pg.setAttribute('seed', new THREE.BufferAttribute(ps, 1));
   const pMat = new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-    uniforms: { uTime: uniforms.uTime, uH: { value: H }, uPx: { value: renderer.getPixelRatio() } },
+    uniforms: { uTime: uniforms.uTime, uCol: uniforms.uCol, uH: { value: H }, uPx: { value: renderer.getPixelRatio() } },
     vertexShader: `attribute float seed; uniform float uTime; uniform float uH; uniform float uPx; varying float vA;
       void main(){ vec3 p = position; p.y = mod(p.y + uTime*(10. + seed*25.) + uH*.5, uH) - uH*.5;
         vA = smoothstep(-uH*.5, -uH*.3, p.y)*smoothstep(uH*.5, uH*.2, p.y)*(.35 + .65*seed);
         vec4 mv = modelViewMatrix*vec4(p,1.); gl_PointSize = (1.5 + seed*2.5)*uPx; gl_Position = projectionMatrix*mv; }`,
-    fragmentShader: `varying float vA; void main(){ float d = length(gl_PointCoord-.5); gl_FragColor = vec4(.45,1.,.95, smoothstep(.5,0.,d)*vA); }`,
+    fragmentShader: `uniform vec3 uCol; varying float vA; void main(){ float d = length(gl_PointCoord-.5); gl_FragColor = vec4(uCol*1.15, smoothstep(.5,0.,d)*vA); }`,
   });
   bust.add(new THREE.Points(pg, pMat));
-  const ring = new THREE.Mesh(new THREE.RingGeometry(W * .3, W * .31, 96), new THREE.MeshBasicMaterial({ color: '#5FE3F0', transparent: true, opacity: .5, side: THREE.DoubleSide }));
+  const ring = new THREE.Mesh(new THREE.RingGeometry(W * .3, W * .31, 96), new THREE.MeshBasicMaterial({ color: uniforms.uCol.value, transparent: true, opacity: .5, side: THREE.DoubleSide }));
   ring.rotation.x = -Math.PI / 2.3; ring.position.set(0, -H * .5 + 4, PLANE_Z + 20); bust.add(ring);
 
   /* ---------- pesos dos "músculos" ---------- */
