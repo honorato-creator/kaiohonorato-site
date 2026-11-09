@@ -124,12 +124,16 @@ button{cursor:pointer}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
 /* reator da abertura */
-.reactor{position:relative;width:min(100%,460px);aspect-ratio:1;margin-inline:auto;user-select:none;will-change:transform}
-.reactor svg{display:block;width:100%;height:100%;overflow:visible}
+.reactor{position:relative;width:min(100%,440px);aspect-ratio:1;margin-inline:auto;user-select:none;will-change:transform;background:#09090b;border-radius:24px;padding:16px;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+.reactor svg{position:relative;display:block;width:100%;height:100%;overflow:visible}
+.rp-glow{position:absolute;inset:0;background:linear-gradient(to top right,rgba(234,88,12,.1),transparent 50%);opacity:0;transition:opacity .7s}
+.reactor:hover .rp-glow{opacity:1}
+.rp-bg{opacity:.4;transition:opacity .5s}
+.reactor:hover .rp-bg{opacity:.75}
 .rp-hud,.rp-seg{transform-box:view-box;transform-origin:200px 200px}
 .rp-seg{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .reactor:hover .rp-seg{transform:scale(1.05)}
-.rp-ping{transform-box:fill-box;transform-origin:center;animation:rp-ping 3s cubic-bezier(0,0,.2,1) infinite}
+.rp-ping{transform-box:fill-box;transform-origin:center;animation:rp-ping 4s cubic-bezier(0,0,.2,1) infinite}
 @keyframes rp-ping{75%,100%{transform:scale(2);opacity:0}}
 .rp-pulse{animation:rp-pulse 2s cubic-bezier(.4,0,.6,1) infinite}
 @keyframes rp-pulse{50%{opacity:.5}}
@@ -903,44 +907,44 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
     </div>
     <div class="hero-fig" aria-hidden="true">
       <div class="reactor" id="reactor">
+        <div class="rp-glow"></div>
         <svg viewBox="0 0 400 400" role="presentation">
           <defs>
             <radialGradient id="rcGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0" stop-color="#f97316"/><stop offset=".5" stop-color="#c2410c" stop-opacity=".9"/><stop offset=".85" stop-color="#3d1404" stop-opacity=".95"/><stop offset="1" stop-color="#120602"/>
+              <stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".25" stop-color="#ea580c"/><stop offset=".7" stop-color="#7c2d12" stop-opacity=".9"/><stop offset="1" stop-color="#09090b"/>
             </radialGradient>
             <filter id="rcShadow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"/><feOffset dx="2" dy="8" result="offsetBlur"/>
-              <feComponentTransfer><feFuncA type="linear" slope=".45"/></feComponentTransfer>
+              <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="blur"/><feOffset dx="0" dy="4" result="offsetBlur"/>
+              <feComponentTransfer><feFuncA type="linear" slope=".6"/></feComponentTransfer>
               <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <g opacity=".5">
-            <circle cx="200" cy="200" r="175" fill="none" stroke="#f97316" stroke-width="1" stroke-dasharray="4 12"/>
-            <path d="M200 25 L200 375 M25 200 L375 200" stroke="#f97316" stroke-width=".6" stroke-dasharray="2 8"/>
-            <path d="M260 260 L320 320 L370 320" fill="none" stroke="#f97316" stroke-width="1.2"/>
-            <circle cx="370" cy="320" r="3" fill="#f97316"/><circle cx="320" cy="320" r="2" fill="#f97316"/><circle cx="280" cy="280" r="2" fill="#f97316"/>
-            <path d="M275 60 L275 30 L320 30" fill="none" stroke="#f97316" stroke-width="1" opacity=".6"/><circle cx="320" cy="30" r="2.5" fill="#f97316"/>
+          <g class="rp-bg">
+            <circle cx="200" cy="200" r="185" fill="none" stroke="#ea580c" stroke-width=".8" stroke-dasharray="3 12"/>
+            <circle cx="200" cy="200" r="160" fill="none" stroke="#ea580c" stroke-width=".5" stroke-opacity=".5"/>
+            <path d="M200 10 L200 390 M10 200 L390 200" stroke="#ea580c" stroke-width=".6" stroke-dasharray="2 10"/>
+            <path d="M70 50 L90 40 L110 50 L110 70 L90 80 L70 70 Z" fill="none" stroke="#ea580c" stroke-width=".7"/>
+            <path d="M310 330 L330 320 L350 330 L350 350 L330 360 L310 350 Z" fill="none" stroke="#ea580c" stroke-width=".7"/>
+            <path d="M260 260 L330 330 L380 330" fill="none" stroke="#ea580c" stroke-width="1"/>
+            <circle class="rp-ping" cx="380" cy="330" r="3.5" fill="#ea580c"/>
+            <circle cx="330" cy="330" r="2" fill="#ea580c"/>
           </g>
-          <g class="rp-hud" id="rpHud"><circle cx="200" cy="200" r="140" fill="none" stroke="#f97316" stroke-width="1.5" stroke-dasharray="8 16 2 16" opacity=".7"/></g>
+          <g id="rpHud"><circle cx="200" cy="200" r="135" fill="none" stroke="#ea580c" stroke-width="2" stroke-dasharray="12 24 4 24" opacity=".85"/></g>
+          <g id="rpRing"><circle cx="200" cy="200" r="115" fill="none" stroke="#18181b" stroke-width="8" stroke-dasharray="30 40 10 50" opacity=".6"/></g>
           <g class="rp-seg" filter="url(#rcShadow)">
-            <path d="M 65,115 A 125,125 0 0,1 175,70" fill="none" stroke="#18181b" stroke-width="24" stroke-linecap="round"/>
-            <path d="M 315,145 A 125,125 0 0,1 305,255" fill="none" stroke="#18181b" stroke-width="24" stroke-linecap="round"/>
-            <path d="M 85,275 A 125,125 0 0,1 195,315" fill="none" stroke="#18181b" stroke-width="24" stroke-linecap="round"/>
+            <path d="M 60,110 A 130,130 0 0,1 180,65" fill="none" stroke="#121215" stroke-width="26" stroke-linecap="round"/>
+            <path d="M 315,140 A 130,130 0 0,1 300,265" fill="none" stroke="#121215" stroke-width="26" stroke-linecap="round"/>
+            <path d="M 85,275 A 130,130 0 0,1 200,325" fill="none" stroke="#121215" stroke-width="26" stroke-linecap="round"/>
           </g>
-          <circle cx="200" cy="200" r="75" fill="url(#rcGlow)" stroke="#f97316" stroke-width="1.2" stroke-opacity=".8"/>
-          <g opacity=".65">
-            <ellipse cx="200" cy="200" rx="75" ry="26" fill="none" stroke="#f97316" stroke-width=".8"/>
-            <ellipse cx="200" cy="200" rx="26" ry="75" fill="none" stroke="#f97316" stroke-width=".8"/>
-            <circle cx="200" cy="200" r="52" fill="none" stroke="#fff" stroke-width=".4" stroke-dasharray="2 4" opacity=".3"/>
+          <circle cx="200" cy="200" r="80" fill="url(#rcGlow)" stroke="#ea580c" stroke-width="2"/>
+          <g opacity=".75">
+            <ellipse cx="200" cy="200" rx="80" ry="28" fill="none" stroke="#ffedd5" stroke-width="1"/>
+            <ellipse cx="200" cy="200" rx="28" ry="80" fill="none" stroke="#ffedd5" stroke-width="1"/>
+            <circle cx="200" cy="200" r="55" fill="none" stroke="#ea580c" stroke-width=".8" stroke-dasharray="3 4"/>
           </g>
-          <path d="M160 215 L215 170 L235 205 Z" fill="none" stroke="#f97316" stroke-width=".8" opacity=".7"/>
-          <circle class="rp-pulse" cx="215" cy="170" r="3.5" fill="#fff"/>
-          <circle cx="160" cy="215" r="2.5" fill="#f97316"/><circle cx="235" cy="205" r="3" fill="#f97316"/>
-          <g opacity=".8">
-            <circle class="rp-ping" cx="200" cy="332" r="3.5" fill="#f97316"/>
-            <circle cx="200" cy="332" r="2" fill="#fff"/>
-            <line x1="200" y1="275" x2="200" y2="332" stroke="#f97316" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/>
-          </g>
+          <circle class="rp-pulse" cx="225" cy="170" r="4.5" fill="#fff"/>
+          <circle cx="160" cy="220" r="3" fill="#ea580c"/><circle cx="220" cy="235" r="3.5" fill="#ea580c"/>
+          <path d="M225 170 L160 220 L220 235 Z" fill="none" stroke="#fff" stroke-width=".8" opacity=".8"/>
         </svg>
       </div>
     </div>
@@ -1119,8 +1123,8 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
 
   /* reator da abertura: o anel externo gira (acelera com o mouse em cima) e o reator segue o mouse suavemente */
   (function(){
-    var re=$('#reactor'),hud=$('#rpHud');if(!re||reduce)return;
-    var on=true,over=false,ang=0,spd=360/40,tx=0,ty=0,cx=0,cy=0,last=performance.now();
+    var re=$('#reactor'),hud=$('#rpHud'),ring=$('#rpRing');if(!re||reduce)return;
+    var on=true,over=false,ang=0,spd=360/45,ang2=0,spd2=360/30,tx=0,ty=0,cx=0,cy=0,last=performance.now();
     if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(re);
     re.addEventListener('mouseenter',function(){over=true});re.addEventListener('mouseleave',function(){over=false});
     document.addEventListener('mousemove',function(e){tx=(innerWidth/2-e.clientX)/25;ty=(innerHeight/2-e.clientY)/25},{passive:true});
@@ -1128,7 +1132,8 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     (function tick(now){
       var dt=Math.min(.05,(now-last)/1000);last=now;
       if(on){
-        spd+=((over?360/20:360/40)-spd)*.04;ang=(ang+spd*dt)%360;hud.setAttribute('transform','rotate('+ang.toFixed(2)+' 200 200)');
+        spd+=((over?360/20:360/45)-spd)*.04;ang=(ang+spd*dt)%360;hud.setAttribute('transform','rotate('+ang.toFixed(2)+' 200 200)');
+        spd2+=((over?360/12:360/30)-spd2)*.04;ang2=(ang2-spd2*dt)%360;ring.setAttribute('transform','rotate('+ang2.toFixed(2)+' 200 200)');
         cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;re.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px)';
       }
       requestAnimationFrame(tick);
