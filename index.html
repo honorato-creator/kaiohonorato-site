@@ -123,7 +123,7 @@ button{cursor:pointer}
 .hero .lede{margin-top:30px}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
-.rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
+.rx{position:relative;will-change:transform}.rx .orb{position:absolute;left:-14%;top:-14%;width:128%;height:128%;pointer-events:none}#orbB{z-index:0}.rx #nodes{position:relative;z-index:1}#neu{z-index:2}#orbF{z-index:3}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
   .hero-fig{grid-column:1/-1;justify-self:start;max-width:340px}
@@ -891,7 +891,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
       </div>
     </div>
     <div class="hero-fig" aria-hidden="true">
-      <div class="rx" id="rx"><svg id="nodes" viewBox="0 0 500 500" role="presentation">
+      <div class="rx" id="rx"><canvas class="orb" id="orbB"></canvas><svg id="nodes" viewBox="0 0 500 500" role="presentation">
         <defs>
           <radialGradient id="cg" cx="50%" cy="50%" r="50%">
             <stop offset="0" stop-color="#FFE9D6"/><stop offset=".28" stop-color="#FF8A4C"/><stop offset=".7" stop-color="#E65516"/><stop offset="1" stop-color="#E65516" stop-opacity="0"/>
@@ -908,7 +908,7 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
           <circle cx="250" cy="138" r="7" fill="#E65516"/><circle cx="347" cy="306" r="7" fill="#313236"/><circle cx="153" cy="306" r="7" fill="#313236"/></g>
         <circle cx="250" cy="250" r="106" fill="#313236"/>
         <circle id="wave" cx="250" cy="250" r="90" fill="none" stroke="#E65516" stroke-width="3" opacity="0"/>
-      </svg><canvas id="neu"></canvas></div>
+      </svg><canvas id="neu"></canvas><canvas class="orb" id="orbF"></canvas></div>
     </div>
   </div>
 </section>
@@ -1096,7 +1096,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
     var dt=Math.min(50,t-last)/1000;last=t;
     if(reduce){rot(rC,0);return}
     var near=ptr?Math.max(0,1-Math.hypot(ptr.x,ptr.y)/1.6):0;
-    heat+=(near-heat)*.06;
+    heat+=(near-heat)*.06;window.rxHeat=heat;
     var sp=1+heat*3.2;
     ang[0]+=dt*6*sp;ang[1]-=dt*9*sp;ang[2]+=dt*26*sp;ang[3]-=dt*3*sp;
     rot(rA,ang[0]);rot(rB,ang[1]);rot(rC,ang[2]);rot(tk,ang[3]);
@@ -1108,6 +1108,63 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   }
 
 
+
+  /* órbitas 3D do reator: anéis inclinados que passam por trás e pela frente do núcleo, com cometas e faíscas */
+  (function(){
+    var cb=$('#orbB'),cf=$('#orbF');if(!cb||!cf)return;
+    var xb=cb.getContext('2d'),xf=cf.getContext('2d'),S=0,dpr=1,on=true,last=performance.now(),T=0;
+    function fit(){dpr=Math.min(2,devicePixelRatio||1);S=cb.clientWidth||400;[cb,cf].forEach(function(c){c.width=c.height=Math.round(S*dpr)})}
+    fit();addEventListener('resize',fit);
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(cb);
+    // raio relativo ao tamanho da camada (o núcleo escuro tem ~0.166 do tamanho dela)
+    var O=[
+      {r:.215,inc:1.2,node:.35,spd:.22,col:[230,85,22],w:2.6,cm:2},
+      {r:.235,inc:1.36,node:2.1,spd:-.16,col:[40,190,220],w:2,cm:1},
+      {r:.255,inc:1.0,node:-.9,spd:.12,col:[124,96,240],w:1.8,cm:1},
+      {r:.28,inc:1.45,node:1.25,spd:-.09,col:[245,150,70],w:1.5,cm:1}
+    ];
+    O.forEach(function(o){o.c=[];for(var i=0;i<o.cm;i++)o.c.push(Math.random()*6.28)});
+    var SP=[];for(var i=0;i<46;i++)SP.push({a:Math.random()*6.28,r:.2+Math.random()*.25,z:Math.random()*2-1,v:.02+Math.random()*.05,s:Math.random()});
+    function P(o,th,rot){ // ponto da órbita em 3D, projetado com perspectiva leve
+      var x=Math.cos(th),y=Math.sin(th),z=0;
+      var ci=Math.cos(o.inc),si=Math.sin(o.inc);var y1=y*ci,z1=y*si;
+      var n=o.node+rot,cn=Math.cos(n),sn=Math.sin(n);var x2=x*cn-y1*sn,y2=x*sn+y1*cn;
+      var f=1/(1-z1*.22);return [S/2+x2*o.r*S*f,S/2+y2*o.r*S*f,z1];
+    }
+    function seg(ctx,a,b,col,al,w){ctx.strokeStyle='rgba('+col+','+al.toFixed(3)+')';ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke()}
+    function draw(now){
+      requestAnimationFrame(draw);
+      var dt=Math.min(.05,(now-last)/1000);last=now;if(!on)return;
+      var heat=window.rxHeat||0;T+=dt*(reduce?0:1)*(1+heat*2.2);
+      [xb,xf].forEach(function(x){x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,S,S);x.lineCap='round'});
+      O.forEach(function(o,k){
+        var rot=T*o.spd*.35,N=140,col=o.col.join(','),prev=P(o,0,rot);
+        for(var i=1;i<=N;i++){
+          var cur=P(o,i/N*6.2832,rot),z=(prev[2]+cur[2])/2,ctx=z<0?xb:xf,dep=.45+.55*(z+1)/2;
+          seg(ctx,prev,cur,col,.16*dep*(1+heat),o.w*4);           // brilho largo
+          seg(ctx,prev,cur,col,(.85+heat*.15)*dep,o.w);              // linha fina
+          prev=cur;
+        }
+        // cometas: cabeça brilhante e rastro
+        o.c.forEach(function(ph,j){
+          var head=ph+T*(1.1+k*.25)*(o.spd>0?1:-1);
+          for(var t=0;t<22;t++){
+            var th=head-(o.spd>0?1:-1)*t*.035,p=P(o,th,rot),ctx=p[2]<0?xb:xf,a=(1-t/22),dep=.5+.5*(p[2]+1)/2;
+            ctx.fillStyle='rgba('+(t<3?'255,255,255':col)+','+(a*.95*dep).toFixed(3)+')';
+            ctx.beginPath();ctx.arc(p[0],p[1],(t<2?3.2:2.2*a+.6)*dep,0,6.3);ctx.fill();
+          }
+        });
+      });
+      // faíscas flutuando em volta
+      SP.forEach(function(p){
+        p.a+=p.v*dt*(1+heat*2);var x=S/2+Math.cos(p.a)*p.r*S,y=S/2+Math.sin(p.a*1.3)*p.r*S*.8,ctx=p.z<0?xb:xf;
+        var tw=.35+.65*Math.abs(Math.sin(T*1.7+p.s*9));
+        ctx.fillStyle=p.s<.5?'rgba(255,150,90,'+(tw*.8)+')':'rgba(140,235,255,'+(tw*.8)+')';
+        ctx.beginPath();ctx.arc(x,y,1+p.s*1.6,0,6.3);ctx.fill();
+      });
+    }
+    requestAnimationFrame(draw);
+  })();
   /* rede neural no núcleo */
   (function(){
     var cv=$('#neu'),cx=cv.getContext('2d'),S=0,dpr=1;
