@@ -24,7 +24,7 @@ const holoChunk = `
     float sweep = smoothstep(.06, 0., abs(fract(uv.y*.6 - uTime*.12) - .5) - .44);
     float flick = .97 + .03*sin(uTime*37.)*sin(uTime*13.);
     vec3 teal = vec3(.37,.95,.9);
-    c = pow(c, vec3(.85))*1.18; // clareia sem estourar
+    c *= 1.02;
     return c*lines*flick*(1. + uGlow*.3 + uTalk*.2) + teal*sweep*.14;
   }`;
 
@@ -59,7 +59,10 @@ export function createIrisHolo(host, opts = {}) {
         e += texture2D(map, vUv+vec2(px.x,0.)).a + texture2D(map, vUv-vec2(px.x,0.)).a + texture2D(map, vUv+vec2(0.,px.y)).a + texture2D(map, vUv-vec2(0.,px.y)).a;
         float rim = clamp(a - e*.25 + .5, 0., 1.)*a; rim = smoothstep(.55,.95,rim)*0. + (1.-smoothstep(.0,.9,e*.25))*a;
         c += vec3(.37,.95,.9)*rim*.9;
-        float edge = smoothstep(0., .04, vUv.x)*smoothstep(1., .96, vUv.x)*smoothstep(0., .03, vUv.y)*smoothstep(1., .97, vUv.y);
+        float edge = smoothstep(0., .04, vUv.x)*smoothstep(1., .96, vUv.x)*smoothstep(.02, .26, vUv.y)*smoothstep(1., .97, vUv.y);
+        // perto da base o busto vira pixels soltos (dissolvendo no feixe)
+        float grain = fract(sin(dot(floor(vUv*vec2(90.,110.)), vec2(12.9898,78.233)))*43758.5453);
+        edge *= mix(step(grain, smoothstep(.04, .3, vUv.y)*1.15), 1., smoothstep(.22, .34, vUv.y));
         gl_FragColor = vec4(holo(c, vUv, vY), a*edge); }`,
   });
 
@@ -127,6 +130,57 @@ export function createIrisHolo(host, opts = {}) {
   const ring = new THREE.Mesh(new THREE.RingGeometry(W * .3, W * .31, 96), new THREE.MeshBasicMaterial({ color: '#5FE3F0', transparent: true, opacity: .5, side: THREE.DoubleSide }));
   ring.rotation.x = -Math.PI / 2.3; ring.position.set(0, -H * .5 + 4, PLANE_Z + 20); bust.add(ring);
 
+  /* ---------- palco de projeção: feixe de luz do chão e luz por trás da cabeça (o fundo fica na seção) ---------- */
+  let stageDisc = null;
+  if (opts.stage !== false) {
+    ring.visible = false;
+    const small = matchMedia('(max-width: 700px)').matches;
+    const FLOOR_Y = -H * .56, CHIN_Y = -H * .3, BZ = PLANE_Z + 30;
+    const add = (o, order) => { o.renderOrder = order; scene.add(o); return o; };
+    const glsl3 = { transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending };
+
+    // luz suave por trás da cabeça: ela "acende" sobre o fundo escuro
+    const bc = document.createElement('canvas'); bc.width = bc.height = 128; const bg2 = bc.getContext('2d');
+    const br = bg2.createRadialGradient(64, 64, 0, 64, 64, 64); br.addColorStop(0, 'rgba(70,150,220,.18)'); br.addColorStop(.5, 'rgba(50,110,190,.06)'); br.addColorStop(1, 'rgba(40,90,160,0)');
+    bg2.fillStyle = br; bg2.fillRect(0, 0, 128, 128);
+    const back = add(new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(bc), ...glsl3 })), -1);
+    back.position.set(0, H * .08, PLANE_Z - 60); back.scale.set(W * 1.25, H * 1.0, 1);
+
+    // plataforma holográfica no chão: anéis, marcações, setas e pontos (desenhada em canvas, girando devagar)
+    const dc = document.createElement('canvas'); dc.width = dc.height = 1024; const dg = dc.getContext('2d'), m = 512;
+    const circ = (r, w, a, dash) => { dg.beginPath(); dg.setLineDash(dash || []); dg.lineWidth = w; dg.strokeStyle = `rgba(90,190,255,${a})`; dg.arc(m, m, r, 0, Math.PI * 2); dg.stroke(); dg.setLineDash([]); };
+    dg.shadowColor = 'rgba(80,180,255,.9)'; dg.shadowBlur = 14;
+    circ(490, 4, .9); circ(470, 2, .5, [3, 9]);
+    for (let i = 0; i < 120; i++) { const ang = i / 120 * Math.PI * 2, r1 = 470, r2 = i % 5 ? 452 : 440; dg.beginPath(); dg.lineWidth = 2; dg.strokeStyle = 'rgba(120,200,255,.55)'; dg.moveTo(m + Math.cos(ang) * r1, m + Math.sin(ang) * r1); dg.lineTo(m + Math.cos(ang) * r2, m + Math.sin(ang) * r2); dg.stroke(); }
+    for (let i = 0; i < 6; i++) { const a0 = i / 6 * Math.PI * 2 + .12; dg.beginPath(); dg.lineWidth = 34; dg.strokeStyle = 'rgba(40,120,230,.45)'; dg.arc(m, m, 360, a0, a0 + .72); dg.stroke(); }
+    circ(320, 3, .8); circ(300, 1.5, .4, [14, 8]); circ(200, 3, .75); circ(150, 10, .35); circ(96, 4, .9);
+    for (let i = 0; i < 8; i++) { const ang = i / 8 * Math.PI * 2; dg.beginPath(); dg.fillStyle = 'rgba(150,240,255,.95)'; dg.arc(m + Math.cos(ang) * 420, m + Math.sin(ang) * 420, 9, 0, 7); dg.fill(); }
+    dg.font = '700 46px ui-monospace,Consolas,monospace'; dg.fillStyle = 'rgba(120,210,255,.8)'; dg.textAlign = 'center'; dg.textBaseline = 'middle';
+    [[m - 250, m, '<<<'], [m + 250, m, '>>>'], [m, m - 250, '▶▶'], [m, m + 250, '◀◀']].forEach(([x, y, t]) => dg.fillText(t, x, y));
+    const cgr = dg.createRadialGradient(m, m, 0, m, m, 120); cgr.addColorStop(0, 'rgba(255,255,255,1)'); cgr.addColorStop(.3, 'rgba(140,230,255,.85)'); cgr.addColorStop(1, 'rgba(60,150,255,0)');
+    dg.shadowBlur = 0; dg.fillStyle = cgr; dg.beginPath(); dg.arc(m, m, 120, 0, 7); dg.fill();
+    const discTex = new THREE.CanvasTexture(dc); discTex.colorSpace = THREE.SRGBColorSpace;
+    const disc = add(new THREE.Mesh(new THREE.CircleGeometry(W * .52, 96), new THREE.MeshBasicMaterial({ map: discTex, ...glsl3 })), 1);
+    disc.rotation.x = -Math.PI / 2 + .42; disc.position.set(0, FLOOR_Y, BZ - 40);
+
+    // colunas de luz: largas, suaves, saindo da plataforma até a Iris, com faixas subindo devagar
+    const colH = (CHIN_Y + H * .18) - FLOOR_Y;
+    const col = add(new THREE.Mesh(new THREE.PlaneGeometry(W * 1.05, colH), new THREE.ShaderMaterial({ ...glsl3,
+      uniforms: { uTime: uniforms.uTime, uTalk: uniforms.uTalk },
+      vertexShader: `varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `uniform float uTime; uniform float uTalk; varying vec2 vU;
+        void main(){ float u = (vU.x - .5)*2.; float t = vU.y;
+          float w = mix(.62, .9, t);                                       // larga como a plataforma
+          float body = exp(-pow(u/w*1.35, 4.));                             // bordas macias
+          float cols = .55 + .45*pow(abs(sin(u*5.2 + .6)), 3.);             // colunas mais claras, como na referência
+          float drift = .8 + .2*sin(t*14. - uTime*1.6 + u*3.);              // brilho subindo devagar
+          float fade = (1. - smoothstep(.55, 1., t))*smoothstep(0., .08, t);
+          float a = body*cols*drift*fade*(.46 + uTalk*.12);
+          gl_FragColor = vec4(vec3(.32,.66,1.)*a, clamp(a, 0., 1.)); }` })), 2);
+    col.position.set(0, FLOOR_Y + colH / 2, BZ - 50);
+    stageDisc = disc;
+  }
+
   /* ---------- pesos dos "músculos" ---------- */
   const wBlink = new Float32Array(N), blinkTarget = new Float32Array(N), wJaw = new Float32Array(N), wUp = new Float32Array(N), wCorner = new Float32Array(N);
   EYES.forEach(e => {
@@ -167,8 +221,8 @@ export function createIrisHolo(host, opts = {}) {
   function resize() {
     const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    const fit = Math.max(H * 1.08, (W * 1.08) / camera.aspect);
-    camera.position.set(0, 0, fit / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))));
+    const fit = opts.stage !== false ? Math.max(H * 1.22, (W * 1.3) / camera.aspect) : Math.max(H * 1.08, (W * 1.08) / camera.aspect);
+    camera.position.set(0, opts.stage !== false ? -H * .04 : 0, fit / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))));
     camera.updateProjectionMatrix();
   }
   new ResizeObserver(resize).observe(host); resize();
@@ -234,6 +288,7 @@ export function createIrisHolo(host, opts = {}) {
     uniforms.uTime.value = t; uniforms.uTalk.value = Math.min(1, level * 1.5);
     uniforms.uGlow.value += ((talking ? .6 : .1 + .08 * Math.sin(t * 1.7)) - uniforms.uGlow.value) * .08;
     ring.material.opacity = .35 + level * .5; ring.rotation.z = t * .2;
+    if (stageDisc) stageDisc.rotation.z = t * .06;
     renderer.render(scene, camera);
   }
   frame();
