@@ -40,7 +40,8 @@ export function createIrisHolo(host, opts = {}) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(28, 1, 1, 5000);
 
-  const tex = new THREE.TextureLoader().load(opts.src || 'img/iris-holo.webp');
+  /* o canvas só aparece quando o rosto carregou: nada de foto ou tela vazia antes */
+  const tex = new THREE.TextureLoader().load(opts.src || 'img/iris-holo.webp', () => { if (opts.onReady) requestAnimationFrame(() => requestAnimationFrame(opts.onReady)); });
   tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
 
   const bust = new THREE.Group(); scene.add(bust);
