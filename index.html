@@ -1221,7 +1221,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
       var heat=window.rxHeat||0;T+=dt*(reduce?0:1)*(1+heat*2.2);
       [xb,xf].forEach(function(x){x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,S,S);x.lineCap='round'});
       O.forEach(function(o,k){
-        var rot=T*o.spd*.35,N=140,col=o.col.join(','),prev=P(o,0,rot);
+        var rot=T*o.spd*.35,N=72,col=o.col.join(','),prev=P(o,0,rot);
         for(var i=1;i<=N;i++){
           var cur=P(o,i/N*6.2832,rot),z=(prev[2]+cur[2])/2,ctx=z<0?xb:xf,dep=.45+.55*(z+1)/2;
           seg(ctx,prev,cur,col,.16*dep*(1+heat),o.w*4);           // brilho largo
@@ -1319,7 +1319,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
      dor:'Leads chegando por WhatsApp, e-mail e site, agentes atendendo clientes, sites de clientes no ar. Acompanhar tudo isso olhando app por app tomava tempo e deixava coisa passar.',
      feito:'Transformei uma TV Box simples em uma central de comando: ligou na tomada, abre direto o painel. Por trás, o n8n coloca para trabalhar a Iris (agente de IA que atende no WhatsApp e marca diagnóstico), um supervisor que revisa as conversas dela, um vigia que confere sites e agentes a cada 5 minutos e tenta consertar sozinho, e um disparo para a lista com limite anti-spam. O que precisa de mim aparece na TV, chega no meu WhatsApp e vira um relatório todo dia às 8h.',
      stack:['n8n','IA','WhatsApp','Supabase','Notion','TV Box Android'],note:'Print real do painel (25/10/2026). Nomes de clientes ocultos.',
-     shots:[['Painel','img/central-painel-2.jpg','Painel da central em 25 de outubro de 2026, com caixa de entrada, leads, prospecção, atividade da Iris no WhatsApp, cobrança e sistemas no ar',[[17,26,'Caixa de entrada: o que chegou e já foi respondido'],[50,36,'Iris, o agente de IA no WhatsApp, online'],[85,80,'Sistemas no ar: vigia os sites a cada 5 minutos'],[17,57,'Leads abertos, vindos do Notion']]],['Como funciona','img/central-fluxo.jpg','Diagrama: WhatsApp, formulários do site, Notion e sites entram no n8n com IA e no Supabase, e chegam como painel na TV, aviso no WhatsApp e relatório das 8h',[]]]},
+     shots:[['Painel','img/central-painel-2.webp','Painel da central em 25 de outubro de 2026, com caixa de entrada, leads, prospecção, atividade da Iris no WhatsApp, cobrança e sistemas no ar',[[17,26,'Caixa de entrada: o que chegou e já foi respondido'],[50,36,'Iris, o agente de IA no WhatsApp, online'],[85,80,'Sistemas no ar: vigia os sites a cada 5 minutos'],[17,57,'Leads abertos, vindos do Notion']]],['Como funciona','img/central-fluxo.jpg','Diagrama: WhatsApp, formulários do site, Notion e sites entram no n8n com IA e no Supabase, e chegam como painel na TV, aviso no WhatsApp e relatório das 8h',[]]]},
     {id:'gerontodata',name:'GerontoData',type:'app',status:'em desenvolvimento',
      dor:'A avaliação gerontológica envolve muitos instrumentos. Em papel e planilha, o dado se espalha e o laudo demora a sair.',
      feito:'App web com cadastro, escalas validadas e laudo em PDF para compartilhar por e-mail ou WhatsApp. Reconstruído em React e Supabase para as turmas da UFSCar.',
@@ -1329,7 +1329,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
      dor:'Uma profissional autônoma que precisava mostrar seus trabalhos de forma mais autêntica. Além de enviar orçamentos de forma mais otimizada.',
      feito:'Site-portfólio feito a partir da identidade visual disponibilizada, com aba de proposta comercial/orçamento (que aparece apenas para quem recebe o link) e painel no Notion para atualizar trabalhos de forma descomplicada e sem necessitar de um programador.',
      stack:['Site sob medida','Notion como painel'],note:'',
-     shots:[['Início','img/shot-manu.jpg','Página inicial do site da Manu Justel, com fotos em polaroides e selos sobre fundo bege',[[50,38,'Frase de abertura com a personalidade dela'],[12,48,'Fotos em polaroides: dá para arrastar pelo quadro'],[50,72,'Botões para ver os trabalhos e chamar']]]]},
+     shots:[['Início','img/shot-manu.webp','Página inicial do site da Manu Justel, com fotos em polaroides e selos sobre fundo bege',[[50,38,'Frase de abertura com a personalidade dela'],[12,48,'Fotos em polaroides: dá para arrastar pelo quadro'],[50,72,'Botões para ver os trabalhos e chamar']]]]},
     {id:'agente',name:'Agente de WhatsApp',type:'agente de IA',status:'em teste',flow:true,
      dor:'Atender clientes no WhatsApp toma bastante tempo e necessita de uma pessoa focada nessa função.',
      feito:'Um agente que conversa em tom natural, tira dúvidas e faz agendamentos, além de chamar um humano somente quando é necessário.',
@@ -1338,7 +1338,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
      dor:'O técnico de ar-condicionado perde cliente por demorar a responder, esquece de avisar a hora da limpeza e não tem agenda e caixa organizados.',
      feito:'Sistema de gestão que funciona no celular, mesmo sem sinal: agenda com calendário do mês, ordens de serviço, orçamento e laudo em PDF, clientes e caixa. Faz parte de um pacote com site profissional e agente de IA no WhatsApp.',
      stack:['React','App offline (PWA)','Supabase','PDF','n8n'],note:'Telas com dados fictícios.',
-     shots:[['Telas','img/climatiza-telas-3.jpg','Três telas do Climatiza no celular: agenda com calendário do mês, orçamentos e caixa do mês',[[21,38,'Calendário do mês: os dias com visita ficam marcados'],[21,61,'Resumo do dia, com as visitas e o valor previsto'],[50,20,'Orçamentos: valor aguardando resposta e taxa de aprovação'],[79,27,'Caixa: quanto entrou no mês e por forma de pagamento'],[79,68,'O que falta receber, com botão para registrar o pagamento']]]]}
+     shots:[['Telas','img/climatiza-telas-3.webp','Três telas do Climatiza no celular: agenda com calendário do mês, orçamentos e caixa do mês',[[21,38,'Calendário do mês: os dias com visita ficam marcados'],[21,61,'Resumo do dia, com as visitas e o valor previsto'],[50,20,'Orçamentos: valor aguardando resposta e taxa de aprovação'],[79,27,'Caixa: quanto entrou no mês e por forma de pagamento'],[79,68,'O que falta receber, com botão para registrar o pagamento']]]]}
   ];
   /* como era antes: a bagunça que cada projeto resolve (ilustração) */
   var MESS={
@@ -1618,7 +1618,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
       }
       var P=pts.map(function(p){return[p[0]*CELL,p[1]*CELL]}),cum=[0];
       for(var i=1;i<P.length;i++)cum.push(cum[i-1]+Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]));
-      T.push({P:P,cum:cum,len:cum[cum.length-1],end:R()<.5?0:1,start:R()<.5?0:1});
+      var ys=P.map(function(p){return p[1]});T.push({P:P,cum:cum,len:cum[cum.length-1],end:R()<.5?0:1,start:R()<.5?0:1,y0:Math.min.apply(0,ys),y1:Math.max.apply(0,ys)});
     }
   }
   function at(tr,l){var P=tr.P,c=tr.cum,i=1;while(i<c.length-1&&c[i]<l)i++;var f=(l-c[i-1])/((c[i]-c[i-1])||1);return[P[i-1][0]+(P[i][0]-P[i-1][0])*f,P[i-1][1]+(P[i][1]-P[i-1][1])*f]}
@@ -1628,8 +1628,16 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   document.addEventListener('pointerleave',function(){px=py=-999});
   addEventListener('pointerdown',function(e){px=e.clientX;py=e.clientY;for(var i=0;i<8;i++)addPulse(true)});
   function off(){return Math.min(scrollY*.14,FH-H)}
+  var geo=null;
+  function measure(){var sy=scrollY,hi=document.getElementById('inicio').getBoundingClientRect(),so=document.getElementById('sobre').getBoundingClientRect();
+    geo={hi:[hi.top+sy,hi.bottom+sy],so:so.top+sy,dk:[].slice.call(document.querySelectorAll('.dark,footer')).map(function(el){var r=el.getBoundingClientRect();return[r.left,r.top+sy,r.width,r.height]})};frame.k=null}
+  addEventListener('resize',function(){geo=null});addEventListener('load',function(){geo=null});
+  if('ResizeObserver' in window)new ResizeObserver(function(){geo=null}).observe(document.body);
+  /* parado quando o circuito não aparece; volta a rodar ao rolar ou redimensionar */
+  function wake(){if(frame.idle&&!reduce){frame.idle=false;last=performance.now();requestAnimationFrame(frame)}}
+  addEventListener('scroll',wake,{passive:true});addEventListener('resize',wake);
   function addPulse(near){
-    if(pulses.length>32)return;var al=window.__allow||[];function ok(y){for(var i=0;i<al.length;i++)if(y>=al[i][1]&&y<=al[i][1]+al[i][3])return true;return false}var tr,tries=0;
+    var al=window.__allow||[];if(pulses.length>32||!al.length)return;function ok(y){for(var i=0;i<al.length;i++)if(y>=al[i][1]&&y<=al[i][1]+al[i][3])return true;return false}var tr,tries=0;
     do{tr=T[Math.floor(Math.random()*T.length)];tries++;
       if(!near){var y=at(tr,tr.len/2)[1]-off();if(y>-60&&y<H+60&&ok(y))break}
       else{var m=at(tr,tr.len*Math.random()),mx=m[0],my=m[1]-off();if(Math.hypot(mx-px,my-py)<200&&ok(my))break}
@@ -1640,7 +1648,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   function path(clipOnly,col,a,w){
     cx.beginPath();var o=off();
     T.forEach(function(tr){
-      var P=tr.P,top=Math.min(P[0][1],P[P.length-1][1]);
+      var P=tr.P;if(tr.y1-o<-4||tr.y0-o>H+4)return;
       cx.moveTo(P[0][0],P[0][1]-o);for(var i=1;i<P.length;i++)cx.lineTo(P[i][0],P[i][1]-o);
     });
     cx.strokeStyle=col;cx.globalAlpha=a;cx.lineWidth=w||1;cx.stroke();cx.globalAlpha=1;
@@ -1675,12 +1683,16 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
       pulses.forEach(function(p){p.l+=p.v*dt});
       pulses=pulses.filter(function(p){return p.l>=0&&p.l<=p.tr.len});
     }
-    cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
-    var allow=[],hr=document.getElementById('inicio').getBoundingClientRect(),sr=document.getElementById('sobre').getBoundingClientRect();
+    if(!geo)measure();var sy=scrollY,allow=[],hr={top:geo.hi[0]-sy,bottom:geo.hi[1]-sy},sr={top:geo.so-sy};
     if(hr.bottom>0&&hr.top<H)allow.push([0,Math.max(hr.top,0),W,Math.min(hr.bottom,H)-Math.max(hr.top,0)]);
     if(sr.top<H){var t0=Math.max(sr.top,0);allow.push([0,t0,W,H-t0])}
     window.__allow=allow;
-    var darks=[].slice.call(document.querySelectorAll('.dark,footer')).map(function(el){var r=el.getBoundingClientRect();return[r.left,Math.max(r.top,0),r.width,Math.min(r.bottom,H)-Math.max(r.top,0)]}).filter(function(r){return r[3]>0});
+    /* sem circuito visível e sem rolagem desde o último quadro: não redesenha */
+    var key=allow.length?'':Math.round(scrollY)+'x'+W+'x'+H;
+    if(key&&key===frame.k){frame.idle=true;return}
+    frame.k=key;
+    cx.setTransform(dpr,0,0,dpr,0,0);cx.clearRect(0,0,W,H);
+    var darks=geo.dk.map(function(d){var t=d[1]-sy,b=t+d[3];return[d[0],Math.max(t,0),d[2],Math.min(b,H)-Math.max(t,0)]}).filter(function(r){return r[3]>0});
     cx.fillStyle=DARK;darks.forEach(function(r){cx.fillRect(r[0],r[1],r[2],r[3])});
     allow.forEach(function(al){
       cx.save();cx.beginPath();cx.rect(al[0],al[1],al[2],al[3]);cx.clip();
