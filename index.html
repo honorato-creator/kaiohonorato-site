@@ -212,10 +212,12 @@ button{cursor:pointer}
 @media (max-width:900px){.stage,.panel{grid-column:1/-1}.stage{max-width:460px;margin-inline:auto}}
 
 /* 03 agente: converse de verdade */
-.demo .grid{align-items:center}
+.demo .grid{align-items:start}
 .demo-text{grid-column:1/7}
 .demo-holo{grid-column:7/13}
-.demo-text h2{margin-top:0;font-size:clamp(40px,4.6vw,68px)}
+.demo-text{position:sticky;top:96px}
+.demo-text h2{margin-top:0;font-size:clamp(44px,5.4vw,84px)}
+#agente .lede{font-size:clamp(18px,1.45vw,22px)}
 .demo-text .lede{margin-top:24px}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
 .chip{min-height:46px;padding:0 22px;border-radius:999px;border:1.5px solid var(--linen);background:transparent;color:var(--linen);font:500 17px var(--f-b);transition:background-color .2s,color .2s}
@@ -247,7 +249,7 @@ button{cursor:pointer}
 .say input::placeholder{color:rgba(49,50,54,.55)}
 .say button{min-height:48px;padding:0 22px;border-radius:999px;border:0;background:var(--base);color:var(--linen);font:700 16px var(--f-b)}
 .say button:hover{background:var(--acc)}
-@media (max-width:900px){.demo-text,.demo-holo{grid-column:1/-1}.demo-holo{margin-top:44px;max-width:560px}}
+@media (max-width:900px){.demo-text{position:static;padding-top:0}.demo-text,.demo-holo{grid-column:1/-1}.demo-holo{margin-top:44px;max-width:560px}}
 /* seção do agente: um espaço de projeção holográfica que ocupa tudo (texto e Iris) */
 html.bgfx #agente,#agente{position:relative;overflow:hidden;background:radial-gradient(ellipse 55% 60% at 72% 45%,rgba(20,90,110,.45),transparent 70%),radial-gradient(ellipse at 50% 100%,#082029 0%,#04070c 55%),#04070c;color:var(--linen)}
 #agente::before{content:"";position:absolute;inset:0;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' fill='none' stroke='%235FE3F0' stroke-width='1'%3E%3Cpath d='M0 40H70V110H150V60H260M30 260V190H110V150H200V230H260M190 0V30H230V110M60 150V210M150 110V150'/%3E%3Cg fill='%235FE3F0' stroke='none'%3E%3Ccircle cx='70' cy='40' r='2.5'/%3E%3Ccircle cx='150' cy='110' r='2.5'/%3E%3Ccircle cx='110' cy='190' r='2.5'/%3E%3Ccircle cx='230' cy='110' r='2.5'/%3E%3Ccircle cx='60' cy='210' r='2.5'/%3E%3Ccircle cx='200' cy='150' r='2.5'/%3E%3C/g%3E%3C/svg%3E") 0 0/260px 260px;opacity:.13;-webkit-mask-image:radial-gradient(ellipse at 60% 45%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse at 60% 45%,#000 30%,transparent 80%)}
