@@ -124,15 +124,14 @@ button{cursor:pointer}
 .hero-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
 .hero-fig{grid-column:8/13;justify-self:end;width:100%;max-width:520px}
 /* reator da abertura */
-.reactor{position:relative;width:min(100%,460px);aspect-ratio:1;margin-inline:auto;display:flex;justify-content:center;align-items:center;transition:transform .3s ease;will-change:transform}
-.reactor:hover{transform:scale(1.05)}
-.r-hud{position:absolute;inset:0;border:2px dashed rgba(234,88,12,.45);border-radius:50%;animation:r-spin 20s linear infinite}
-.r-seg{position:absolute;width:85%;height:85%;border-radius:50%;border:clamp(10px,1.8vw,18px) solid transparent;border-top-color:#262626;border-bottom-color:#262626;box-shadow:0 0 15px rgba(234,88,12,.2);animation:r-spin 10s linear infinite reverse}
-.r-core{position:absolute;width:50%;height:50%;border-radius:50%;display:flex;justify-content:center;align-items:center;background:radial-gradient(circle,rgba(234,88,12,.8) 0%,rgba(20,20,20,.95) 70%);box-shadow:0 0 30px rgba(234,88,12,.6),inset 0 0 15px rgba(255,255,255,.3);animation:r-pulse 3s ease-in-out infinite}
-.r-mesh{width:80%;height:80%;border-radius:50%;border:1px dotted rgba(255,255,255,.4);background:radial-gradient(circle,transparent 40%,rgba(234,88,12,.4) 100%);animation:r-spin 8s linear infinite}
-@keyframes r-spin{to{transform:rotate(360deg)}}
-@keyframes r-pulse{0%,100%{box-shadow:0 0 20px rgba(234,88,12,.4),inset 0 0 15px rgba(255,255,255,.3)}50%{box-shadow:0 0 45px rgba(234,88,12,.9),inset 0 0 15px rgba(255,255,255,.3)}}
-@media (prefers-reduced-motion:reduce){.r-hud,.r-seg,.r-core,.r-mesh{animation:none}.reactor{transition:none}}
+.reactor{position:relative;width:min(100%,460px);aspect-ratio:1;margin-inline:auto;user-select:none;will-change:transform}
+.reactor svg{display:block;width:100%;height:100%;overflow:visible}
+.rp-hud,.rp-seg{transform-box:view-box;transform-origin:200px 200px}
+.rp-seg{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.reactor:hover .rp-seg{transform:scale(1.05)}
+.rp-ping{transform-box:fill-box;transform-origin:center;animation:rp-ping 3s cubic-bezier(0,0,.2,1) infinite}
+@keyframes rp-ping{75%,100%{transform:scale(2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rp-ping{animation:none}.rp-seg{transition:none}}
 .rx{position:relative;will-change:transform}#neu{position:absolute;left:29%;top:29%;width:42%;height:42%;border-radius:50%;pointer-events:none}#nodes{display:block;width:100%;height:auto;touch-action:pan-y;overflow:visible;will-change:transform}
 @media (max-width:900px){
   .hero .grid{min-height:0;row-gap:48px}.hero-text{grid-column:1/-1}
@@ -902,9 +901,38 @@ html.bgfx main,html.bgfx footer{position:relative;z-index:1}
     </div>
     <div class="hero-fig" aria-hidden="true">
       <div class="reactor" id="reactor">
-        <div class="r-hud"></div>
-        <div class="r-seg"></div>
-        <div class="r-core"><div class="r-mesh"></div></div>
+        <svg viewBox="0 0 400 400" role="presentation">
+          <defs>
+            <radialGradient id="rcGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0" stop-color="#ea580c"/><stop offset=".6" stop-color="#7c2d12" stop-opacity=".8"/><stop offset="1" stop-color="#0f0f11" stop-opacity=".95"/>
+            </radialGradient>
+            <filter id="rcShadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+          </defs>
+          <g opacity=".4">
+            <circle cx="200" cy="200" r="185" fill="none" stroke="#ea580c" stroke-width="1" stroke-dasharray="4 8"/>
+            <path d="M200 15 L200 385 M15 200 L385 200" stroke="#ea580c" stroke-width=".5" stroke-dasharray="2 6"/>
+            <path d="M280 280 L340 340 L380 340" fill="none" stroke="#ea580c" stroke-width="1.5"/>
+            <circle cx="380" cy="340" r="3" fill="#ea580c"/><circle cx="340" cy="340" r="2" fill="#ea580c"/><circle cx="305" cy="305" r="2" fill="#ea580c"/><circle cx="280" cy="280" r="2" fill="#ea580c"/>
+          </g>
+          <g class="rp-hud" id="rpHud"><circle cx="200" cy="200" r="160" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="10 15 3 15" stroke-opacity=".6"/></g>
+          <g class="rp-seg" filter="url(#rcShadow)">
+            <path d="M 70,120 A 130,130 0 0,1 180,72" fill="none" stroke="#1c1c1e" stroke-width="26" stroke-linecap="round"/>
+            <path d="M 230,328 A 130,130 0 0,1 110,290" fill="none" stroke="#1c1c1e" stroke-width="26" stroke-linecap="round"/>
+            <path d="M 315,140 A 130,130 0 0,1 328,240" fill="none" stroke="#1c1c1e" stroke-width="24" stroke-linecap="round"/>
+          </g>
+          <circle cx="200" cy="200" r="110" fill="none" stroke="#ea580c" stroke-width="1" stroke-dasharray="2 8" opacity=".8"/>
+          <circle cx="200" cy="200" r="85" fill="url(#rcGlow)" stroke="#ea580c" stroke-width="1.5" stroke-opacity=".8"/>
+          <g opacity=".65">
+            <ellipse cx="200" cy="200" rx="85" ry="30" fill="none" stroke="#ea580c" stroke-width=".8"/>
+            <ellipse cx="200" cy="200" rx="30" ry="85" fill="none" stroke="#ea580c" stroke-width=".8"/>
+            <circle cx="200" cy="200" r="60" fill="none" stroke="#fff" stroke-width=".5" stroke-dasharray="3 3" opacity=".4"/>
+          </g>
+          <circle class="rp-ping" cx="225" cy="180" r="4" fill="#ea580c"/>
+          <circle cx="225" cy="180" r="3" fill="#fff"/>
+          <circle cx="170" cy="220" r="2.5" fill="#ea580c"/><circle cx="210" cy="235" r="3.5" fill="#ea580c"/>
+          <line x1="225" y1="180" x2="210" y2="235" stroke="#ea580c" stroke-width=".8" opacity=".8"/>
+          <line x1="170" y1="220" x2="210" y2="235" stroke="#ea580c" stroke-width=".8" opacity=".8"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -1080,14 +1108,22 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   if(PERFIL.instagram){var ig=$('#lnkInsta');ig.href=PERFIL.instagram;ig.hidden=false}
   if(!gh&&!li&&!PERFIL.instagram)$('#links2').hidden=true;
 
-  /* reator da abertura: segue o mouse suavemente (só enquanto o topo está na tela) */
+  /* reator da abertura: o anel externo gira (acelera com o mouse em cima) e o reator segue o mouse suavemente */
   (function(){
-    var re=$('#reactor');if(!re||reduce)return;
-    var on=true,tx=0,ty=0,cx=0,cy=0,raf=0;
+    var re=$('#reactor'),hud=$('#rpHud');if(!re||reduce)return;
+    var on=true,over=false,ang=0,spd=360/35,tx=0,ty=0,cx=0,cy=0,last=performance.now();
     if('IntersectionObserver' in window)new IntersectionObserver(function(es){on=es[0].isIntersecting}).observe(re);
-    function step(){cx+=(tx-cx)*.12;cy+=(ty-cy)*.12;re.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px) scale(1.02)';if(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1)raf=requestAnimationFrame(step);else raf=0}
-    document.addEventListener('mousemove',function(e){if(!on)return;tx=(innerWidth/2-e.clientX)/25;ty=(innerHeight/2-e.clientY)/25;if(!raf)raf=requestAnimationFrame(step)},{passive:true});
-    document.documentElement.addEventListener('mouseleave',function(){tx=ty=0;if(!raf)raf=requestAnimationFrame(step)});
+    re.addEventListener('mouseenter',function(){over=true});re.addEventListener('mouseleave',function(){over=false});
+    document.addEventListener('mousemove',function(e){tx=(innerWidth/2-e.clientX)/25;ty=(innerHeight/2-e.clientY)/25},{passive:true});
+    document.documentElement.addEventListener('mouseleave',function(){tx=ty=0});
+    (function tick(now){
+      var dt=Math.min(.05,(now-last)/1000);last=now;
+      if(on){
+        spd+=((over?360/15:360/35)-spd)*.04;ang=(ang+spd*dt)%360;hud.setAttribute('transform','rotate('+ang.toFixed(2)+' 200 200)');
+        cx+=(tx-cx)*.08;cy+=(ty-cy)*.08;re.style.transform='translate('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px)';
+      }
+      requestAnimationFrame(tick);
+    })(last);
   })();
   /* reator antigo (SVG): o código só roda se ele existir */
   var HAS_RX=!!$('#nodes');
