@@ -1444,6 +1444,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
   function irisState(s){
     if(!iris)return;clearTimeout(irisT);
     iris.classList.toggle('talk',s!=='idle');
+    if(window.irisHolo&&irisHolo.setState)irisHolo.setState(s);
     irisSt.textContent=s==='listen'?'ouvindo':s==='think'?'processando':s==='talk'?'respondendo':'sistema ativo';
   }
   /* agentSay aceita um texto pronto ou uma promessa de [texto, etiqueta] vinda da Iris real */
@@ -1710,15 +1711,15 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
 })();
 </script>
 <script type="module">
-  /* Iris holográfica: carrega o 3D só quando a seção do agente se aproxima da tela */
+  /* Iris em orbe: carrega o orbe só quando a seção do agente se aproxima da tela */
   const stage = document.getElementById('irisStage');
   if (stage && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(async es => {
       if (!es.some(e => e.isIntersecting)) return;
       io.disconnect();
       try {
-        const { createIrisHolo } = await import('./js/iris/iris-holo.js?v=2');
-        window.irisHolo = createIrisHolo(stage, { src: 'img/iris-holo.webp', onReady: () => stage.classList.add('on') }); setTimeout(() => stage.classList.add('on'), 8000);
+        const { createIrisOrb } = await import('./js/iris/iris-orb.js?v=2');
+        window.irisHolo = createIrisOrb(stage, { onReady: () => stage.classList.add('on') }); setTimeout(() => stage.classList.add('on'), 8000);
       } catch (e) { stage.classList.add('sem3d'); /* sem WebGL: mostra a imagem parada */ }
     }, { rootMargin: '400px 0px' });
     io.observe(stage);
