@@ -1718,7 +1718,7 @@ var LINKS={agente:{live:'',repo:''},gerontodata:{live:'https://gerontodata-web.v
       if (!es.some(e => e.isIntersecting)) return;
       io.disconnect();
       try {
-        const { createIrisOrb } = await import('./js/iris/iris-orb.js?v=2');
+        const { createIrisOrb } = await import('./js/iris/iris-orb.js?v=3');
         window.irisHolo = createIrisOrb(stage, { onReady: () => stage.classList.add('on') }); setTimeout(() => stage.classList.add('on'), 8000);
       } catch (e) { stage.classList.add('sem3d'); /* sem WebGL: mostra a imagem parada */ }
     }, { rootMargin: '400px 0px' });

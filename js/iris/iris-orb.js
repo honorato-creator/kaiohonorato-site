@@ -62,11 +62,18 @@ export function createIrisOrb(host, opts = {}) {
     env = L(env, target, v > env ? .5 : .2);
     const speaking = v > 0.04 || state === 'talk';
 
-    const cx = W / 2, cy = H * .48, R = Math.min(W, H) * .2;
+    const breath = 1 + Math.sin(t * 1.3) * .015 + env * .03;
+    const cx = W / 2, cy = H * .47, R = Math.min(W, H) * .255 * breath;
     x.clearRect(0, 0, W, H);
+
+    /* aura atrás de tudo: é o que faz o orbe ser a fonte de luz da seção */
+    x.globalCompositeOperation = 'source-over';
+    const aura = x.createRadialGradient(cx, cy, R * .2, cx, cy, R * 2.3);
+    aura.addColorStop(0, A(.42 + env * .2 + mix * .15)); aura.addColorStop(.35, A(.14)); aura.addColorStop(1, A(0));
+    x.fillStyle = aura; x.beginPath(); x.arc(cx, cy, R * 2.3, 0, 7); x.fill();
     x.globalCompositeOperation = 'lighter';
 
-    /* esfera em wireframe girando em 3D */
+    /* esfera em wireframe girando em 3D: frente forte, fundo apagado */
     const rot = t * sp, tilt = .45;
     const pr = (th, ph) => {
       const X = Math.cos(ph) * Math.cos(th), Y = Math.sin(ph), Z = Math.cos(ph) * Math.sin(th);
@@ -75,39 +82,45 @@ export function createIrisOrb(host, opts = {}) {
       const d = 1 + amp * env * Math.sin(th * 6 + t * 5) * Math.cos(ph * 4 - t * 3) * 3;
       return [cx + X2 * R * d, cy + Y2 * R * d, Z3];
     };
-    x.lineWidth = D;
-    for (let m = 0; m < 12; m++) {
-      const th = m / 12 * Math.PI * 2; x.beginPath();
-      for (let k = 0; k <= 30; k++) { const p = pr(th, -Math.PI / 2 + k / 30 * Math.PI); k ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]); }
-      x.strokeStyle = C(.22, 60); x.stroke();
+    const line = (a, b) => {
+      const z = (a[2] + b[2]) / 2, k = (z + 1) / 2;
+      x.strokeStyle = C(.08 + k * .55, 62); x.lineWidth = D * (.8 + k * 1.1);
+      x.beginPath(); x.moveTo(a[0], a[1]); x.lineTo(b[0], b[1]); x.stroke();
+    };
+    for (let m = 0; m < 14; m++) {
+      const th = m / 14 * Math.PI * 2; let q = pr(th, -Math.PI / 2);
+      for (let k = 1; k <= 28; k++) { const p = pr(th, -Math.PI / 2 + k / 28 * Math.PI); line(q, p); q = p; }
     }
-    for (let n = 1; n < 8; n++) {
-      const ph = -Math.PI / 2 + n / 8 * Math.PI; x.beginPath();
-      for (let k = 0; k <= 40; k++) { const p = pr(k / 40 * Math.PI * 2, ph); k ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]); }
-      x.strokeStyle = C(.18, 60); x.stroke();
+    for (let n = 1; n < 9; n++) {
+      const ph = -Math.PI / 2 + n / 9 * Math.PI; let q = pr(0, ph);
+      for (let k = 1; k <= 40; k++) { const p = pr(k / 40 * Math.PI * 2, ph); line(q, p); q = p; }
     }
-    for (let m = 0; m < 12; m++) for (let n = 1; n < 8; n++) {
-      const p = pr(m / 12 * Math.PI * 2, -Math.PI / 2 + n / 8 * Math.PI);
-      if (p[2] > 0) { x.fillStyle = C(.5 + p[2] * .5, 80); x.fillRect(p[0] - D, p[1] - D, 2 * D, 2 * D); }
+    x.shadowColor = A(1); x.shadowBlur = 10 * D;
+    for (let m = 0; m < 14; m++) for (let n = 1; n < 9; n++) {
+      const p = pr(m / 14 * Math.PI * 2, -Math.PI / 2 + n / 9 * Math.PI);
+      if (p[2] > -.1) { const s2 = D * (1.2 + p[2] * 1.6); x.fillStyle = (m + n) % 7 ? C(.6 + p[2] * .4, 80) : A(.95); x.fillRect(p[0] - s2, p[1] - s2, 2 * s2, 2 * s2); }
     }
-    /* núcleo de luz */
-    const core = x.createRadialGradient(cx, cy, 0, cx, cy, R * .9);
-    core.addColorStop(0, `rgba(255,246,236,${.7 + env * .3})`); core.addColorStop(.22, A(.45 + env * .25)); core.addColorStop(.6, A(.08)); core.addColorStop(1, A(0));
-    x.fillStyle = core; x.beginPath(); x.arc(cx, cy, R * .9, 0, 7); x.fill();
-    if (mix > .02) {
-      const hot = x.createRadialGradient(cx, cy, 0, cx, cy, R * .55);
-      hot.addColorStop(0, A(.5 * mix)); hot.addColorStop(1, A(0));
-      x.fillStyle = hot; x.beginPath(); x.arc(cx, cy, R * .55, 0, 7); x.fill();
-    }
+    /* núcleo: estrela branca com coroa laranja */
+    x.shadowBlur = 40 * D;
+    const core = x.createRadialGradient(cx, cy, 0, cx, cy, R * .75);
+    core.addColorStop(0, `rgba(255,250,242,${.95})`); core.addColorStop(.08, `rgba(255,236,214,${.8 + env * .2})`);
+    core.addColorStop(.3, A(.55 + env * .3 + mix * .2)); core.addColorStop(.7, A(.1)); core.addColorStop(1, A(0));
+    x.fillStyle = core; x.beginPath(); x.arc(cx, cy, R * .75, 0, 7); x.fill();
+    x.shadowBlur = 0;
+    /* reflexo horizontal, tipo lente */
+    const fl = x.createLinearGradient(cx - R * 1.6, 0, cx + R * 1.6, 0);
+    fl.addColorStop(0, A(0)); fl.addColorStop(.5, `rgba(255,240,225,${.35 + env * .3})`); fl.addColorStop(1, A(0));
+    x.fillStyle = fl; x.fillRect(cx - R * 1.6, cy - D * 1.2, R * 3.2, D * 2.4);
 
     /* anéis do HUD */
     const seg = (r, n, gap, off, w, col) => {
-      x.lineWidth = w; x.strokeStyle = col;
+      x.lineWidth = w; x.strokeStyle = col; x.shadowColor = col; x.shadowBlur = w * 4;
       for (let i = 0; i < n; i++) { const a = off + i / n * Math.PI * 2; x.beginPath(); x.arc(cx, cy, r, a, a + Math.PI * 2 / n * (1 - gap)); x.stroke(); }
     };
-    seg(R * 1.3, 3, .35, t * sp * .8, D * 2, A(.85));
-    seg(R * 1.42, 24, .5, -t * sp * .5, D, C(.4, 70));
-    seg(R * 1.62, 2, .6, t * sp * 1.3 + 1, D * 3, A(.55));
+    seg(R * 1.3, 3, .35, t * sp * .8, D * 2.5, A(.95));
+    seg(R * 1.42, 24, .5, -t * sp * .5, D * 1.3, C(.5, 70));
+    seg(R * 1.62, 2, .6, t * sp * 1.3 + 1, D * 3.5, A(.75));
+    x.shadowBlur = 0;
     x.strokeStyle = C(.3, 70); x.lineWidth = D;
     for (let i = 0; i < 72; i++) {
       const a = i / 72 * Math.PI * 2, l = i % 6 ? R * .04 : R * .09;
