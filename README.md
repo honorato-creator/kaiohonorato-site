@@ -24,7 +24,7 @@ Um site estático de apresentação com três páginas:
 |---|---|
 | Páginas | HTML, CSS e JavaScript puros, sem framework e sem build |
 | Formulários | Netlify Forms (`contato` e `orcamento`), com campo anti-spam escondido |
-| Iris (agente) | Orbe de luz com HUD em Canvas 2D (`js/iris/iris-orb.js`), que muda com o estado da conversa (repouso, ouvindo, processando, respondendo) e pulsa com a voz; inteligência no n8n e voz no ElevenLabs, via Netlify Functions (`netlify/functions/`). O rosto 3D antigo em Three.js (`iris-holo.js`) continua na pasta como alternativa |
+| Iris (agente) | Esfera de cristal em 3D com uma íris acesa dentro, feita em Three.js (`js/iris/iris-crystal.js`): o olho acompanha o visitante, a pupila abre quando ela ouve, a íris gira quando ela pensa e pulsa com a voz. Em aparelhos sem 3D, cai para um orbe em Canvas 2D (`iris-orb.js`). Inteligência no n8n e voz no ElevenLabs, via Netlify Functions (`netlify/functions/`) |
 | Hospedagem | Netlify |
 | Segurança | Arquivo `_headers` com Content-Security-Policy, X-Frame-Options, nosniff, Referrer-Policy e Permissions-Policy |
 | Desempenho | Cache de 30 dias para imagens e ícones; páginas sempre revalidadas |
